@@ -1,4 +1,4 @@
-package com.example.myapplication;
+package com.fixed4fun.alarmclock;
 
 import android.app.Dialog;
 import android.app.TimePickerDialog;
@@ -10,7 +10,7 @@ import android.text.format.DateFormat;
 
 import java.util.Calendar;
 
-public class TimePicker extends DialogFragment {
+public class TimePicker extends DialogFragment  {
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
@@ -24,4 +24,7 @@ public class TimePicker extends DialogFragment {
                 , minuteOfHour
                 , DateFormat.is24HourFormat(getActivity()));
     }
+
+
+
 }

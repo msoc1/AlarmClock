@@ -1,4 +1,4 @@
-package com.example.myapplication;
+package com.fixed4fun.alarmclock;
 
 import android.content.Context;
 import android.support.annotation.NonNull;

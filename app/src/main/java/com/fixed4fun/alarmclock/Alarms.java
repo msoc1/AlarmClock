@@ -1,7 +1,6 @@
-package com.example.myapplication;
+package com.fixed4fun.alarmclock;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 
 public class Alarms {
 

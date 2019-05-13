@@ -1,4 +1,4 @@
-package com.example.myapplication;
+package com.fixed4fun.alarmclock;
 
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;

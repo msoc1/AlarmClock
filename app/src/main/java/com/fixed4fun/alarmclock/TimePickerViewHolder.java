@@ -1,4 +1,4 @@
-package com.example.myapplication;
+package com.fixed4fun.alarmclock;
 
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
@@ -7,8 +7,6 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.RadioButton;
 import android.widget.TextView;
-
-import java.text.DateFormat;
 
 public class TimePickerViewHolder extends RecyclerView.ViewHolder {
 
@@ -21,6 +19,7 @@ public class TimePickerViewHolder extends RecyclerView.ViewHolder {
         super(itemView);
         cs = itemView.findViewById(R.id.custom_time);
         tp = itemView.findViewById(R.id.time_picker);
+
 
 
 

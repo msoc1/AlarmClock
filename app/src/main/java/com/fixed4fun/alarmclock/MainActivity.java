@@ -1,4 +1,4 @@
-package com.example.myapplication;
+package com.fixed4fun.alarmclock;
 
 import android.app.TimePickerDialog;
 import android.support.design.widget.FloatingActionButton;
@@ -10,28 +10,30 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.FrameLayout;
-import android.widget.TableLayout;
-import android.widget.Toast;
-
-import java.text.DateFormat;
-import java.util.ArrayList;
+import android.widget.TimePicker;
 
 public class MainActivity extends AppCompatActivity implements TimePickerDialog.OnTimeSetListener {
     Alarms alarms = new Alarms();
-     CustomAdapter customAdapter;
+     static com.fixed4fun.alarmclock.CustomAdapter customAdapter;
+    FrameLayout timePicker;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        customAdapter = new CustomAdapter(alarms.getAlarms(), getApplicationContext());
+        customAdapter = new com.fixed4fun.alarmclock.CustomAdapter(alarms.getAlarms(), getApplicationContext());
+        timePicker = (TimePicker) findViewById(R.id.time_picker);
 
         final TabLayout tableLayout = findViewById(R.id.tabLayout);
 
         final RecyclerView recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setAdapter(customAdapter);
 
-        customAdapter.SetOnClickItemListener(new CustomAdapter.OnItemClickListener() {
+
+
+
+
+        customAdapter.SetOnClickItemListener(new com.fixed4fun.alarmclock.CustomAdapter.OnItemClickListener() {
             @Override
             public void OnItemClick(int position) {
                 Alarms.deleteAlarm(position);
@@ -63,6 +65,8 @@ public class MainActivity extends AppCompatActivity implements TimePickerDialog.
 
 
 
+
+
         FloatingActionButton floatingActionButton = findViewById(R.id.asb);
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -84,4 +88,7 @@ public class MainActivity extends AppCompatActivity implements TimePickerDialog.
         Alarms.addAlarm(hourOfDay+ "h "+ minute + "min", "wed", "123", true);
         customAdapter.notifyDataSetChanged();
     }
+
+
+
 }
