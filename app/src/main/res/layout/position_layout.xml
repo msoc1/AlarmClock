@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/positionConstraintLayout"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:background="#01314b">
 
     <TextView
         android:id="@+id/timeOfAlarm"
@@ -15,6 +16,7 @@
         android:text="timeOfAlarm"
         android:textSize="24sp"
         android:textStyle="bold"
+        android:textColor="#e6c6a9"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -33,6 +35,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:text="setTime"
+        android:textColor="#e6c6a9"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/timeOfAlarm" />
 
@@ -42,6 +45,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:text="howLong"
+        android:textColor="#e6c6a9"
         app:layout_constraintBaseline_toBaselineOf="@+id/setTime"
         app:layout_constraintEnd_toEndOf="parent" />
 

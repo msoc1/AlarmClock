@@ -16,6 +16,12 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomViewHolder> {
 
     private OnItemClickListener mListener;
 
+    private OnLongClickListener mLongListener;
+
+    public interface OnLongClickListener{
+        void OnLongClick();
+    }
+
     public interface OnItemClickListener{
         void OnItemClick(int position);
     }
@@ -23,6 +29,11 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomViewHolder> {
     public void SetOnClickItemListener(OnItemClickListener listener){
         mListener = listener;
     }
+
+    public void SetOnLongClickListener(OnLongClickListener listener){
+        mLongListener = listener;
+    }
+
 
 
     public CustomAdapter(ArrayList<AlarmData> alarmDataArrayList, Context context) {
@@ -43,7 +54,6 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomViewHolder> {
         customViewHolder.howLong.setText(alarmDataArrayList.get(i).getHowLongTillAlarm());
         customViewHolder.timeOfAlarm.setText(alarmDataArrayList.get(i).getTimeOfAlarm());
         customViewHolder.setTime.setText(alarmDataArrayList.get(i).getWhenToGoOff());
-
     }
 
     @Override

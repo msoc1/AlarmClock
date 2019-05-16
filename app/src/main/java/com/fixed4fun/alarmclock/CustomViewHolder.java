@@ -34,5 +34,15 @@ public class CustomViewHolder extends RecyclerView.ViewHolder {
                 }
             }
         });
+
+        itemView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                MainActivity.toolbar.setMaxHeight(MainActivity.toolbarHeight);
+
+                return false;
+            }
+        });
+
     }
 }
