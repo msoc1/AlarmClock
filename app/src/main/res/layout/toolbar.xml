@@ -24,15 +24,15 @@
         app:layout_constraintBaseline_toBaselineOf="@+id/checkBox2"
         app:layout_constraintStart_toEndOf="@+id/checkBox2" />
 
-    <Button
-        android:id="@+id/button3"
-        android:layout_width="174dp"
+    <Switch
+        android:id="@+id/switch3"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
-        android:drawableStart="@android:drawable/ic_delete"
-        android:text="delete"
+        android:text="Switch"
         app:layout_constraintBaseline_toBaselineOf="@+id/button2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/button2" />
+
 </android.support.constraint.ConstraintLayout>

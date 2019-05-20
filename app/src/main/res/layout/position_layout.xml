@@ -25,6 +25,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
+        android:shadowColor="#44CE1F"
+        android:textColor="#60A230"
+        android:textColorHighlight="#003AEE6D"
+        android:textColorLink="#27B117"
         app:layout_constraintBaseline_toBaselineOf="@+id/timeOfAlarm"
         app:layout_constraintEnd_toEndOf="parent" />
 
@@ -62,4 +66,5 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/howLong" />
+
 </android.support.constraint.ConstraintLayout>

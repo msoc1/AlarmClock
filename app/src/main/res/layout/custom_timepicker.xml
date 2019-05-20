@@ -4,28 +4,30 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/custom_time"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:background="#01314b">
 
     <TimePicker
         android:id="@+id/time_picker"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginEnd="32dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginEnd="40dp"
         android:amPmTextColor="#7fc2db"
         android:headerBackground="#01314b"
         android:numbersBackgroundColor="#e6c6a9"
         android:numbersSelectorColor="#7fc2db"
         android:numbersTextColor="#233FDD"
+
         android:outlineSpotShadowColor="#7fc2db"
+        android:timePickerMode="clock"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
 
     <Button
-        android:id="@+id/setAlarm"
+        android:id="@+id/set_alarm"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
@@ -37,11 +39,11 @@
         android:text="ustaw"
         android:textColor="#e6c6a9"
         android:textSize="12sp"
-        app:layout_constraintEnd_toEndOf="@+id/time_picker"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/cancelAlarm"
+        android:id="@+id/cancel_alarm"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -52,72 +54,72 @@
         android:text="anuluj"
         android:textColor="#e6c6a9"
         android:textSize="12sp"
-        app:layout_constraintBaseline_toBaselineOf="@+id/setAlarm"
+        app:layout_constraintBaseline_toBaselineOf="@+id/set_alarm"
         app:layout_constraintStart_toStartOf="parent" />
 
     <CheckBox
-        android:id="@+id/mondayCheckBox"
+        android:id="@+id/monday_check_box"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="16dp"
         android:button="@drawable/monday_selector"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/time_picker" />
 
     <CheckBox
-        android:id="@+id/tuesdayCheckBox"
+        android:id="@+id/tuesday_check_box"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:button="@drawable/tuesday_selector"
-        app:layout_constraintBaseline_toBaselineOf="@+id/mondayCheckBox"
-        app:layout_constraintStart_toEndOf="@+id/mondayCheckBox" />
+        app:layout_constraintBaseline_toBaselineOf="@+id/monday_check_box"
+        app:layout_constraintStart_toEndOf="@+id/monday_check_box" />
 
     <CheckBox
-        android:id="@+id/wedmesdayCheckBox"
+        android:id="@+id/wednesday_check_box"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:button="@drawable/wednesday_selector"
-        app:layout_constraintBaseline_toBaselineOf="@+id/tuesdayCheckBox"
-        app:layout_constraintStart_toEndOf="@+id/tuesdayCheckBox" />
+        app:layout_constraintBaseline_toBaselineOf="@+id/tuesday_check_box"
+        app:layout_constraintStart_toEndOf="@+id/tuesday_check_box" />
 
     <CheckBox
-        android:id="@+id/thursdayCheckBox"
+        android:id="@+id/thursday_check_box"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:button="@drawable/thursday_selector"
-        app:layout_constraintBaseline_toBaselineOf="@+id/wedmesdayCheckBox"
-        app:layout_constraintStart_toEndOf="@+id/wedmesdayCheckBox" />
+        app:layout_constraintBaseline_toBaselineOf="@+id/wednesday_check_box"
+        app:layout_constraintStart_toEndOf="@+id/wednesday_check_box" />
 
     <CheckBox
-        android:id="@+id/fridayCheckBox"
+        android:id="@+id/friday_check_box"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:button="@drawable/friday_selector"
-        app:layout_constraintBaseline_toBaselineOf="@+id/thursdayCheckBox"
-        app:layout_constraintStart_toEndOf="@+id/thursdayCheckBox" />
+        app:layout_constraintBaseline_toBaselineOf="@+id/thursday_check_box"
+        app:layout_constraintStart_toEndOf="@+id/thursday_check_box" />
 
     <CheckBox
-        android:id="@+id/saturdayCheckBox"
+        android:id="@+id/saturday_check_box"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:button="@drawable/saturday_selector"
-        app:layout_constraintBaseline_toBaselineOf="@+id/fridayCheckBox"
-        app:layout_constraintStart_toEndOf="@+id/fridayCheckBox" />
+        app:layout_constraintBaseline_toBaselineOf="@+id/friday_check_box"
+        app:layout_constraintStart_toEndOf="@+id/friday_check_box" />
 
     <CheckBox
-        android:id="@+id/sundayCheckBox"
+        android:id="@+id/sunday_check_box"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:button="@drawable/sunday_selector"
-        app:layout_constraintBaseline_toBaselineOf="@+id/saturdayCheckBox"
-        app:layout_constraintStart_toEndOf="@+id/saturdayCheckBox" />
+        app:layout_constraintBaseline_toBaselineOf="@+id/saturday_check_box"
+        app:layout_constraintStart_toEndOf="@+id/saturday_check_box" />
 
     <TextView
         android:id="@+id/mon_fri_textView"
@@ -135,7 +137,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_begin="94dp" />
+        app:layout_constraintGuide_begin="73dp" />
 
     <TextView
         android:id="@+id/sat_sun_textView"
@@ -169,7 +171,7 @@
         app:layout_constraintTop_toBottomOf="@+id/sat_sun_textView" />
 
     <Button
-        android:id="@+id/changeSoundbutton"
+        android:id="@+id/change_soundbutton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -178,7 +180,7 @@
         android:text="change sound"
         android:textColor="#e6c6a9"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/mondayCheckBox" />
+        app:layout_constraintTop_toBottomOf="@+id/monday_check_box" />
 
     <TextView
         android:id="@+id/current_sount_textView"
@@ -188,9 +190,9 @@
         android:text="current sound"
         android:textColor="#e6c6a9"
         android:textSize="18sp"
-        app:layout_constraintBaseline_toBaselineOf="@+id/changeSoundbutton"
+        app:layout_constraintBaseline_toBaselineOf="@+id/change_soundbutton"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/changeSoundbutton" />
+        app:layout_constraintStart_toEndOf="@+id/change_soundbutton" />
 
     <TextView
         android:id="@+id/vibrate_when_alarm"
@@ -202,10 +204,10 @@
         android:textColor="#e6c6a9"
         android:textColorLink="#EB1010"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/changeSoundbutton" />
+        app:layout_constraintTop_toBottomOf="@+id/change_soundbutton" />
 
     <CheckBox
-        android:id="@+id/vibrationCheckBox"
+        android:id="@+id/vibration_check_box"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
