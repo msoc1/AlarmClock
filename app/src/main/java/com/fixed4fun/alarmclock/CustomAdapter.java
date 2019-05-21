@@ -48,19 +48,19 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomViewHolder> {
     public void onBindViewHolder(@NonNull CustomViewHolder customViewHolder, int i) {
         if (!MainActivity.listState) {
             //normal list item view
-            customViewHolder.timeOfAlarm.setText(setTimeOfAlarm(alarmDataArrayList.get(i)));
+            customViewHolder.timeOfAlarm.setText(displayTimeOfAlarm(alarmDataArrayList.get(i)));
             customViewHolder.onOrOff.setChecked(alarmDataArrayList.get(i).isOnOrOff());
             customViewHolder.howLong.setText(timeUntilAlarm(context.getApplicationContext(), alarmDataArrayList.get(i)));
             customViewHolder.setTime.setText(daysWhenToRing(alarmDataArrayList.get(i)));
 
         } else {
-            customViewHolder.timeOfAlarm.setText(setTimeOfAlarm(alarmDataArrayList.get(i)));
+            customViewHolder.timeOfAlarm.setText(displayTimeOfAlarm(alarmDataArrayList.get(i)));
             customViewHolder.onOrOff.setChecked(alarmDataArrayList.get(i).isOnOrOff());
         }
     }
 
-    private String setTimeOfAlarm(AlarmData alarmData) {
-        return alarmData.getHour() + ":" + alarmData.getMinute();
+    private String displayTimeOfAlarm(AlarmData alarmData) {
+        return alarmData.getHour() + ":" +((alarmData.getMinute()>9)? alarmData.getMinute() : ("0" + alarmData.getMinute())) ;
     }
 
     private String daysWhenToRing(AlarmData alarmData) {

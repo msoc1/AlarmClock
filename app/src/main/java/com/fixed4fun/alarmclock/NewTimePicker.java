@@ -6,7 +6,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.annotation.RequiresApi;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
 import android.text.format.DateFormat;
@@ -18,7 +17,7 @@ import android.widget.TimePicker;
 
 public class NewTimePicker extends DialogFragment {
 
-   static FrameLayout timePicker;
+   static TimePicker timePicker;
     Button buttoSetAlatm;
     Button cancelAlarm;
     CheckBox monFriCheckBox;
@@ -53,8 +52,8 @@ public class NewTimePicker extends DialogFragment {
         sundayCheckBox = view.findViewById(R.id.sunday_check_box);
         vibrateCheckBox = view.findViewById(R.id.vibration_check_box);
 
-        timePicker = (TimePicker) view.findViewById(R.id.time_picker);
-        ((TimePicker) timePicker).setIs24HourView(DateFormat.is24HourFormat(getContext()));
+        timePicker =  view.findViewById(R.id.time_picker);
+         timePicker.setIs24HourView(DateFormat.is24HourFormat(getContext()));
 
         builder.setView(view);
         buttoSetAlatm = view.findViewById(R.id.set_alarm);
@@ -66,7 +65,6 @@ public class NewTimePicker extends DialogFragment {
 
     public void setUpButtons() {
         buttoSetAlatm.setOnClickListener(new View.OnClickListener() {
-            @RequiresApi(api = Build.VERSION_CODES.M)
             @Override
             public void onClick(View v) {
                 addanalarm();
@@ -83,17 +81,26 @@ public class NewTimePicker extends DialogFragment {
     }
 
 
-    @RequiresApi(api = Build.VERSION_CODES.M)
     public static int getHour(){
-        return ((TimePicker) timePicker).getHour();
+        //support older versions of API
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            return timePicker.getHour();
+        } else {
+            return timePicker.getCurrentHour();
+        }
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.M)
     public static int getMinute(){
-       return ((TimePicker) timePicker).getMinute();
+        //support older versions of API
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            return timePicker.getMinute();
+        }
+        else {
+            return timePicker.getCurrentMinute();
+        }
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.M)
+
     public void addanalarm(){
         //TODO
         // before adding an alarm check where it should go on the list

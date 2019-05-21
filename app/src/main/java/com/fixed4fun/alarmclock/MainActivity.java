@@ -1,6 +1,7 @@
 package com.fixed4fun.alarmclock;
 
 import android.app.TimePickerDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.FloatingActionButton;
@@ -13,8 +14,10 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.TimePicker;
 
+import java.util.ArrayList;
+
 public class MainActivity extends AppCompatActivity implements TimePickerDialog.OnTimeSetListener {
-    Alarms alarms = new Alarms();
+    ArrayList<AlarmData> alarms = new ArrayList<>();
     static CustomAdapter customAdapter;
     FrameLayout timePicker;
     static ConstraintLayout toolbar;
@@ -25,7 +28,8 @@ public class MainActivity extends AppCompatActivity implements TimePickerDialog.
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        customAdapter = new CustomAdapter(alarms.getAlarms(), getApplicationContext());
+        alarms = Alarms.getAlarms();
+        customAdapter = new CustomAdapter(alarms, getApplicationContext());
         timePicker = (TimePicker) findViewById(R.id.time_picker);
         toolbar = findViewById(R.id.include);
         listState = false;
@@ -45,8 +49,14 @@ public class MainActivity extends AppCompatActivity implements TimePickerDialog.
         customAdapter.SetOnClickItemListener(new com.fixed4fun.alarmclock.CustomAdapter.OnItemClickListener() {
             @Override
             public void OnItemClick(int position) {
-                toolbar.setVisibility(View.GONE);
-                listState = false;
+
+                Bundle bundle = new Bundle();
+                DialogFragment dialogFragment = new ModifyTimePicker();
+                bundle.putParcelable("modify", alarms.get(position));
+                dialogFragment.setArguments(bundle);
+                dialogFragment.show(getSupportFragmentManager(), "as");
+              //  toolbar.setVisibility(View.GONE);
+               // listState = false;
                 customAdapter.notifyDataSetChanged();
                 recyclerView.setAdapter(customAdapter);
 
@@ -59,6 +69,7 @@ public class MainActivity extends AppCompatActivity implements TimePickerDialog.
             public void OnLongClick(int position) {
                toolbar.setVisibility(View.VISIBLE);
                 listState = true;
+
 
                 customAdapter.notifyDataSetChanged();
                 recyclerView.setAdapter(customAdapter);
