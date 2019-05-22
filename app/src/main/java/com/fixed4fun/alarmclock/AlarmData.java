@@ -200,4 +200,14 @@ public class AlarmData implements Parcelable {
         dest.writeInt(sound);
         dest.writeByte((byte) (onOrOff ? 1 : 0));
     }
+
+
+    @Override
+    public String toString() {
+        return "AlarmData{" +
+                "hour=" + hour +
+                ", minute=" + minute +
+                ", onOrOff=" + onOrOff +
+                '}';
+    }
 }

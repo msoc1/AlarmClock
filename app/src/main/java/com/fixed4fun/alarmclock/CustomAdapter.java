@@ -63,16 +63,22 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomViewHolder> {
         return alarmData.getHour() + ":" +((alarmData.getMinute()>9)? alarmData.getMinute() : ("0" + alarmData.getMinute())) ;
     }
 
-    private String daysWhenToRing(AlarmData alarmData) {
+    public static String daysWhenToRing(AlarmData alarmData) {
         String message = "";
-
-        if (alarmData.isMonday_friday() && alarmData.isSaturday_sunday()) {
+        if (alarmData.isMonday_friday() && alarmData.isSaturday_sunday() ||
+                (alarmData.isMonday() && alarmData.isTuesday() && alarmData.isWednesday() && alarmData.isThursday()
+                        && alarmData.isFriday() && alarmData.isSaturday() && alarmData.isSunday() )) {
             return "Everyday";
-        } else if (alarmData.isMonday_friday()) {
-            return "Mon - Fri";
-        } else if (alarmData.isSaturday_sunday()) {
-            return "Sat-Sun";
-        } else {
+        } else if (alarmData.isMonday_friday() ) {
+            if(alarmData.isMonday_friday() &&alarmData.isSaturday()){
+                return "Mon - Sat";
+            }
+            if(alarmData.isMonday_friday() && alarmData.isSunday()){
+                return "Mon - Fri & Sun";
+            } else {
+                return "Mon - Fri";
+            }
+        }  else {
             if (alarmData.isMonday()) {
                 message += "M ";
             }

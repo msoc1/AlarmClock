@@ -8,11 +8,13 @@ public class Alarms {
 
     private static ArrayList<AlarmData> alarmDataArrayList = new ArrayList<AlarmData>();
 
+    public static void addFirstAlarm(){
+        alarmDataArrayList.add(new AlarmData(23, 47, true, false
+                , true, true, true, true, true
+                , true, true
+                , false, 2, false));
+    }
     public static ArrayList<AlarmData> getAlarms() {
-//        alarmDataArrayList.add(new AlarmData(23, 47, true, false
-//                , true, true, true, true, true
-//                , true, true
-//                , false, 2, false));
         return alarmDataArrayList;
     }
 

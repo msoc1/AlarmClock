@@ -23,6 +23,7 @@ public class MainActivity extends AppCompatActivity implements TimePickerDialog.
     static ConstraintLayout toolbar;
     static int toolbarHeight;
     static boolean listState;
+    static int position;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +34,8 @@ public class MainActivity extends AppCompatActivity implements TimePickerDialog.
         timePicker = (TimePicker) findViewById(R.id.time_picker);
         toolbar = findViewById(R.id.include);
         listState = false;
+
+        Alarms.addFirstAlarm();
 
         final TabLayout tableLayout = findViewById(R.id.tabLayout);
 
@@ -49,10 +52,10 @@ public class MainActivity extends AppCompatActivity implements TimePickerDialog.
         customAdapter.SetOnClickItemListener(new com.fixed4fun.alarmclock.CustomAdapter.OnItemClickListener() {
             @Override
             public void OnItemClick(int position) {
-
+                MainActivity.position = position;
                 Bundle bundle = new Bundle();
                 DialogFragment dialogFragment = new ModifyTimePicker();
-                bundle.putParcelable("modify", alarms.get(position));
+                bundle.putParcelable("modify", alarms.get(position) );
                 dialogFragment.setArguments(bundle);
                 dialogFragment.show(getSupportFragmentManager(), "as");
               //  toolbar.setVisibility(View.GONE);
