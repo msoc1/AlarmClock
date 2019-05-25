@@ -6,33 +6,23 @@ import android.os.Parcelable;
 
 public class AlarmData implements Parcelable {
 
-    public static final Creator<AlarmData> CREATOR = new Creator<AlarmData>() {
-        @Override
-        public AlarmData createFromParcel(Parcel in) {
-            return new AlarmData(in);
-        }
+    private int hour;
+    private int minute;
+    private boolean monday_friday;
+    private boolean saturday_sunday;
+    private boolean monday;
+    private boolean tuesday;
+    private boolean wednesday;
+    private boolean thursday;
+    private boolean friday;
+    private boolean saturday;
+    private boolean sunday;
+    private boolean vibrate;
+    private int sound;
+    private boolean onOrOff;
+    private boolean selected;
 
-        @Override
-        public AlarmData[] newArray(int size) {
-            return new AlarmData[size];
-        }
-    };
-    int hour;
-    int minute;
-    boolean monday_friday;
-    boolean saturday_sunday;
-    boolean monday;
-    boolean tuesday;
-    boolean wednesday;
-    boolean thursday;
-    boolean friday;
-    boolean saturday;
-    boolean sunday;
-    boolean vibrate;
-    int sound;
-    boolean onOrOff;
-
-    public AlarmData(int hour, int minute, boolean monday_friday, boolean saturday_sunday, boolean monday, boolean tuesday, boolean wednesday, boolean thursday, boolean friday, boolean saturday, boolean sunday, boolean vibrate, int sound, boolean onOrOff) {
+    public AlarmData(int hour, int minute, boolean monday_friday, boolean saturday_sunday, boolean monday, boolean tuesday, boolean wednesday, boolean thursday, boolean friday, boolean saturday, boolean sunday, boolean vibrate, int sound, boolean onOrOff, boolean selected) {
         this.hour = hour;
         this.minute = minute;
         this.monday_friday = monday_friday;
@@ -47,6 +37,7 @@ public class AlarmData implements Parcelable {
         this.vibrate = vibrate;
         this.sound = sound;
         this.onOrOff = onOrOff;
+        this.selected = selected;
     }
 
     protected AlarmData(Parcel in) {
@@ -64,7 +55,20 @@ public class AlarmData implements Parcelable {
         vibrate = in.readByte() != 0;
         sound = in.readInt();
         onOrOff = in.readByte() != 0;
+        selected = in.readByte() != 0;
     }
+
+    public static final Creator<AlarmData> CREATOR = new Creator<AlarmData>() {
+        @Override
+        public AlarmData createFromParcel(Parcel in) {
+            return new AlarmData(in);
+        }
+
+        @Override
+        public AlarmData[] newArray(int size) {
+            return new AlarmData[size];
+        }
+    };
 
     public int getHour() {
         return hour;
@@ -178,6 +182,14 @@ public class AlarmData implements Parcelable {
         this.onOrOff = onOrOff;
     }
 
+    public boolean isSelected() {
+        return selected;
+    }
+
+    public void setSelected(boolean selected) {
+        this.selected = selected;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -199,15 +211,6 @@ public class AlarmData implements Parcelable {
         dest.writeByte((byte) (vibrate ? 1 : 0));
         dest.writeInt(sound);
         dest.writeByte((byte) (onOrOff ? 1 : 0));
-    }
-
-
-    @Override
-    public String toString() {
-        return "AlarmData{" +
-                "hour=" + hour +
-                ", minute=" + minute +
-                ", onOrOff=" + onOrOff +
-                '}';
+        dest.writeByte((byte) (selected ? 1 : 0));
     }
 }

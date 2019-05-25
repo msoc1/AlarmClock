@@ -8,7 +8,7 @@
     >
 
     <TextView
-        android:id="@+id/timeOfAlarm"
+        android:id="@+id/time_of_alarm"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -16,8 +16,8 @@
         android:textColor="#e6c6a9"
         android:textSize="24sp"
         android:textStyle="bold"
-        app:layout_constraintBaseline_toBaselineOf="@+id/checkBox"
-        app:layout_constraintStart_toEndOf="@+id/checkBox" />
+        app:layout_constraintBaseline_toBaselineOf="@+id/selected"
+        app:layout_constraintStart_toEndOf="@+id/selected" />
 
     <View
         android:layout_width="match_parent"
@@ -32,10 +32,10 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <CheckBox
-        android:id="@+id/checkBox"
+        android:id="@+id/selected"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
         android:layout_marginBottom="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -43,22 +43,22 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/delete_alarm"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:drawableStart="@android:drawable/star_big_off"
         android:minWidth="0dp"
-        app:layout_constraintBaseline_toBaselineOf="@+id/timeOfAlarm"
+        app:layout_constraintBaseline_toBaselineOf="@+id/time_of_alarm"
         app:layout_constraintEnd_toEndOf="parent" />
 
     <Switch
-        android:id="@+id/onOrOff"
+        android:id="@+id/on_or_off"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
-        app:layout_constraintBaseline_toBaselineOf="@+id/timeOfAlarm"
-        app:layout_constraintEnd_toStartOf="@+id/button"
-        app:layout_constraintStart_toEndOf="@+id/timeOfAlarm" />
+        app:layout_constraintBaseline_toBaselineOf="@+id/time_of_alarm"
+        app:layout_constraintEnd_toStartOf="@+id/delete_alarm"
+        app:layout_constraintStart_toEndOf="@+id/time_of_alarm" />
 </android.support.constraint.ConstraintLayout>

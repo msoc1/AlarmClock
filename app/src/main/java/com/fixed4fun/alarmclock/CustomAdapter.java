@@ -7,6 +7,7 @@ import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -60,44 +61,50 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomViewHolder> {
     }
 
     private String displayTimeOfAlarm(AlarmData alarmData) {
-        return alarmData.getHour() + ":" +((alarmData.getMinute()>9)? alarmData.getMinute() : ("0" + alarmData.getMinute())) ;
+        return ((alarmData.getHour() > 9) ? alarmData.getHour() : ("0" + alarmData.getHour()))
+                + ":"
+                + ((alarmData.getMinute() > 9) ? alarmData.getMinute() : ("0" + alarmData.getMinute()));
     }
 
-    public static String daysWhenToRing(AlarmData alarmData) {
+    public static String daysWhenToRing(AlarmData alarm) {
+
         String message = "";
-        if (alarmData.isMonday_friday() && alarmData.isSaturday_sunday() ||
-                (alarmData.isMonday() && alarmData.isTuesday() && alarmData.isWednesday() && alarmData.isThursday()
-                        && alarmData.isFriday() && alarmData.isSaturday() && alarmData.isSunday() )) {
+
+        boolean workDays = alarm.isMonday_friday();
+        boolean weekend = alarm.isSaturday_sunday();
+        boolean wholeWeek = alarm.isMonday() && alarm.isTuesday() && alarm.isWednesday() && alarm.isThursday() && alarm.isFriday() && alarm.isSaturday() && alarm.isSunday();
+
+        if (workDays && weekend || wholeWeek) {
             return "Everyday";
-        } else if (alarmData.isMonday_friday() ) {
-            if(alarmData.isMonday_friday() &&alarmData.isSaturday()){
+        } else if (workDays) {
+            if (alarm.isSaturday()) {
                 return "Mon - Sat";
             }
-            if(alarmData.isMonday_friday() && alarmData.isSunday()){
+            if (alarm.isSunday()) {
                 return "Mon - Fri & Sun";
             } else {
                 return "Mon - Fri";
             }
-        }  else {
-            if (alarmData.isMonday()) {
+        } else {
+            if (alarm.isMonday()) {
                 message += "M ";
             }
-            if (alarmData.isTuesday()) {
+            if (alarm.isTuesday()) {
                 message += "T ";
             }
-            if (alarmData.isWednesday()) {
+            if (alarm.isWednesday()) {
                 message += "W ";
             }
-            if (alarmData.isThursday()) {
+            if (alarm.isThursday()) {
                 message += "T ";
             }
-            if (alarmData.isFriday()) {
+            if (alarm.isFriday()) {
                 message += "F ";
             }
-            if (alarmData.isSaturday()) {
+            if (alarm.isSaturday()) {
                 message += "S ";
             }
-            if (alarmData.isSunday()) {
+            if (alarm.isSunday()) {
                 message += "S";
             }
         }
@@ -113,9 +120,9 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomViewHolder> {
 
 
         if (DateFormat.is24HourFormat(context)) {
-           // hour = c.get(Calendar.HOUR_OF_DAY);
+            // hour = c.get(Calendar.HOUR_OF_DAY);
         } else {
-          //  hour = c.get(Calendar.HOUR);
+            //  hour = c.get(Calendar.HOUR);
         }
         //TODO
         //find way to get time difference

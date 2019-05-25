@@ -9,20 +9,24 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
 import android.text.format.DateFormat;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
-import android.widget.Switch;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
 public class NewTimePicker extends DialogFragment implements View.OnClickListener {
 
-    static TimePicker timePicker;
+    TimePicker timePicker;
+
+    AlertDialog alertDialog;
+
+    AlarmData alarmData;
+
     Button buttoSetAlatm;
     Button cancelAlarm;
+    Button changeSound;
+
     CheckBox monFriCheckBox;
     CheckBox satSunCheckBox;
     CheckBox mondayCheckBox;
@@ -33,13 +37,12 @@ public class NewTimePicker extends DialogFragment implements View.OnClickListene
     CheckBox saturdayCheckBox;
     CheckBox sundayCheckBox;
     CheckBox vibrateCheckBox;
-    Button changeSound;
-    AlarmData alarmData;
+
+    CustomAdapter adapter;
 
 
-    AlertDialog alertDialog;
 
-    public static int getHour() {
+    public static int getHour(TimePicker timePicker) {
         //support older versions of API
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             return timePicker.getHour();
@@ -48,7 +51,7 @@ public class NewTimePicker extends DialogFragment implements View.OnClickListene
         }
     }
 
-    public static int getMinute() {
+    public static int getMinute(TimePicker timePicker) {
         //support older versions of API
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             return timePicker.getMinute();
@@ -99,6 +102,7 @@ public class NewTimePicker extends DialogFragment implements View.OnClickListene
                     thursdayCheckBox.setChecked(false);
                     fridayCheckBox.setChecked(false);
                 }
+                break;
             case R.id.sat_sun_checkBox:
                 if (satSunCheckBox.isChecked()) {
                     sundayCheckBox.setChecked(true);
@@ -107,48 +111,56 @@ public class NewTimePicker extends DialogFragment implements View.OnClickListene
                     sundayCheckBox.setChecked(false);
                     saturdayCheckBox.setChecked(false);
                 }
+                break;
             case R.id.saturday_check_box:
                 if (saturdayCheckBox.isChecked() && sundayCheckBox.isChecked()) {
                     satSunCheckBox.setChecked(true);
                 } else if (!saturdayCheckBox.isChecked()) {
                     satSunCheckBox.setChecked(false);
                 }
+                break;
             case R.id.sunday_check_box:
                 if (saturdayCheckBox.isChecked() && sundayCheckBox.isChecked()) {
                     satSunCheckBox.setChecked(true);
                 } else if (!sundayCheckBox.isChecked()) {
                     satSunCheckBox.setChecked(false);
                 }
+                break;
             case R.id.monday_check_box:
-                if (isMondayToFriday()) {
+                if (isWorkday()) {
                     monFriCheckBox.setChecked(true);
                 } else {
                     monFriCheckBox.setChecked(false);
                 }
+                break;
             case R.id.tuesday_check_box:
-                if (isMondayToFriday()) {
+                if (isWorkday()) {
                     monFriCheckBox.setChecked(true);
                 } else {
                     monFriCheckBox.setChecked(false);
                 }
+                break;
             case R.id.wednesday_check_box:
-                if (isMondayToFriday()) {
+                if (isWorkday()) {
                     monFriCheckBox.setChecked(true);
                 } else {
                     monFriCheckBox.setChecked(false);
                 }
+                break;
             case R.id.thursday_check_box:
-                if (isMondayToFriday()) {
+                if (isWorkday()) {
                     monFriCheckBox.setChecked(true);
                 } else {
                     monFriCheckBox.setChecked(false);
                 }
+                break;
             case R.id.friday_check_box:
-                if (isMondayToFriday()) {
+                if (isWorkday()) {
                     monFriCheckBox.setChecked(true);
                 } else {
                     monFriCheckBox.setChecked(false);
                 }
+                break;
 
 
         }
@@ -160,7 +172,7 @@ public class NewTimePicker extends DialogFragment implements View.OnClickListene
 
     }
 
-    public boolean isMondayToFriday() {
+    public boolean isWorkday() {
         return mondayCheckBox.isChecked() && tuesdayCheckBox.isChecked() && wednesdayCheckBox.isChecked() && thursdayCheckBox.isChecked() && fridayCheckBox.isChecked();
     }
 
@@ -177,7 +189,6 @@ public class NewTimePicker extends DialogFragment implements View.OnClickListene
                 closeTimePicker();
             }
         });
-
         satSunCheckBox.setOnClickListener(this);
         monFriCheckBox.setOnClickListener(this);
         saturdayCheckBox.setOnClickListener(this);
@@ -193,18 +204,43 @@ public class NewTimePicker extends DialogFragment implements View.OnClickListene
     public void addanalarm() {
         //TODO
         // before adding an alarm check where it should go on the list
+        // check if added alarm is copy of existing alarm
 
-        alarmData = new AlarmData(getHour(), getMinute(), monFriCheckBox.isChecked(), satSunCheckBox.isChecked(), mondayCheckBox.isChecked()
-                , tuesdayCheckBox.isChecked(), wednesdayCheckBox.isChecked(), thursdayCheckBox.isChecked(), fridayCheckBox.isChecked(), saturdayCheckBox.isChecked(), sundayCheckBox.isChecked()
-                , vibrateCheckBox.isChecked(), 3, true);
-        Alarms.addAlarm(getHour(), getMinute(), monFriCheckBox.isChecked(), satSunCheckBox.isChecked(), mondayCheckBox.isChecked()
-                , tuesdayCheckBox.isChecked(), wednesdayCheckBox.isChecked(), thursdayCheckBox.isChecked(), fridayCheckBox.isChecked(), saturdayCheckBox.isChecked(), sundayCheckBox.isChecked()
-                , vibrateCheckBox.isChecked(), 3, true);
 
-        String toastMessage = "New Alarm set to " + timePicker.getCurrentHour()+":"+timePicker.getCurrentMinute() + " on: " + CustomAdapter.daysWhenToRing(alarmData);
+        alarmData = new AlarmData(getHour(timePicker), getMinute(timePicker), monFriCheckBox.isChecked(), satSunCheckBox.isChecked(), mondayCheckBox.isChecked()
+                , tuesdayCheckBox.isChecked(), wednesdayCheckBox.isChecked(), thursdayCheckBox.isChecked(), fridayCheckBox.isChecked(), saturdayCheckBox.isChecked(), sundayCheckBox.isChecked()
+                , vibrateCheckBox.isChecked(), 3, true, false);
+
+        if(!alarmData.isMonday() && !alarmData.isTuesday() && !alarmData.isWednesday() && !alarmData.isThursday() && !alarmData.isFriday() && !alarmData.isSaturday() && !alarmData.isSunday()){
+            alarmData.setMonday_friday(true);
+            alarmData.setSaturday_sunday(true);
+            alarmData.setMonday(true);
+            alarmData.setTuesday(true);
+            alarmData.setWednesday(true);
+            alarmData.setThursday(true);
+            alarmData.setFriday(true);
+            alarmData.setSaturday(true);
+            alarmData.setSunday(true);
+            Alarms.addAlarm(alarmData);
+
+        } else {
+            Alarms.addAlarm(getHour(timePicker), getMinute(timePicker), monFriCheckBox.isChecked(), satSunCheckBox.isChecked(), mondayCheckBox.isChecked()
+                    , tuesdayCheckBox.isChecked(), wednesdayCheckBox.isChecked(), thursdayCheckBox.isChecked(), fridayCheckBox.isChecked(), saturdayCheckBox.isChecked(), sundayCheckBox.isChecked()
+                    , vibrateCheckBox.isChecked(), 3, true, false);
+        }
+
+
+
+        String toastMessage = "New Alarm set to "
+                + timePicker.getCurrentHour()
+                +":"
+                + ((timePicker.getCurrentMinute() >9 )? timePicker.getCurrentMinute() : "0" + timePicker.getCurrentMinute() )
+                + " on: "
+                + CustomAdapter.daysWhenToRing(alarmData);
         Toast toast = Toast.makeText(getContext(), toastMessage, Toast.LENGTH_LONG);
         toast.show();
-        MainActivity.customAdapter.notifyDataSetChanged();
+        adapter = ((MainActivity) getActivity()).getCustomAdapter();
+        adapter.notifyDataSetChanged();
         closeTimePicker();
     }
 
