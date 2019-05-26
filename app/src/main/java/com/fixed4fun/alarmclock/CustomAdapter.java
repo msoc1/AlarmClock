@@ -57,6 +57,8 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomViewHolder> {
         } else {
             customViewHolder.timeOfAlarm.setText(displayTimeOfAlarm(alarmDataArrayList.get(i)));
             customViewHolder.onOrOff.setChecked(alarmDataArrayList.get(i).isOnOrOff());
+            customViewHolder.selected.setChecked(alarmDataArrayList.get(i).isSelected());
+
         }
     }
 

@@ -78,6 +78,7 @@ public class AlarmData implements Parcelable {
         this.hour = hour;
     }
 
+
     public int getMinute() {
         return minute;
     }
@@ -212,5 +213,15 @@ public class AlarmData implements Parcelable {
         dest.writeInt(sound);
         dest.writeByte((byte) (onOrOff ? 1 : 0));
         dest.writeByte((byte) (selected ? 1 : 0));
+    }
+
+
+    @Override
+    public String toString() {
+        return "AlarmData{" +
+                "hour=" + hour +
+                ", minute=" + minute +
+                ", selected=" + selected +
+                '}';
     }
 }

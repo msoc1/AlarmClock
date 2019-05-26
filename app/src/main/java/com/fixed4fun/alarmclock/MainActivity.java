@@ -1,7 +1,6 @@
 package com.fixed4fun.alarmclock;
 
 import android.annotation.SuppressLint;
-import android.app.TimePickerDialog;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.FloatingActionButton;
@@ -11,89 +10,74 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.Switch;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity implements TimePickerDialog.OnTimeSetListener {
-    @SuppressLint("StaticFieldLeak")
-    private static CustomAdapter customAdapter;
-
-    private ConstraintLayout toolbar;
-
-
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     static int toolbarHeight;
     static int position;
+
     static boolean listState;
-    ArrayList<AlarmData> alarms = new ArrayList<>();
+
+
+    static String toastMessage;
+    static ArrayList<AlarmData> alarms = new ArrayList<>();
+    static ArrayList<AlarmData> tempList;
+    @SuppressLint("StaticFieldLeak")
+    static private CustomAdapter customAdapter;
     TimePicker timePicker;
+
+    FloatingActionButton floatingActionButton;
+
     RecyclerView recyclerView;
     Switch turnOnOrOffAll;
+    CheckBox selectAll;
+    Button deleteAll;
+    Button changeAll;
+    Toast notificationToast;
+    private ConstraintLayout toolbar;
+
+    public static CustomAdapter getCustomAdapter() {
+        return customAdapter;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        alarms = Alarms.getAlarms();
-        customAdapter = new CustomAdapter(alarms, getApplicationContext());
-        timePicker = findViewById(R.id.time_picker);
-        toolbar = findViewById(R.id.include);
-        listState = false;
-        turnOnOrOffAll = findViewById(R.id.turn_all);
 
+        alarms = Alarms.getAlarms();
+        tempList = new ArrayList<>();
         Alarms.addFirstAlarm();
 
-        final TabLayout tableLayout = findViewById(R.id.tabLayout);
+        customAdapter = new CustomAdapter(alarms, getApplicationContext());
 
+        listState = false;
+
+        timePicker = findViewById(R.id.time_picker);
+        toolbar = findViewById(R.id.include);
+        turnOnOrOffAll = findViewById(R.id.turn_all);
+        selectAll = findViewById(R.id.select_all);
+        deleteAll = findViewById(R.id.delete_all);
+        changeAll = findViewById(R.id.change_all);
+        floatingActionButton = findViewById(R.id.new_alarm);
         recyclerView = findViewById(R.id.recyclerView);
+        TabLayout tableLayout = findViewById(R.id.tabLayout);
+
+        toastMessage = "";
+        notificationToast = Toast.makeText(this, toastMessage, Toast.LENGTH_LONG);
+
         recyclerView.setAdapter(customAdapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
         toolbarHeight = toolbar.getMaxHeight();
         toolbar.setVisibility(View.GONE);
 
-        customAdapter.SetOnClickItemListener(new com.fixed4fun.alarmclock.CustomAdapter.OnItemClickListener() {
-            @Override
-            public void OnItemClick(int position) {
-                MainActivity.position = position;
-                Bundle bundle = new Bundle();
-                DialogFragment dialogFragment = new ModifyTimePicker();
-                bundle.putParcelable("modify", alarms.get(position));
-                dialogFragment.setArguments(bundle);
-                dialogFragment.show(getSupportFragmentManager(), "as");
-              //  Alarms.getAlarms().remove(position);
-                customAdapter.notifyDataSetChanged();
-                recyclerView.setAdapter(customAdapter);
-            }
-        });
-
-        turnOnOrOffAll.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //TODO
-                // implement turning on and off selected alarms
-                customAdapter.notifyDataSetChanged();
-                recyclerView.setAdapter(customAdapter);
-            }
-        });
-
-        //TODO
-        // implement changing selected alarms
-        // #2 deleting selected alarms
-
-
-        customAdapter.SetOnLongClickListener(new CustomAdapter.OnLongClickListener() {
-            @Override
-            public void OnLongClick(int position) {
-                toolbar.setVisibility(View.VISIBLE);
-                listState = true;
-                MainActivity.position = position;
-                customAdapter.notifyDataSetChanged();
-                recyclerView.setAdapter(customAdapter);
-            }
-        });
-
-
-        recyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
+        setOnClickListeners();
 
         tableLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
@@ -111,49 +95,123 @@ public class MainActivity extends AppCompatActivity implements TimePickerDialog.
 
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
-
             }
         });
+    }
 
-        FloatingActionButton floatingActionButton = findViewById(R.id.new_alarm);
-        floatingActionButton.setOnClickListener(new View.OnClickListener() {
+    public void setOnClickListeners() {
+        changeAll.setOnClickListener(this);
+        selectAll.setOnClickListener(this);
+        deleteAll.setOnClickListener(this);
+        turnOnOrOffAll.setOnClickListener(this);
+        floatingActionButton.setOnClickListener(this);
+
+        customAdapter.SetOnClickItemListener(new CustomAdapter.OnItemClickListener() {
             @Override
-            public void onClick(View v) {
-                DialogFragment dialogFragment = new NewTimePicker();
-                dialogFragment.show(getSupportFragmentManager()
+            public void OnItemClick(int position) {
+                MainActivity.position = position;
+                Bundle bundle = new Bundle();
+                DialogFragment dialogFragment = new ModifyTimePicker();
+                bundle.putParcelable("modify", alarms.get(position));
+                dialogFragment.setArguments(bundle);
+                dialogFragment.show(getSupportFragmentManager(), "as");
+                customAdapter.notifyDataSetChanged();
+                recyclerView.setAdapter(customAdapter);
+            }
+        });
+        customAdapter.SetOnLongClickListener(new CustomAdapter.OnLongClickListener() {
+            @Override
+            public void OnLongClick(int position) {
+                toolbar.setVisibility(View.VISIBLE);
+                listState = true;
+                MainActivity.position = position;
+                customAdapter.notifyDataSetChanged();
+                recyclerView.setAdapter(customAdapter);
+            }
+        });
+    }
+
+    private void onClickListeners(View v) {
+        switch (v.getId()) {
+            case R.id.select_all:
+                if (selectAll.isChecked()) {
+                    for (AlarmData ad : alarms) {
+                        ad.setSelected(true);
+                    }
+                } else {
+                    for (AlarmData ad : alarms) {
+                        ad.setSelected(false);
+                    }
+                }
+                customAdapter.notifyDataSetChanged();
+                break;
+
+            case R.id.delete_all:
+                for (AlarmData ad : alarms) {
+                    if (ad.isSelected()) {
+                        tempList.add(ad);
+                    }
+                }
+                alarms.removeAll(tempList);
+                toastMessage = "Deleted " + tempList.size() + " alarms.";
+                notificationToast.setText(toastMessage);
+                notificationToast.show();
+                tempList.clear();
+                customAdapter.notifyDataSetChanged();
+                recyclerView.setAdapter(customAdapter);
+                break;
+
+            case R.id.change_all:
+                ChangeAllFragment dialogFragment = new ChangeAllFragment();
+                dialogFragment.show(getSupportFragmentManager(), "asa");
+                customAdapter.notifyDataSetChanged();
+                break;
+
+            case R.id.turn_all:
+                for (AlarmData ad : alarms) {
+                    if (ad.isSelected())
+                        ad.setOnOrOff(turnOnOrOffAll.isChecked());
+                }
+                customAdapter.notifyDataSetChanged();
+                recyclerView.setAdapter(customAdapter);
+                break;
+
+            case R.id.new_alarm:
+                DialogFragment timePickerFragment = new NewTimePicker();
+                timePickerFragment.show(getSupportFragmentManager()
                         , "time picker");
                 toolbar.setVisibility(View.GONE);
                 listState = false;
                 recyclerView.setAdapter(customAdapter);
-            }
-        });
-
-
-
-
+                break;
+        }
     }
 
-    public static CustomAdapter getCustomAdapter() {
-        return customAdapter;
+    public RecyclerView getRecyclerView() {
+        return recyclerView;
     }
 
-
-    @Override
-    public void onTimeSet(android.widget.TimePicker view, int hourOfDay, int minute) {
-        //Alarms.addAlarm(hourOfDay+ "h "+ minute + "min", "wed", "123", true);
-        customAdapter.notifyDataSetChanged();
+    public ConstraintLayout getToolbar() {
+        return toolbar;
     }
 
 
     @Override
     public void onBackPressed() {
-
         if (listState) {
             listState = false;
             toolbar.setVisibility(View.GONE);
+            for (AlarmData ad : alarms) {
+                ad.setSelected(false);
+            }
             recyclerView.setAdapter(customAdapter);
         } else {
             super.onBackPressed();
         }
+    }
+
+    @Override
+    public void onClick(View v) {
+        onClickListeners(v);
     }
 }

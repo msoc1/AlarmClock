@@ -13,13 +13,14 @@ import android.widget.CheckBox;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import static com.fixed4fun.alarmclock.NewTimePicker.changeMondayToFriday;
+import static com.fixed4fun.alarmclock.NewTimePicker.changeSaturdayAndSunday;
+
 public class ModifyTimePicker extends DialogFragment implements View.OnClickListener {
 
-    TimePicker timePicker;
-
     static AlarmData alarmData;
-
-    Button buttoSetAlatm;
+    TimePicker timePicker;
+    Button buttoSetAlarm;
     Button cancelAlarm;
     Button changeSound;
 
@@ -36,7 +37,6 @@ public class ModifyTimePicker extends DialogFragment implements View.OnClickList
     CheckBox sundayCheckBox;
     CheckBox vibrateCheckBox;
     CustomAdapter customAdapter;
-
 
 
     @NonNull
@@ -56,7 +56,7 @@ public class ModifyTimePicker extends DialogFragment implements View.OnClickList
         saturdayCheckBox = view.findViewById(R.id.saturday_check_box);
         sundayCheckBox = view.findViewById(R.id.sunday_check_box);
         vibrateCheckBox = view.findViewById(R.id.vibration_check_box);
-        buttoSetAlatm = view.findViewById(R.id.set_alarm);
+        buttoSetAlarm = view.findViewById(R.id.set_alarm);
         cancelAlarm = view.findViewById(R.id.cancel_alarm);
 
         Bundle bundle = getArguments();
@@ -85,14 +85,7 @@ public class ModifyTimePicker extends DialogFragment implements View.OnClickList
     }
 
     public void setUpButtons() {
-        buttoSetAlatm.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                modifyAlarm();
-            }
-        });
-
-
+        buttoSetAlarm.setOnClickListener(this);
         satSunCheckBox.setOnClickListener(this);
         monFriCheckBox.setOnClickListener(this);
         saturdayCheckBox.setOnClickListener(this);
@@ -102,22 +95,13 @@ public class ModifyTimePicker extends DialogFragment implements View.OnClickList
         mondayCheckBox.setOnClickListener(this);
         tuesdayCheckBox.setOnClickListener(this);
         wednesdayCheckBox.setOnClickListener(this);
-
-
-        cancelAlarm.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                closeTimePicker();
-            }
-        });
-
+        cancelAlarm.setOnClickListener(this);
     }
 
 
     public void modifyAlarm() {
         //TODO
         // implement sound modyfying timepicker position
-
 
         if (!mondayCheckBox.isChecked() && !tuesdayCheckBox.isChecked() && !wednesdayCheckBox.isChecked() && !thursdayCheckBox.isChecked()
                 && !fridayCheckBox.isChecked() && !saturdayCheckBox.isChecked() && !sundayCheckBox.isChecked()) {
@@ -141,7 +125,6 @@ public class ModifyTimePicker extends DialogFragment implements View.OnClickList
             Alarms.getAlarms().get(MainActivity.position).setMonday_friday(monFriCheckBox.isChecked());
             Alarms.getAlarms().get(MainActivity.position).setSaturday_sunday(satSunCheckBox.isChecked());
         }
-
         Alarms.getAlarms().get(MainActivity.position).setHour(timePicker.getCurrentHour());
         Alarms.getAlarms().get(MainActivity.position).setMinute(timePicker.getCurrentMinute());
         Alarms.getAlarms().get(MainActivity.position).setVibrate(vibrateCheckBox.isChecked());
@@ -183,31 +166,26 @@ public class ModifyTimePicker extends DialogFragment implements View.OnClickList
         confirmDays(v);
     }
 
-
     public void confirmDays(View v) {
         switch (v.getId()) {
+            case R.id.cancel_alarm:
+                closeTimePicker();
+                break;
+            case R.id.set_alarm:
+                modifyAlarm();
+                break;
             case R.id.mon_fri_checkBox:
                 if (monFriCheckBox.isChecked()) {
-                    mondayCheckBox.setChecked(true);
-                    tuesdayCheckBox.setChecked(true);
-                    wednesdayCheckBox.setChecked(true);
-                    thursdayCheckBox.setChecked(true);
-                    fridayCheckBox.setChecked(true);
+                    changeMondayToFriday(true);
                 } else {
-                    mondayCheckBox.setChecked(false);
-                    tuesdayCheckBox.setChecked(false);
-                    wednesdayCheckBox.setChecked(false);
-                    thursdayCheckBox.setChecked(false);
-                    fridayCheckBox.setChecked(false);
+                    changeMondayToFriday(false);
                 }
                 break;
             case R.id.sat_sun_checkBox:
                 if (satSunCheckBox.isChecked()) {
-                    sundayCheckBox.setChecked(true);
-                    saturdayCheckBox.setChecked(true);
+                    changeSaturdayAndSunday(true);
                 } else {
-                    sundayCheckBox.setChecked(false);
-                    saturdayCheckBox.setChecked(false);
+                    changeSaturdayAndSunday(false);
                 }
                 break;
             case R.id.saturday_check_box:
