@@ -9,11 +9,11 @@ public class Alarms {
     private static ArrayList<AlarmData> alarmDataArrayList = new ArrayList<AlarmData>();
 
     public static void addFirstAlarm() {
-        alarmDataArrayList.add(new AlarmData(1, 1, true, true
+        alarmDataArrayList.add(new AlarmData(1, 20, true, true
                 , true, true, true, true, true
                 , true, true
                 , false, 2, false, false));
-        alarmDataArrayList.add(new AlarmData(2, 2, true, true
+        alarmDataArrayList.add(new AlarmData(1, 2, true, true
                 , true, true, true, true, true
                 , true, true
                 , false, 2, false, false));
@@ -25,7 +25,7 @@ public class Alarms {
                 , true, true, true, true, true
                 , true, true
                 , false, 2, false, false));
-        alarmDataArrayList.add(new AlarmData(5, 5, true, true
+        alarmDataArrayList.add(new AlarmData(4, 1, true, true
                 , true, true, true, true, true
                 , true, true
                 , false, 2, false, false));

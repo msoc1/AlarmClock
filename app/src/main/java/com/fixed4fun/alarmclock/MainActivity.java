@@ -17,6 +17,7 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     static int toolbarHeight;
@@ -54,6 +55,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         alarms = Alarms.getAlarms();
         tempList = new ArrayList<>();
         Alarms.addFirstAlarm();
+
+      //  sortList(alarms);
 
         customAdapter = new CustomAdapter(alarms, getApplicationContext());
 
@@ -200,6 +203,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onBackPressed() {
         if (listState) {
             listState = false;
+            selectAll.setChecked(false);
+            turnOnOrOffAll.setChecked(false);
             toolbar.setVisibility(View.GONE);
             for (AlarmData ad : alarms) {
                 ad.setSelected(false);
@@ -214,4 +219,31 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View v) {
         onClickListeners(v);
     }
+
+    public static void sortList(ArrayList<AlarmData> a){
+        for(int i =0; i < a.size() ; i++){
+         for(int j = i+1; j <= a.size()-1 ; j++ ){
+             if(a.get(i).getHour() >  a.get(j).getHour()){
+                 Collections.swap(a, i, j);
+             }
+         }
+        }
+        for(int i =0; i < a.size() ; i++) {
+            for (int j = i + 1; j <= a.size() - 1; j++) {
+                if (a.get(i).getHour() == a.get(j).getHour()) {
+                    sortMinute(a, a.get(i), a.get(j));
+                }
+            }
+        }
+    }
+
+    public static void sortMinute(ArrayList<AlarmData> a, AlarmData o1, AlarmData o2){
+        if(o1.getMinute() > o2.getMinute()) {
+            Collections.swap(a, a.indexOf(o1), a.indexOf(o2));
+        }
+    }
+
+
+
+
 }

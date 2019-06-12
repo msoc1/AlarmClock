@@ -139,6 +139,7 @@ public class ModifyTimePicker extends DialogFragment implements View.OnClickList
                         + CustomAdapter.daysWhenToRing(Alarms.getAlarms().get(MainActivity.position));
         Toast toast = Toast.makeText(getContext(), toastMessage, Toast.LENGTH_LONG);
         toast.show();
+        MainActivity.sortList(MainActivity.alarms);
         customAdapter = ((MainActivity) getActivity()).getCustomAdapter();
         customAdapter.notifyDataSetChanged();
         closeTimePicker();

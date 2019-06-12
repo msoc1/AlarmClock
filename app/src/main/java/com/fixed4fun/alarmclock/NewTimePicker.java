@@ -201,11 +201,6 @@ public class NewTimePicker extends DialogFragment implements View.OnClickListene
     }
 
     public void addAnAlarm() {
-        //TODO
-        // before adding an alarm check where it should go on the list
-        // check if added alarm is copy of existing alarm
-
-
         alarmData = new AlarmData(getHour(timePicker), getMinute(timePicker), monFriCheckBox.isChecked(), satSunCheckBox.isChecked(), mondayCheckBox.isChecked()
                 , tuesdayCheckBox.isChecked(), wednesdayCheckBox.isChecked(), thursdayCheckBox.isChecked(), fridayCheckBox.isChecked(), saturdayCheckBox.isChecked(), sundayCheckBox.isChecked()
                 , vibrateCheckBox.isChecked(), 3, true, false);
@@ -238,6 +233,7 @@ public class NewTimePicker extends DialogFragment implements View.OnClickListene
         Toast toast = Toast.makeText(getContext(), toastMessage, Toast.LENGTH_LONG);
         toast.show();
         adapter = ((MainActivity) getActivity()).getCustomAdapter();
+        MainActivity.sortList(MainActivity.alarms);
         adapter.notifyDataSetChanged();
         closeTimePicker();
     }

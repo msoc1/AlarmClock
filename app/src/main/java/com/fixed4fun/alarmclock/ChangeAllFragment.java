@@ -106,6 +106,7 @@ public class ChangeAllFragment extends DialogFragment implements View.OnClickLis
                     }
                 }
                 MainActivity.listState = false;
+                MainActivity.sortList(MainActivity.alarms);
 
                 adapter = ((MainActivity) getActivity()).getCustomAdapter();
                 recyclerView = ((MainActivity) getActivity()).getRecyclerView();
