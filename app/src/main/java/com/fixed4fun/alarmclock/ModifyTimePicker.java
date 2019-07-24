@@ -13,8 +13,6 @@ import android.widget.CheckBox;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
-import static com.fixed4fun.alarmclock.NewTimePicker.changeMondayToFriday;
-import static com.fixed4fun.alarmclock.NewTimePicker.changeSaturdayAndSunday;
 
 public class ModifyTimePicker extends DialogFragment implements View.OnClickListener {
 
@@ -240,6 +238,20 @@ public class ModifyTimePicker extends DialogFragment implements View.OnClickList
                 break;
 
         }
+    }
+
+
+    public void changeMondayToFriday(boolean bool) {
+        mondayCheckBox.setChecked(bool);
+        tuesdayCheckBox.setChecked(bool);
+        wednesdayCheckBox.setChecked(bool);
+        thursdayCheckBox.setChecked(bool);
+        fridayCheckBox.setChecked(bool);
+    }
+
+    public void changeSaturdayAndSunday(boolean bool) {
+        sundayCheckBox.setChecked(bool);
+        saturdayCheckBox.setChecked(bool);
     }
 
 }

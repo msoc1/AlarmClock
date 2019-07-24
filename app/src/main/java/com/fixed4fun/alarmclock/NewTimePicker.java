@@ -29,13 +29,13 @@ public class NewTimePicker extends DialogFragment implements View.OnClickListene
 
     CheckBox monFriCheckBox;
     CheckBox satSunCheckBox;
-    static CheckBox mondayCheckBox;
-    static CheckBox tuesdayCheckBox;
-    static CheckBox wednesdayCheckBox;
-    static CheckBox thursdayCheckBox;
-    static CheckBox fridayCheckBox;
-    static CheckBox saturdayCheckBox;
-    static CheckBox sundayCheckBox;
+    CheckBox mondayCheckBox;
+    CheckBox tuesdayCheckBox;
+    CheckBox wednesdayCheckBox;
+    CheckBox thursdayCheckBox;
+    CheckBox fridayCheckBox;
+    CheckBox saturdayCheckBox;
+    CheckBox sundayCheckBox;
     CheckBox vibrateCheckBox;
 
     CustomAdapter adapter;
@@ -153,7 +153,7 @@ public class NewTimePicker extends DialogFragment implements View.OnClickListene
     }
 
 
-    public static void changeMondayToFriday(boolean bool){
+    public void changeMondayToFriday(boolean bool) {
         mondayCheckBox.setChecked(bool);
         tuesdayCheckBox.setChecked(bool);
         wednesdayCheckBox.setChecked(bool);
@@ -161,7 +161,7 @@ public class NewTimePicker extends DialogFragment implements View.OnClickListene
         fridayCheckBox.setChecked(bool);
     }
 
-    public static void changeSaturdayAndSunday(boolean bool){
+    public void changeSaturdayAndSunday(boolean bool) {
         sundayCheckBox.setChecked(bool);
         saturdayCheckBox.setChecked(bool);
     }

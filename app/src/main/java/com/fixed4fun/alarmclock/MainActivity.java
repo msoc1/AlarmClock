@@ -1,11 +1,16 @@
 package com.fixed4fun.alarmclock;
 
 import android.annotation.SuppressLint;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -17,6 +22,7 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
@@ -43,6 +49,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     Toast notificationToast;
     private ConstraintLayout toolbar;
 
+
+    Button notificationButton;
+
     public static CustomAdapter getCustomAdapter() {
         return customAdapter;
     }
@@ -56,7 +65,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         tempList = new ArrayList<>();
         Alarms.addFirstAlarm();
 
-      //  sortList(alarms);
+        //  sortList(alarms);
 
         customAdapter = new CustomAdapter(alarms, getApplicationContext());
 
@@ -71,6 +80,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         floatingActionButton = findViewById(R.id.new_alarm);
         recyclerView = findViewById(R.id.recyclerView);
         TabLayout tableLayout = findViewById(R.id.tabLayout);
+
+        notificationButton = findViewById(R.id.notification);
 
         toastMessage = "";
         notificationToast = Toast.makeText(this, toastMessage, Toast.LENGTH_LONG);
@@ -108,6 +119,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         deleteAll.setOnClickListener(this);
         turnOnOrOffAll.setOnClickListener(this);
         floatingActionButton.setOnClickListener(this);
+
+        notificationButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startNotification();
+            }
+        });
 
         customAdapter.SetOnClickItemListener(new CustomAdapter.OnItemClickListener() {
             @Override
@@ -220,15 +238,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         onClickListeners(v);
     }
 
-    public static void sortList(ArrayList<AlarmData> a){
-        for(int i =0; i < a.size() ; i++){
-         for(int j = i+1; j <= a.size()-1 ; j++ ){
-             if(a.get(i).getHour() >  a.get(j).getHour()){
-                 Collections.swap(a, i, j);
-             }
-         }
+    public static void sortList(ArrayList<AlarmData> a) {
+        for (int i = 0; i < a.size(); i++) {
+            for (int j = i + 1; j <= a.size() - 1; j++) {
+                if (a.get(i).getHour() > a.get(j).getHour()) {
+                    Collections.swap(a, i, j);
+                }
+            }
         }
-        for(int i =0; i < a.size() ; i++) {
+        for (int i = 0; i < a.size(); i++) {
             for (int j = i + 1; j <= a.size() - 1; j++) {
                 if (a.get(i).getHour() == a.get(j).getHour()) {
                     sortMinute(a, a.get(i), a.get(j));
@@ -237,13 +255,38 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-    public static void sortMinute(ArrayList<AlarmData> a, AlarmData o1, AlarmData o2){
-        if(o1.getMinute() > o2.getMinute()) {
+    public static void sortMinute(ArrayList<AlarmData> a, AlarmData o1, AlarmData o2) {
+        if (o1.getMinute() > o2.getMinute()) {
             Collections.swap(a, a.indexOf(o1), a.indexOf(o2));
         }
     }
 
+    public void startNotification() {
+        for(AlarmData ad : alarms) {
+            Calendar c = Calendar.getInstance();
+            c.set(Calendar.HOUR_OF_DAY, ad.getHour());
+            c.set(Calendar.MINUTE, ad.getMinute());
+            c.set(Calendar.SECOND, 0);
+            startAlarm(c);
+        }
 
+    }
+
+    private void startAlarm(Calendar c) {
+            AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+            Intent intent = new Intent(this, AlertReceiver.class);
+            PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 1, intent, 0);
+            alarmManager.setExact(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(), pendingIntent);
+    }
+
+    private void cancelAlarm() {
+        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        Intent intent = new Intent(this, AlertReceiver.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this,
+                1, intent, 0);
+        alarmManager.cancel(pendingIntent);
+
+    }
 
 
 }

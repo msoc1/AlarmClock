@@ -9,30 +9,30 @@ public class Alarms {
     private static ArrayList<AlarmData> alarmDataArrayList = new ArrayList<AlarmData>();
 
     public static void addFirstAlarm() {
-        alarmDataArrayList.add(new AlarmData(1, 20, true, true
+        alarmDataArrayList.add(new AlarmData(20, 11, true, true
                 , true, true, true, true, true
                 , true, true
                 , false, 2, false, false));
-        alarmDataArrayList.add(new AlarmData(1, 2, true, true
+        alarmDataArrayList.add(new AlarmData(20, 11, true, true
                 , true, true, true, true, true
                 , true, true
                 , false, 2, false, false));
-        alarmDataArrayList.add(new AlarmData(3, 3, true, true
+        alarmDataArrayList.add(new AlarmData(20, 11, true, true
                 , true, true, true, true, true
                 , true, true
                 , false, 2, false, false));
-        alarmDataArrayList.add(new AlarmData(4, 4, true, true
-                , true, true, true, true, true
-                , true, true
-                , false, 2, false, false));
-        alarmDataArrayList.add(new AlarmData(4, 1, true, true
-                , true, true, true, true, true
-                , true, true
-                , false, 2, false, false));
-        alarmDataArrayList.add(new AlarmData(6, 6, true, true
-                , true, true, true, true, true
-                , true, true
-                , false, 2, false, false));
+//        alarmDataArrayList.add(new AlarmData(4, 4, true, true
+//                , true, true, true, true, true
+//                , true, true
+//                , false, 2, false, false));
+//        alarmDataArrayList.add(new AlarmData(4, 1, true, true
+//                , true, true, true, true, true
+//                , true, true
+//                , false, 2, false, false));
+//        alarmDataArrayList.add(new AlarmData(6, 6, true, true
+//                , true, true, true, true, true
+//                , true, true
+//                , false, 2, false, false));
     }
 
     public static ArrayList<AlarmData> getAlarms() {
