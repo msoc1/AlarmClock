@@ -10,7 +10,6 @@ import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.DialogFragment;
-import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -48,6 +47,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     Button changeAll;
     Toast notificationToast;
     private ConstraintLayout toolbar;
+    Button checkAllAlarms;
 
 
     Button notificationButton;
@@ -65,7 +65,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         tempList = new ArrayList<>();
         Alarms.addFirstAlarm();
 
-        //  sortList(alarms);
+        sortList(alarms);
 
         customAdapter = new CustomAdapter(alarms, getApplicationContext());
 
@@ -120,35 +120,25 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         turnOnOrOffAll.setOnClickListener(this);
         floatingActionButton.setOnClickListener(this);
 
-        notificationButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startNotification();
-            }
-        });
+        notificationButton.setOnClickListener(v -> startNotification());
 
-        customAdapter.SetOnClickItemListener(new CustomAdapter.OnItemClickListener() {
-            @Override
-            public void OnItemClick(int position) {
-                MainActivity.position = position;
-                Bundle bundle = new Bundle();
-                DialogFragment dialogFragment = new ModifyTimePicker();
-                bundle.putParcelable("modify", alarms.get(position));
-                dialogFragment.setArguments(bundle);
-                dialogFragment.show(getSupportFragmentManager(), "as");
-                customAdapter.notifyDataSetChanged();
-                recyclerView.setAdapter(customAdapter);
-            }
+
+        customAdapter.SetOnClickItemListener(position -> {
+            MainActivity.position = position;
+            Bundle bundle = new Bundle();
+            DialogFragment dialogFragment = new ModifyTimePicker();
+            bundle.putParcelable("modify", alarms.get(position));
+            dialogFragment.setArguments(bundle);
+            dialogFragment.show(getSupportFragmentManager(), "as");
+            customAdapter.notifyDataSetChanged();
+            recyclerView.setAdapter(customAdapter);
         });
-        customAdapter.SetOnLongClickListener(new CustomAdapter.OnLongClickListener() {
-            @Override
-            public void OnLongClick(int position) {
-                toolbar.setVisibility(View.VISIBLE);
-                listState = true;
-                MainActivity.position = position;
-                customAdapter.notifyDataSetChanged();
-                recyclerView.setAdapter(customAdapter);
-            }
+        customAdapter.SetOnLongClickListener(position -> {
+            toolbar.setVisibility(View.VISIBLE);
+            listState = true;
+            MainActivity.position = position;
+            customAdapter.notifyDataSetChanged();
+            recyclerView.setAdapter(customAdapter);
         });
     }
 
@@ -262,31 +252,40 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     public void startNotification() {
-        for(AlarmData ad : alarms) {
-            Calendar c = Calendar.getInstance();
-            c.set(Calendar.HOUR_OF_DAY, ad.getHour());
-            c.set(Calendar.MINUTE, ad.getMinute());
-            c.set(Calendar.SECOND, 0);
-            startAlarm(c);
+        for (AlarmData currentAlarmData : alarms) {
+            Calendar calendar = Calendar.getInstance();
+            calendar.set(Calendar.HOUR_OF_DAY, currentAlarmData.getHour());
+            calendar.set(Calendar.MINUTE, currentAlarmData.getMinute());
+            calendar.set(Calendar.SECOND, 0);
+            calendar.get(Calendar.DAY_OF_WEEK);
+            startAlarm(calendar, currentAlarmData);
         }
-
     }
 
-    private void startAlarm(Calendar c) {
+    private void startAlarm(Calendar c, AlarmData ad) {
+        if (!c.before(Calendar.getInstance()) && ad.isOnOrOff()) {
             AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
             Intent intent = new Intent(this, AlertReceiver.class);
-            PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 1, intent, 0);
+            intent.setAction(Long.toString(System.currentTimeMillis()));
+            PendingIntent pendingIntent = PendingIntent.getBroadcast(this, alarms.indexOf(ad), intent, PendingIntent.FLAG_ONE_SHOT);
             alarmManager.setExact(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(), pendingIntent);
+        }
     }
 
-    private void cancelAlarm() {
+
+    private void cancelAlarm(AlarmData ad) {
         AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         Intent intent = new Intent(this, AlertReceiver.class);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this,
-                1, intent, 0);
+                alarms.indexOf(ad), intent, 0);
         alarmManager.cancel(pendingIntent);
+    }
+
+    private void checkForActiveDays(AlarmData alarmData){
+
 
     }
+
 
 
 }

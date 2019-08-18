@@ -22,7 +22,9 @@ public class AlarmData implements Parcelable {
     private boolean onOrOff;
     private boolean selected;
 
-    public AlarmData(int hour, int minute, boolean monday_friday, boolean saturday_sunday, boolean monday, boolean tuesday, boolean wednesday, boolean thursday, boolean friday, boolean saturday, boolean sunday, boolean vibrate, int sound, boolean onOrOff, boolean selected) {
+    public AlarmData(int hour, int minute, boolean monday_friday, boolean saturday_sunday,
+                     boolean monday, boolean tuesday, boolean wednesday, boolean thursday, boolean friday, boolean saturday, boolean sunday,
+                     boolean vibrate, int sound, boolean onOrOff, boolean selected) {
         this.hour = hour;
         this.minute = minute;
         this.monday_friday = monday_friday;
@@ -191,6 +193,8 @@ public class AlarmData implements Parcelable {
         this.selected = selected;
     }
 
+
+
     @Override
     public int describeContents() {
         return 0;
@@ -213,6 +217,7 @@ public class AlarmData implements Parcelable {
         dest.writeInt(sound);
         dest.writeByte((byte) (onOrOff ? 1 : 0));
         dest.writeByte((byte) (selected ? 1 : 0));
+
     }
 
 
