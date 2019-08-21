@@ -46,14 +46,35 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     Button deleteAll;
     Button changeAll;
     Toast notificationToast;
-    private ConstraintLayout toolbar;
     Button checkAllAlarms;
-
-
     Button notificationButton;
+    private ConstraintLayout toolbar;
 
     public static CustomAdapter getCustomAdapter() {
         return customAdapter;
+    }
+
+    public static void sortList(ArrayList<AlarmData> a) {
+        for (int i = 0; i < a.size(); i++) {
+            for (int j = i + 1; j <= a.size() - 1; j++) {
+                if (a.get(i).getHour() > a.get(j).getHour()) {
+                    Collections.swap(a, i, j);
+                }
+            }
+        }
+        for (int i = 0; i < a.size(); i++) {
+            for (int j = i + 1; j <= a.size() - 1; j++) {
+                if (a.get(i).getHour() == a.get(j).getHour()) {
+                    sortMinute(a, a.get(i), a.get(j));
+                }
+            }
+        }
+    }
+
+    public static void sortMinute(ArrayList<AlarmData> a, AlarmData o1, AlarmData o2) {
+        if (o1.getMinute() > o2.getMinute()) {
+            Collections.swap(a, a.indexOf(o1), a.indexOf(o2));
+        }
     }
 
     @Override
@@ -206,7 +227,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         return toolbar;
     }
 
-
     @Override
     public void onBackPressed() {
         if (listState) {
@@ -228,37 +248,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         onClickListeners(v);
     }
 
-    public static void sortList(ArrayList<AlarmData> a) {
-        for (int i = 0; i < a.size(); i++) {
-            for (int j = i + 1; j <= a.size() - 1; j++) {
-                if (a.get(i).getHour() > a.get(j).getHour()) {
-                    Collections.swap(a, i, j);
-                }
-            }
-        }
-        for (int i = 0; i < a.size(); i++) {
-            for (int j = i + 1; j <= a.size() - 1; j++) {
-                if (a.get(i).getHour() == a.get(j).getHour()) {
-                    sortMinute(a, a.get(i), a.get(j));
-                }
-            }
-        }
-    }
-
-    public static void sortMinute(ArrayList<AlarmData> a, AlarmData o1, AlarmData o2) {
-        if (o1.getMinute() > o2.getMinute()) {
-            Collections.swap(a, a.indexOf(o1), a.indexOf(o2));
-        }
-    }
-
     public void startNotification() {
         for (AlarmData currentAlarmData : alarms) {
             Calendar calendar = Calendar.getInstance();
             calendar.set(Calendar.HOUR_OF_DAY, currentAlarmData.getHour());
             calendar.set(Calendar.MINUTE, currentAlarmData.getMinute());
             calendar.set(Calendar.SECOND, 0);
-            calendar.get(Calendar.DAY_OF_WEEK);
-            startAlarm(calendar, currentAlarmData);
+            checkForActiveDays(calendar, currentAlarmData);
         }
     }
 
@@ -281,11 +277,60 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         alarmManager.cancel(pendingIntent);
     }
 
-    private void checkForActiveDays(AlarmData alarmData){
+    private void resetAlarms(){
 
+        for (AlarmData currentAlarmData : alarms) {
+                cancelAlarm(currentAlarmData);
+        }
+        startNotification();
+        }
+
+    private void checkForActiveDays(Calendar calendar, AlarmData alarmData) {
+        int date = calendar.get(Calendar.DAY_OF_WEEK);
+        switch (date) {
+            //check for monday
+            case 2:
+                if (alarmData.isMonday()) {
+                    startAlarm(calendar, alarmData);
+                    break;
+                }
+                //check for tuesday
+            case 3:
+                if (alarmData.isTuesday()) {
+                    startAlarm(calendar, alarmData);
+                    break;
+                }
+                //check for wednesday
+            case 4:
+                if (alarmData.isWednesday()) {
+                    startAlarm(calendar, alarmData);
+                    break;
+                }
+                //check for thursday
+            case 5:
+                if (alarmData.isThursday()) {
+                    startAlarm(calendar, alarmData);
+                    break;
+                }
+                //check for friday
+            case 6:
+                if (alarmData.isFriday()) {
+                    startAlarm(calendar, alarmData);
+                    break;
+                }
+                //check for saturday
+            case 7:
+                if (alarmData.isSaturday()) {
+                    startAlarm(calendar, alarmData);
+                    break;
+                }
+                //check for sunday
+            case 1:
+                if (alarmData.isSunday()) {
+                    startAlarm(calendar, alarmData);
+                    break;
+                }
+        }
 
     }
-
-
-
 }

@@ -9,19 +9,19 @@ public class Alarms {
     private static ArrayList<AlarmData> alarmDataArrayList = new ArrayList<AlarmData>();
 
     public static void addFirstAlarm() {
-        alarmDataArrayList.add(new AlarmData(22, 38, true, true
+        alarmDataArrayList.add(new AlarmData(23, 0, true, true
                 , true, true, true, true, true
-                , true, true
+                , true, false
                 , false, 2, false, false));
-        alarmDataArrayList.add(new AlarmData(22, 39, true, true
+        alarmDataArrayList.add(new AlarmData(23, 1, true, true
                 , true, true, true, true, true
                 , true, true
                 , false, 2, true, false));
-        alarmDataArrayList.add(new AlarmData(22, 40, true, true
+        alarmDataArrayList.add(new AlarmData(23, 2, true, true
                 , true, true, true, true, true
-                , true, true
+                , true, false
                 , false, 2, true, false));
-        alarmDataArrayList.add(new AlarmData(22, 41, true, true
+        alarmDataArrayList.add(new AlarmData(23, 3, true, true
                 , true, true, true, true, true
                 , true, true
                 , false, 2, true, false));
