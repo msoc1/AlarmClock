@@ -1,4 +1,4 @@
-package com.fixed4fun.alarmclock;
+package com.fixed4fun.alarmclock.TimePickerFragments;
 
 import android.app.Dialog;
 import android.os.Bundle;
@@ -12,6 +12,12 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.TimePicker;
 import android.widget.Toast;
+
+import com.fixed4fun.alarmclock.AlarmObject.AlarmData;
+import com.fixed4fun.alarmclock.AlarmsList.Alarms;
+import com.fixed4fun.alarmclock.Adapters.CustomAdapter;
+import com.fixed4fun.alarmclock.Activities.MainActivity;
+import com.fixed4fun.alarmclock.R;
 
 
 public class ModifyTimePicker extends DialogFragment implements View.OnClickListener {

@@ -1,4 +1,4 @@
-package com.fixed4fun.alarmclock;
+package com.fixed4fun.alarmclock.TimePickerFragments;
 
 
 import android.app.Dialog;
@@ -14,6 +14,12 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.TimePicker;
 import android.widget.Toast;
+
+import com.fixed4fun.alarmclock.AlarmObject.AlarmData;
+import com.fixed4fun.alarmclock.AlarmsList.Alarms;
+import com.fixed4fun.alarmclock.Adapters.CustomAdapter;
+import com.fixed4fun.alarmclock.Activities.MainActivity;
+import com.fixed4fun.alarmclock.R;
 
 public class NewTimePicker extends DialogFragment implements View.OnClickListener {
 
@@ -176,18 +182,8 @@ public class NewTimePicker extends DialogFragment implements View.OnClickListene
     }
 
     public void setUpButtons() {
-        buttoSetAlatm.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                addAnAlarm();
-            }
-        });
-        cancelAlarm.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                closeTimePicker();
-            }
-        });
+        buttoSetAlatm.setOnClickListener(v -> addAnAlarm());
+        cancelAlarm.setOnClickListener(v -> closeTimePicker());
         satSunCheckBox.setOnClickListener(this);
         monFriCheckBox.setOnClickListener(this);
         saturdayCheckBox.setOnClickListener(this);
@@ -203,7 +199,7 @@ public class NewTimePicker extends DialogFragment implements View.OnClickListene
     public void addAnAlarm() {
         alarmData = new AlarmData(getHour(timePicker), getMinute(timePicker), monFriCheckBox.isChecked(), satSunCheckBox.isChecked(), mondayCheckBox.isChecked()
                 , tuesdayCheckBox.isChecked(), wednesdayCheckBox.isChecked(), thursdayCheckBox.isChecked(), fridayCheckBox.isChecked(), saturdayCheckBox.isChecked(), sundayCheckBox.isChecked()
-                , vibrateCheckBox.isChecked(), 3, true, false);
+                , vibrateCheckBox.isChecked(), 3, true, false, null);
 
         if (!alarmData.isMonday() && !alarmData.isTuesday() && !alarmData.isWednesday() && !alarmData.isThursday() && !alarmData.isFriday() && !alarmData.isSaturday() && !alarmData.isSunday()) {
             alarmData.setMonday_friday(true);
@@ -220,7 +216,7 @@ public class NewTimePicker extends DialogFragment implements View.OnClickListene
         } else {
             Alarms.addAlarm(getHour(timePicker), getMinute(timePicker), monFriCheckBox.isChecked(), satSunCheckBox.isChecked(), mondayCheckBox.isChecked()
                     , tuesdayCheckBox.isChecked(), wednesdayCheckBox.isChecked(), thursdayCheckBox.isChecked(), fridayCheckBox.isChecked(), saturdayCheckBox.isChecked(), sundayCheckBox.isChecked()
-                    , vibrateCheckBox.isChecked(), 3, true, false);
+                    , vibrateCheckBox.isChecked(), 3, true, false, null);
         }
 
 

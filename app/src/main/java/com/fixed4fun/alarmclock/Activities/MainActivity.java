@@ -1,10 +1,6 @@
-package com.fixed4fun.alarmclock;
+package com.fixed4fun.alarmclock.Activities;
 
 import android.annotation.SuppressLint;
-import android.app.AlarmManager;
-import android.app.PendingIntent;
-import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.FloatingActionButton;
@@ -20,23 +16,32 @@ import android.widget.Switch;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.fixed4fun.alarmclock.Adapters.CustomAdapter;
+import com.fixed4fun.alarmclock.AlarmObject.AlarmData;
+import com.fixed4fun.alarmclock.AlarmsList.Alarms;
+import com.fixed4fun.alarmclock.Notifications.AlarmNotifications;
+import com.fixed4fun.alarmclock.R;
+import com.fixed4fun.alarmclock.TimePickerFragments.ChangeAllTimePicker;
+import com.fixed4fun.alarmclock.TimePickerFragments.ModifyTimePicker;
+import com.fixed4fun.alarmclock.TimePickerFragments.NewTimePicker;
+
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collections;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     static int toolbarHeight;
-    static int position;
+    public static int position;
 
-    static boolean listState;
+    public static boolean listState;
 
 
     static String toastMessage;
-    static ArrayList<AlarmData> alarms = new ArrayList<>();
+    public static ArrayList<AlarmData> alarms = new ArrayList<>();
     static ArrayList<AlarmData> tempList;
     @SuppressLint("StaticFieldLeak")
     static private CustomAdapter customAdapter;
     TimePicker timePicker;
+    private AlarmNotifications alarmNotifications;
 
     FloatingActionButton floatingActionButton;
 
@@ -46,7 +51,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     Button deleteAll;
     Button changeAll;
     Toast notificationToast;
-    Button checkAllAlarms;
     Button notificationButton;
     private ConstraintLayout toolbar;
 
@@ -77,6 +81,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+    @SuppressLint("ShowToast")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -104,6 +109,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         notificationButton = findViewById(R.id.notification);
 
+        //Toast will be shown later
         toastMessage = "";
         notificationToast = Toast.makeText(this, toastMessage, Toast.LENGTH_LONG);
 
@@ -111,6 +117,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         recyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
         toolbarHeight = toolbar.getMaxHeight();
         toolbar.setVisibility(View.GONE);
+        alarmNotifications = new AlarmNotifications();
+        notificationButton.setOnClickListener(v ->
+            alarmNotifications.startNotification(getBaseContext()));
 
         setOnClickListeners();
 
@@ -141,7 +150,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         turnOnOrOffAll.setOnClickListener(this);
         floatingActionButton.setOnClickListener(this);
 
-        notificationButton.setOnClickListener(v -> startNotification());
 
 
         customAdapter.SetOnClickItemListener(position -> {
@@ -194,7 +202,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
 
             case R.id.change_all:
-                ChangeAllFragment dialogFragment = new ChangeAllFragment();
+                ChangeAllTimePicker dialogFragment = new ChangeAllTimePicker();
                 dialogFragment.show(getSupportFragmentManager(), "asa");
                 customAdapter.notifyDataSetChanged();
                 break;
@@ -248,89 +256,5 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         onClickListeners(v);
     }
 
-    public void startNotification() {
-        for (AlarmData currentAlarmData : alarms) {
-            Calendar calendar = Calendar.getInstance();
-            calendar.set(Calendar.HOUR_OF_DAY, currentAlarmData.getHour());
-            calendar.set(Calendar.MINUTE, currentAlarmData.getMinute());
-            calendar.set(Calendar.SECOND, 0);
-            checkForActiveDays(calendar, currentAlarmData);
-        }
-    }
 
-    private void startAlarm(Calendar c, AlarmData ad) {
-        if (!c.before(Calendar.getInstance()) && ad.isOnOrOff()) {
-            AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-            Intent intent = new Intent(this, AlertReceiver.class);
-            intent.setAction(Long.toString(System.currentTimeMillis()));
-            PendingIntent pendingIntent = PendingIntent.getBroadcast(this, alarms.indexOf(ad), intent, PendingIntent.FLAG_ONE_SHOT);
-            alarmManager.setExact(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(), pendingIntent);
-        }
-    }
-
-
-    private void cancelAlarm(AlarmData ad) {
-        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-        Intent intent = new Intent(this, AlertReceiver.class);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(this,
-                alarms.indexOf(ad), intent, 0);
-        alarmManager.cancel(pendingIntent);
-    }
-
-    private void resetAlarms(){
-
-        for (AlarmData currentAlarmData : alarms) {
-                cancelAlarm(currentAlarmData);
-        }
-        startNotification();
-        }
-
-    private void checkForActiveDays(Calendar calendar, AlarmData alarmData) {
-        int date = calendar.get(Calendar.DAY_OF_WEEK);
-        switch (date) {
-            //check for monday
-            case 2:
-                if (alarmData.isMonday()) {
-                    startAlarm(calendar, alarmData);
-                    break;
-                }
-                //check for tuesday
-            case 3:
-                if (alarmData.isTuesday()) {
-                    startAlarm(calendar, alarmData);
-                    break;
-                }
-                //check for wednesday
-            case 4:
-                if (alarmData.isWednesday()) {
-                    startAlarm(calendar, alarmData);
-                    break;
-                }
-                //check for thursday
-            case 5:
-                if (alarmData.isThursday()) {
-                    startAlarm(calendar, alarmData);
-                    break;
-                }
-                //check for friday
-            case 6:
-                if (alarmData.isFriday()) {
-                    startAlarm(calendar, alarmData);
-                    break;
-                }
-                //check for saturday
-            case 7:
-                if (alarmData.isSaturday()) {
-                    startAlarm(calendar, alarmData);
-                    break;
-                }
-                //check for sunday
-            case 1:
-                if (alarmData.isSunday()) {
-                    startAlarm(calendar, alarmData);
-                    break;
-                }
-        }
-
-    }
 }

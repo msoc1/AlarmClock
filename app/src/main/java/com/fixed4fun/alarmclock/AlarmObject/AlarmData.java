@@ -1,6 +1,7 @@
-package com.fixed4fun.alarmclock;
+package com.fixed4fun.alarmclock.AlarmObject;
 
 
+import android.content.Intent;
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -21,26 +22,8 @@ public class AlarmData implements Parcelable {
     private int sound;
     private boolean onOrOff;
     private boolean selected;
-
-    public AlarmData(int hour, int minute, boolean monday_friday, boolean saturday_sunday,
-                     boolean monday, boolean tuesday, boolean wednesday, boolean thursday, boolean friday, boolean saturday, boolean sunday,
-                     boolean vibrate, int sound, boolean onOrOff, boolean selected) {
-        this.hour = hour;
-        this.minute = minute;
-        this.monday_friday = monday_friday;
-        this.saturday_sunday = saturday_sunday;
-        this.monday = monday;
-        this.tuesday = tuesday;
-        this.wednesday = wednesday;
-        this.thursday = thursday;
-        this.friday = friday;
-        this.saturday = saturday;
-        this.sunday = sunday;
-        this.vibrate = vibrate;
-        this.sound = sound;
-        this.onOrOff = onOrOff;
-        this.selected = selected;
-    }
+    // extra Intent needed for cancelling specific alarm, used to setAction and getAction. Could find other way around it to work
+    private Intent notificationIntent;
 
     protected AlarmData(Parcel in) {
         hour = in.readInt();
@@ -58,6 +41,7 @@ public class AlarmData implements Parcelable {
         sound = in.readInt();
         onOrOff = in.readByte() != 0;
         selected = in.readByte() != 0;
+        notificationIntent = in.readParcelable(Intent.class.getClassLoader());
     }
 
     public static final Creator<AlarmData> CREATOR = new Creator<AlarmData>() {
@@ -193,7 +177,32 @@ public class AlarmData implements Parcelable {
         this.selected = selected;
     }
 
+    public Intent getNotificationIntent() {
+        return notificationIntent;
+    }
 
+    public void setNotificationIntent(Intent notificationIntent) {
+        this.notificationIntent = notificationIntent;
+    }
+
+    public AlarmData(int hour, int minute, boolean monday_friday, boolean saturday_sunday, boolean monday, boolean tuesday, boolean wednesday, boolean thursday, boolean friday, boolean saturday, boolean sunday, boolean vibrate, int sound, boolean onOrOff, boolean selected, Intent notificationIntent) {
+        this.hour = hour;
+        this.minute = minute;
+        this.monday_friday = monday_friday;
+        this.saturday_sunday = saturday_sunday;
+        this.monday = monday;
+        this.tuesday = tuesday;
+        this.wednesday = wednesday;
+        this.thursday = thursday;
+        this.friday = friday;
+        this.saturday = saturday;
+        this.sunday = sunday;
+        this.vibrate = vibrate;
+        this.sound = sound;
+        this.onOrOff = onOrOff;
+        this.selected = selected;
+        this.notificationIntent = notificationIntent;
+    }
 
     @Override
     public int describeContents() {
@@ -217,16 +226,28 @@ public class AlarmData implements Parcelable {
         dest.writeInt(sound);
         dest.writeByte((byte) (onOrOff ? 1 : 0));
         dest.writeByte((byte) (selected ? 1 : 0));
-
+        dest.writeParcelable(notificationIntent, flags);
     }
-
 
     @Override
     public String toString() {
         return "AlarmData{" +
                 "hour=" + hour +
                 ", minute=" + minute +
+                ", monday_friday=" + monday_friday +
+                ", saturday_sunday=" + saturday_sunday +
+                ", monday=" + monday +
+                ", tuesday=" + tuesday +
+                ", wednesday=" + wednesday +
+                ", thursday=" + thursday +
+                ", friday=" + friday +
+                ", saturday=" + saturday +
+                ", sunday=" + sunday +
+                ", vibrate=" + vibrate +
+                ", sound=" + sound +
+                ", onOrOff=" + onOrOff +
                 ", selected=" + selected +
+                ", notificationIntent=" + notificationIntent +
                 '}';
     }
 }

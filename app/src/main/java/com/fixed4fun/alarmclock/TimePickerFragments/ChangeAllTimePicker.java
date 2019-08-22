@@ -1,4 +1,4 @@
-package com.fixed4fun.alarmclock;
+package com.fixed4fun.alarmclock.TimePickerFragments;
 
 import android.app.Dialog;
 import android.os.Bundle;
@@ -12,9 +12,15 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.NumberPicker;
 
+import com.fixed4fun.alarmclock.AlarmObject.AlarmData;
+import com.fixed4fun.alarmclock.AlarmsList.Alarms;
+import com.fixed4fun.alarmclock.Adapters.CustomAdapter;
+import com.fixed4fun.alarmclock.Activities.MainActivity;
+import com.fixed4fun.alarmclock.R;
+
 import java.util.ArrayList;
 
-public class ChangeAllFragment extends DialogFragment implements View.OnClickListener {
+public class ChangeAllTimePicker extends DialogFragment implements View.OnClickListener {
     AlertDialog alertDialog;
 
     NumberPicker hours;

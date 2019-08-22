@@ -1,4 +1,4 @@
-package com.fixed4fun.alarmclock;
+package com.fixed4fun.alarmclock.Adapters;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -7,6 +7,11 @@ import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.fixed4fun.alarmclock.Activities.MainActivity;
+import com.fixed4fun.alarmclock.AlarmObject.AlarmData;
+import com.fixed4fun.alarmclock.ViewHolders.CustomViewHolder;
+import com.fixed4fun.alarmclock.R;
 
 import java.util.ArrayList;
 import java.util.Calendar;
