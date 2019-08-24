@@ -1,13 +1,12 @@
-package com.fixed4fun.alarmclock.AlertReceivers;
+package com.fixed4fun.alarmclock.alertReceivers;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.support.v4.app.NotificationCompat;
-import android.util.Log;
+import androidx.core.app.NotificationCompat;
 import android.widget.Toast;
 
-import com.fixed4fun.alarmclock.Notifications.NotificationHelper;
+import com.fixed4fun.alarmclock.notifications.NotificationHelper;
 
 import java.util.Calendar;
 

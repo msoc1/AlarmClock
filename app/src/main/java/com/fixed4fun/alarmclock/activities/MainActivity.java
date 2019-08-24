@@ -1,14 +1,14 @@
-package com.fixed4fun.alarmclock.Activities;
+package com.fixed4fun.alarmclock.activities;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
-import android.support.constraint.ConstraintLayout;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.TabLayout;
-import android.support.v4.app.DialogFragment;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.tabs.TabLayout;
+import androidx.fragment.app.DialogFragment;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -16,14 +16,14 @@ import android.widget.Switch;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
-import com.fixed4fun.alarmclock.Adapters.CustomAdapter;
-import com.fixed4fun.alarmclock.AlarmObject.AlarmData;
-import com.fixed4fun.alarmclock.AlarmsList.Alarms;
-import com.fixed4fun.alarmclock.Notifications.AlarmNotifications;
+import com.fixed4fun.alarmclock.adapters.CustomAdapter;
+import com.fixed4fun.alarmclock.alarmObject.AlarmData;
+import com.fixed4fun.alarmclock.alarmsList.Alarms;
+import com.fixed4fun.alarmclock.notifications.AlarmNotifications;
 import com.fixed4fun.alarmclock.R;
-import com.fixed4fun.alarmclock.TimePickerFragments.ChangeAllTimePicker;
-import com.fixed4fun.alarmclock.TimePickerFragments.ModifyTimePicker;
-import com.fixed4fun.alarmclock.TimePickerFragments.NewTimePicker;
+import com.fixed4fun.alarmclock.timePickerFragments.ChangeAllTimePicker;
+import com.fixed4fun.alarmclock.timePickerFragments.ModifyTimePicker;
+import com.fixed4fun.alarmclock.timePickerFragments.NewTimePicker;
 
 import java.util.ArrayList;
 import java.util.Collections;

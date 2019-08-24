@@ -1,4 +1,4 @@
-package com.fixed4fun.alarmclock.AlarmObject;
+package com.fixed4fun.alarmclock.alarmObject;
 
 
 import android.content.Intent;

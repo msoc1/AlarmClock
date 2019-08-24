@@ -1,17 +1,17 @@
-package com.fixed4fun.alarmclock.Notifications;
+package com.fixed4fun.alarmclock.notifications;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 
-import com.fixed4fun.alarmclock.AlarmObject.AlarmData;
-import com.fixed4fun.alarmclock.AlertReceivers.AlertReceiver;
+import com.fixed4fun.alarmclock.alarmObject.AlarmData;
+import com.fixed4fun.alarmclock.alertReceivers.AlertReceiver;
 
 import java.util.Calendar;
 
-import static com.fixed4fun.alarmclock.Activities.MainActivity.alarms;
+import static com.fixed4fun.alarmclock.activities.MainActivity.alarms;
 
 public class AlarmNotifications extends AppCompatActivity {
 
@@ -100,7 +100,7 @@ public class AlarmNotifications extends AppCompatActivity {
 
     private void startAlarm(Calendar c, AlarmData ad, Context context) {
         Intent intent = ad.getNotificationIntent();
-        if (!c.before(Calendar.getInstance()) && ad.isOnOrOff()) {
+        if (c.after(Calendar.getInstance()) && ad.isOnOrOff()) {
             AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
             if (intent == null) {
                 intent = new Intent(context, AlertReceiver.class);

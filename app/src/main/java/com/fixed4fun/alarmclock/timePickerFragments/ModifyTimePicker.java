@@ -1,11 +1,11 @@
-package com.fixed4fun.alarmclock.TimePickerFragments;
+package com.fixed4fun.alarmclock.timePickerFragments;
 
 import android.app.Dialog;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.app.DialogFragment;
-import android.support.v7.app.AlertDialog;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.DialogFragment;
+import androidx.appcompat.app.AlertDialog;
 import android.text.format.DateFormat;
 import android.view.View;
 import android.widget.Button;
@@ -13,10 +13,10 @@ import android.widget.CheckBox;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
-import com.fixed4fun.alarmclock.AlarmObject.AlarmData;
-import com.fixed4fun.alarmclock.AlarmsList.Alarms;
-import com.fixed4fun.alarmclock.Adapters.CustomAdapter;
-import com.fixed4fun.alarmclock.Activities.MainActivity;
+import com.fixed4fun.alarmclock.alarmObject.AlarmData;
+import com.fixed4fun.alarmclock.alarmsList.Alarms;
+import com.fixed4fun.alarmclock.adapters.CustomAdapter;
+import com.fixed4fun.alarmclock.activities.MainActivity;
 import com.fixed4fun.alarmclock.R;
 
 

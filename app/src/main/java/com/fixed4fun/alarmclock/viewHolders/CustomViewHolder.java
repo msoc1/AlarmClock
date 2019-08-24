@@ -1,16 +1,16 @@
-package com.fixed4fun.alarmclock.ViewHolders;
+package com.fixed4fun.alarmclock.viewHolders;
 
-import android.support.annotation.NonNull;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.Switch;
 import android.widget.TextView;
 
-import com.fixed4fun.alarmclock.Activities.MainActivity;
-import com.fixed4fun.alarmclock.Adapters.CustomAdapter;
-import com.fixed4fun.alarmclock.AlarmsList.Alarms;
+import com.fixed4fun.alarmclock.activities.MainActivity;
+import com.fixed4fun.alarmclock.adapters.CustomAdapter;
+import com.fixed4fun.alarmclock.alarmsList.Alarms;
 import com.fixed4fun.alarmclock.R;
 
 public class CustomViewHolder extends RecyclerView.ViewHolder {

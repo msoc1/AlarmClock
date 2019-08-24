@@ -1,4 +1,4 @@
-package com.fixed4fun.alarmclock.Notifications;
+package com.fixed4fun.alarmclock.notifications;
 
 import android.annotation.TargetApi;
 import android.app.Notification;
@@ -7,7 +7,7 @@ import android.app.NotificationManager;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.os.Build;
-import android.support.v4.app.NotificationCompat;
+import androidx.core.app.NotificationCompat;
 
 import com.fixed4fun.alarmclock.R;
 

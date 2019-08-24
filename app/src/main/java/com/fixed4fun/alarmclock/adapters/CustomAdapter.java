@@ -1,16 +1,16 @@
-package com.fixed4fun.alarmclock.Adapters;
+package com.fixed4fun.alarmclock.adapters;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.fixed4fun.alarmclock.Activities.MainActivity;
-import com.fixed4fun.alarmclock.AlarmObject.AlarmData;
-import com.fixed4fun.alarmclock.ViewHolders.CustomViewHolder;
+import com.fixed4fun.alarmclock.activities.MainActivity;
+import com.fixed4fun.alarmclock.alarmObject.AlarmData;
+import com.fixed4fun.alarmclock.viewHolders.CustomViewHolder;
 import com.fixed4fun.alarmclock.R;
 
 import java.util.ArrayList;
