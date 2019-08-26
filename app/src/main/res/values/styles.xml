@@ -8,4 +8,15 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="checkboxes_style">
+        <item name="android:textColor">@color/checkboxes_text_color</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="my_timePicker">
+        <item name="android:textColor">@color/numbersSelectorColor</item>
+    </style>
+
+
+
 </resources>

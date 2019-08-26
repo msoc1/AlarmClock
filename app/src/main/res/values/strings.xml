@@ -1,3 +1,15 @@
 <resources>
     <string name="app_name">My Application</string>
+    <string name="sunday_text">S</string>
+    <string name="saturday_text">S</string>
+    <string name="friday_text">F</string>
+    <string name="thursday_text">T</string>
+    <string name="wednesday_text">W</string>
+    <string name="tuesday_text">T</string>
+    <string name="monday_text">M</string>
+    <string name="saturday_sunday_short_text">S-S</string>
+    <string name="monday_friday_short_text">M-F</string>
+    <string name="vibrate">V</string>
+    <string name="sat_sun_text">SAT-SUN</string>
+    <string name="mon_fri_text">MON-FRI</string>
 </resources>

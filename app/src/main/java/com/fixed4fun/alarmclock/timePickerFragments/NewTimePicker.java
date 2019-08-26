@@ -4,10 +4,6 @@ package com.fixed4fun.alarmclock.timePickerFragments;
 import android.app.Dialog;
 import android.os.Build;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.DialogFragment;
-import androidx.appcompat.app.AlertDialog;
 import android.text.format.DateFormat;
 import android.view.View;
 import android.widget.Button;
@@ -15,11 +11,15 @@ import android.widget.CheckBox;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+import androidx.fragment.app.DialogFragment;
+import com.fixed4fun.alarmclock.R;
+import com.fixed4fun.alarmclock.activities.MainActivity;
+import com.fixed4fun.alarmclock.adapters.CustomAdapter;
 import com.fixed4fun.alarmclock.alarmObject.AlarmData;
 import com.fixed4fun.alarmclock.alarmsList.Alarms;
-import com.fixed4fun.alarmclock.adapters.CustomAdapter;
-import com.fixed4fun.alarmclock.activities.MainActivity;
-import com.fixed4fun.alarmclock.R;
 
 public class NewTimePicker extends DialogFragment implements View.OnClickListener {
 
@@ -87,6 +87,7 @@ public class NewTimePicker extends DialogFragment implements View.OnClickListene
         cancelAlarm = view.findViewById(R.id.cancel_alarm);
         setUpButtons();
         alertDialog = builder.create();
+
         return alertDialog;
     }
 

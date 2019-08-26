@@ -23,12 +23,11 @@
         app:layout_constraintBaseline_toBaselineOf="@+id/select_all"
         app:layout_constraintStart_toEndOf="@+id/select_all" />
 
-    <Switch
+    <androidx.appcompat.widget.SwitchCompat
         android:id="@+id/turn_all"
         android:layout_width="113dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:text="On/ Off"
         app:layout_constraintBaseline_toBaselineOf="@+id/change_all"
         app:layout_constraintStart_toEndOf="@+id/change_all" />
 

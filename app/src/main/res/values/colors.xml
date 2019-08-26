@@ -3,4 +3,22 @@
     <color name="colorPrimary">#008577</color>
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
+
+    <color name="backgroundActivity">#1B1D35</color>
+
+    <color name="floatingActionButtonColor">#4F80FF</color>
+
+    <color name="textColor">#FFFFFF</color>
+
+    <color name="topBarColor">#4F52B3</color>
+
+    <color name="selected_checkbox_color">#4F80FF</color>
+
+    <color name="notselected_checkbox_color">#B6D0FF</color>
+
+    <color name="backgroundTimePickerColor">#FFFFFF</color>
+    <color name="numbersSelectorColor">#6666CC</color>
+    <color name="numbersBackgroundColor">#4961B7</color>
+
+    <color name="checkboxes_text_color">#FFFFFF</color>
 </resources>

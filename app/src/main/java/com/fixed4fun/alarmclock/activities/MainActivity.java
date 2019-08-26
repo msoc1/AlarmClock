@@ -2,6 +2,7 @@ package com.fixed4fun.alarmclock.activities;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+import androidx.appcompat.widget.SwitchCompat;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
@@ -12,7 +13,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.Switch;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     FloatingActionButton floatingActionButton;
 
     RecyclerView recyclerView;
-    Switch turnOnOrOffAll;
+    SwitchCompat turnOnOrOffAll;
     CheckBox selectAll;
     Button deleteAll;
     Button changeAll;

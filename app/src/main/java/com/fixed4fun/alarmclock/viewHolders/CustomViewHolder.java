@@ -1,6 +1,7 @@
 package com.fixed4fun.alarmclock.viewHolders;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.SwitchCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
@@ -19,7 +20,7 @@ public class CustomViewHolder extends RecyclerView.ViewHolder {
     public TextView setTime;
     public TextView howLong;
 
-    public Switch onOrOff;
+    public SwitchCompat onOrOff;
 
     public CheckBox selected;
     CustomAdapter adapter;
