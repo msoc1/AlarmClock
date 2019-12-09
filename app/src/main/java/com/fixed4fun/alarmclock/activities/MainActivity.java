@@ -1,6 +1,7 @@
 package com.fixed4fun.alarmclock.activities;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import androidx.appcompat.widget.SwitchCompat;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -53,6 +54,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     Toast notificationToast;
     Button notificationButton;
     private ConstraintLayout toolbar;
+    Button startalarm;
 
     public static CustomAdapter getCustomAdapter() {
         return customAdapter;
@@ -108,6 +110,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         TabLayout tableLayout = findViewById(R.id.tabLayout);
 
         notificationButton = findViewById(R.id.notification);
+        startalarm = findViewById(R.id.startalarm);
+
+        startalarm.setOnClickListener(v -> startActivity(new Intent(MainActivity.this, AlarmGoingOff.class)));
 
         //Toast will be shown later
         toastMessage = "";

@@ -20,6 +20,7 @@
 
 
         <receiver android:name=".alertReceivers.AlertReceiver"/>
+        <activity android:name=".activities.AlarmGoingOff"></activity>
 
     </application>
 

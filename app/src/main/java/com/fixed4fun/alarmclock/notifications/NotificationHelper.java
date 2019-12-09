@@ -6,10 +6,12 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.ContextWrapper;
+import android.content.Intent;
 import android.os.Build;
 import androidx.core.app.NotificationCompat;
 
 import com.fixed4fun.alarmclock.R;
+import com.fixed4fun.alarmclock.activities.AlarmGoingOff;
 
 public class NotificationHelper extends ContextWrapper {
 
@@ -32,6 +34,10 @@ public class NotificationHelper extends ContextWrapper {
         channel1.enableVibration(true);
         channel1.setLightColor(R.color.colorPrimary);
         channel1.setLockscreenVisibility(Notification.VISIBILITY_PRIVATE);
+        Intent intent = new Intent(NotificationHelper.this, AlarmGoingOff.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+
         getManager().createNotificationChannel(channel1);
     }
 
