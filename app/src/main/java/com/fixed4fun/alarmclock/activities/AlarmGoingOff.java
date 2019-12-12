@@ -42,13 +42,14 @@ public class AlarmGoingOff extends AppCompatActivity {
         dayOfTheWeek = findViewById(R.id.day_of_the_week);
 
         hours.setText(String.valueOf(calendar.get(Calendar.HOUR_OF_DAY)));
-        minutes.setText(String.valueOf(calendar.get(Calendar.MINUTE)));
+        int timeInMinutes = calendar.get(Calendar.MINUTE);
+        minutes.setText(((timeInMinutes> 9) ? timeInMinutes : "0" + timeInMinutes).toString());
         dayOfTheWeek.setText(LocalDate.now().getDayOfWeek().name());
 
         turnOff.setOnTouchListener(buttonOnTouchListener);
 
         mMediaPlayer = new MediaPlayer();
-        mMediaPlayer = MediaPlayer.create(this, R.raw.alarm1);
+        mMediaPlayer = MediaPlayer.create(this,R.raw.pager_beeps);
         mMediaPlayer.setAudioAttributes( new AudioAttributes.Builder().setContentType(AudioAttributes.CONTENT_TYPE_MUSIC).build());
         mMediaPlayer.setLooping(true);
         mMediaPlayer.start();

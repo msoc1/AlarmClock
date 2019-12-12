@@ -1,14 +1,22 @@
 package com.fixed4fun.alarmclock.timePickerFragments;
 
 import android.app.Dialog;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.os.Build;
 import android.os.Bundle;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.DialogFragment;
 import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.NumberPicker;
 
@@ -37,11 +45,16 @@ public class ChangeAllTimePicker extends DialogFragment implements View.OnClickL
 
     ConstraintLayout mainActivityToolbar;
 
-    @NonNull
     @Override
-    public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        View view = getActivity().getLayoutInflater().inflate(R.layout.modify_all_timepickers, null);
+        View view = inflater.inflate(R.layout.modify_all_timepickers, container);
+        if (getDialog() != null && getDialog().getWindow() != null) {
+            getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+        }
+        setStyle(DialogFragment.STYLE_NO_FRAME, android.R.style.Theme);
         builder.setView(view);
         hours = view.findViewById(R.id.hours);
         minutes = view.findViewById(R.id.minutes);
@@ -54,7 +67,9 @@ public class ChangeAllTimePicker extends DialogFragment implements View.OnClickL
         setOnClickListeners();
 
         alertDialog = builder.create();
-        return alertDialog;
+        return view;
+
+
     }
 
     private void setUpPickers() {
@@ -72,6 +87,7 @@ public class ChangeAllTimePicker extends DialogFragment implements View.OnClickL
 
     private void closeChangeDialog() {
         alertDialog.dismiss();
+        getDialog().cancel();
     }
 
     private void setOnClickListeners() {

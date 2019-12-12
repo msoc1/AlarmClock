@@ -1,15 +1,21 @@
 package com.fixed4fun.alarmclock.timePickerFragments;
 
 import android.app.Dialog;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 import androidx.appcompat.app.AlertDialog;
 import android.text.format.DateFormat;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
@@ -41,13 +47,14 @@ public class ModifyTimePicker extends DialogFragment implements View.OnClickList
     CheckBox sundayCheckBox;
     CheckBox vibrateCheckBox;
     CustomAdapter customAdapter;
+    TextView sound;
 
 
     @NonNull
     @Override
-    public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        View view = getActivity().getLayoutInflater().inflate(R.layout.custom_timepicker, null);
+        View view = inflater.inflate(R.layout.custom_timepicker, container);
 
         timePicker = view.findViewById(R.id.time_picker);
         monFriCheckBox = view.findViewById(R.id.mon_fri_checkBox);
@@ -67,7 +74,14 @@ public class ModifyTimePicker extends DialogFragment implements View.OnClickList
         if (bundle != null) {
             alarmData = bundle.getParcelable("modify");
         }
+        if (getDialog() != null && getDialog().getWindow() != null) {
+            getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+        }
+        setStyle(DialogFragment.STYLE_NO_FRAME, android.R.style.Theme);
 
+        sound = view.findViewById(R.id.current_sound_textView);
+        sound.setText(getResources().getResourceEntryName(R.raw.pager_beeps));
         setTimePickerHour();
         setTimePickerMinute();
         timePicker.setIs24HourView(DateFormat.is24HourFormat(getContext()));
@@ -85,7 +99,7 @@ public class ModifyTimePicker extends DialogFragment implements View.OnClickList
         builder.setView(view);
         setUpButtons();
         alertDialog = builder.create();
-        return alertDialog;
+        return view;
     }
 
     public void setUpButtons() {
@@ -152,6 +166,7 @@ public class ModifyTimePicker extends DialogFragment implements View.OnClickList
 
     public void closeTimePicker() {
         alertDialog.dismiss();
+        getDialog().cancel();
     }
 
     public void setTimePickerHour() {

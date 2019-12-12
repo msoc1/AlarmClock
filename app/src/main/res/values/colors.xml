@@ -16,7 +16,7 @@
 
     <color name="notselected_checkbox_color">#B6D0FF</color>
 
-    <color name="backgroundTimePickerColor">#FFFFFF</color>
+    <color name="backgroundTimePickerColor">#FAFAFA</color>
     <color name="numbersSelectorColor">#6666CC</color>
     <color name="numbersBackgroundColor">#4961B7</color>
 

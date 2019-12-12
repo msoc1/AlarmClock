@@ -5,14 +5,15 @@
     android:id="@+id/custom_time"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/backgroundTimePickerColor">
+    android:background="@drawable/timepicker_background">
 
     <TimePicker
         android:id="@+id/time_picker"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="40dp"
-        android:layout_marginEnd="40dp"
+        android:layout_marginStart="48dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="48dp"
         android:headerBackground="@color/backgroundTimePickerColor"
         android:headerTimeTextAppearance="@style/my_timePicker"
         android:numbersBackgroundColor="@color/numbersBackgroundColor"
@@ -28,8 +29,8 @@
         android:id="@+id/set_alarm"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
         android:background="?android:attr/selectableItemBackground"
         android:minWidth="0dp"
         android:minHeight="0dp"
@@ -44,7 +45,7 @@
         android:id="@+id/cancel_alarm"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
+        android:layout_marginStart="16dp"
         android:background="?android:attr/selectableItemBackground"
         android:minWidth="0dp"
         android:minHeight="0dp"
@@ -59,9 +60,11 @@
         android:id="@+id/monday_check_box"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
+        android:layout_marginStart="24dp"
         android:layout_marginTop="16dp"
         android:button="@drawable/checkboxes_selector"
+        app:layout_constraintEnd_toStartOf="@+id/tuesday_check_box"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/time_picker" />
 
@@ -73,6 +76,8 @@
         android:button="@drawable/checkboxes_selector"
         android:textAlignment="gravity"
         app:layout_constraintBaseline_toBaselineOf="@+id/monday_check_box"
+        app:layout_constraintEnd_toStartOf="@+id/wednesday_check_box"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/monday_check_box" />
 
     <CheckBox
@@ -82,6 +87,8 @@
         android:layout_marginStart="16dp"
         android:button="@drawable/checkboxes_selector"
         app:layout_constraintBaseline_toBaselineOf="@+id/tuesday_check_box"
+        app:layout_constraintEnd_toStartOf="@+id/thursday_check_box"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/tuesday_check_box" />
 
     <CheckBox
@@ -91,6 +98,8 @@
         android:layout_marginStart="16dp"
         android:button="@drawable/checkboxes_selector"
         app:layout_constraintBaseline_toBaselineOf="@+id/wednesday_check_box"
+        app:layout_constraintEnd_toStartOf="@+id/friday_check_box"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/wednesday_check_box" />
 
     <CheckBox
@@ -100,6 +109,8 @@
         android:layout_marginStart="16dp"
         android:button="@drawable/checkboxes_selector"
         app:layout_constraintBaseline_toBaselineOf="@+id/thursday_check_box"
+        app:layout_constraintEnd_toStartOf="@+id/saturday_check_box"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/thursday_check_box" />
 
     <CheckBox
@@ -109,6 +120,8 @@
         android:layout_marginStart="16dp"
         android:button="@drawable/checkboxes_selector"
         app:layout_constraintBaseline_toBaselineOf="@+id/friday_check_box"
+        app:layout_constraintEnd_toStartOf="@+id/sunday_check_box"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/friday_check_box" />
 
     <CheckBox
@@ -116,8 +129,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
+        android:layout_marginEnd="24dp"
         android:button="@drawable/checkboxes_selector"
         app:layout_constraintBaseline_toBaselineOf="@+id/saturday_check_box"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/saturday_check_box" />
 
     <TextView
@@ -136,7 +152,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_begin="73dp" />
+        app:layout_constraintGuide_begin="115dp" />
 
     <TextView
         android:id="@+id/sat_sun_textView"
@@ -169,40 +185,30 @@
         app:layout_constraintStart_toStartOf="@+id/sat_sun_textView"
         app:layout_constraintTop_toBottomOf="@+id/sat_sun_textView" />
 
-    <Button
-        android:id="@+id/change_soundbutton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:background="?android:attr/selectableItemBackground"
-        android:text="change sound"
-        android:textColor="@color/floatingActionButtonColor"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/monday_check_box" />
-
     <TextView
-        android:id="@+id/current_sount_textView"
+        android:id="@+id/current_sound_textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="8dp"
         android:text="current sound"
         android:textColor="@color/floatingActionButtonColor"
         android:textSize="18sp"
-        app:layout_constraintBaseline_toBaselineOf="@+id/change_soundbutton"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/change_soundbutton" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/friday_check_box" />
 
     <TextView
         android:id="@+id/vibrate_when_alarm"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginBottom="24dp"
         android:text="vibrate when alarm"
         android:textColor="@color/floatingActionButtonColor"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/change_soundbutton" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/monday_check_box"
+        app:layout_constraintTop_toBottomOf="@+id/current_sound_textView" />
 
     <CheckBox
         android:id="@+id/vibration_check_box"
@@ -217,21 +223,21 @@
 
     <TextView
         android:id="@+id/vibrate_textview"
+        style="@style/checkboxes_style"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/vibrate"
-        style="@style/checkboxes_style"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/vibration_check_box"
         app:layout_constraintEnd_toEndOf="@+id/vibration_check_box"
         app:layout_constraintStart_toStartOf="@+id/vibration_check_box"
         app:layout_constraintTop_toTopOf="@+id/vibration_check_box" />
 
     <TextView
         android:id="@+id/monday_friday_textview"
+        style="@style/checkboxes_style"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/monday_friday_short_text"
-        style="@style/checkboxes_style"
         app:layout_constraintBottom_toBottomOf="@+id/mon_fri_checkBox"
         app:layout_constraintEnd_toEndOf="@+id/mon_fri_checkBox"
         app:layout_constraintStart_toStartOf="@+id/mon_fri_checkBox"
@@ -239,10 +245,10 @@
 
     <TextView
         android:id="@+id/saturday_sunday_textview"
+        style="@style/checkboxes_style"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/saturday_sunday_short_text"
-        style="@style/checkboxes_style"
         app:layout_constraintBottom_toBottomOf="@+id/sat_sun_checkBox"
         app:layout_constraintEnd_toEndOf="@+id/sat_sun_checkBox"
         app:layout_constraintStart_toStartOf="@+id/sat_sun_checkBox"
@@ -250,10 +256,10 @@
 
     <TextView
         android:id="@+id/monday_textview"
+        style="@style/checkboxes_style"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/monday_text"
-        style="@style/checkboxes_style"
         app:layout_constraintBottom_toBottomOf="@+id/monday_check_box"
         app:layout_constraintEnd_toEndOf="@+id/monday_check_box"
         app:layout_constraintStart_toStartOf="@+id/monday_check_box"
@@ -261,10 +267,10 @@
 
     <TextView
         android:id="@+id/tuesday_textview"
+        style="@style/checkboxes_style"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/tuesday_text"
-        style="@style/checkboxes_style"
         app:layout_constraintBottom_toBottomOf="@+id/tuesday_check_box"
         app:layout_constraintEnd_toEndOf="@+id/tuesday_check_box"
         app:layout_constraintStart_toStartOf="@+id/tuesday_check_box"
@@ -272,10 +278,10 @@
 
     <TextView
         android:id="@+id/wednesday_textview"
+        style="@style/checkboxes_style"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/wednesday_text"
-        style="@style/checkboxes_style"
         app:layout_constraintBottom_toBottomOf="@+id/wednesday_check_box"
         app:layout_constraintEnd_toEndOf="@+id/wednesday_check_box"
         app:layout_constraintStart_toStartOf="@+id/wednesday_check_box"
@@ -283,10 +289,10 @@
 
     <TextView
         android:id="@+id/thursday_textview"
+        style="@style/checkboxes_style"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/thursday_text"
-        style="@style/checkboxes_style"
         app:layout_constraintBottom_toBottomOf="@+id/thursday_check_box"
         app:layout_constraintEnd_toEndOf="@+id/thursday_check_box"
         app:layout_constraintStart_toStartOf="@+id/thursday_check_box"
@@ -294,10 +300,10 @@
 
     <TextView
         android:id="@+id/friday_textview"
+        style="@style/checkboxes_style"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/friday_text"
-        style="@style/checkboxes_style"
         app:layout_constraintBottom_toBottomOf="@+id/friday_check_box"
         app:layout_constraintEnd_toEndOf="@+id/friday_check_box"
         app:layout_constraintStart_toStartOf="@+id/friday_check_box"
@@ -305,10 +311,10 @@
 
     <TextView
         android:id="@+id/saturday_textview"
+        style="@style/checkboxes_style"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/saturday_text"
-        style="@style/checkboxes_style"
         app:layout_constraintBottom_toBottomOf="@+id/saturday_check_box"
         app:layout_constraintEnd_toEndOf="@+id/saturday_check_box"
         app:layout_constraintStart_toStartOf="@+id/saturday_check_box"
@@ -316,10 +322,10 @@
 
     <TextView
         android:id="@+id/sunday_textview"
+        style="@style/checkboxes_style"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/sunday_text"
-        style="@style/checkboxes_style"
         app:layout_constraintBottom_toBottomOf="@+id/sunday_check_box"
         app:layout_constraintEnd_toEndOf="@+id/sunday_check_box"
         app:layout_constraintStart_toStartOf="@+id/sunday_check_box"

@@ -1,18 +1,23 @@
 package com.fixed4fun.alarmclock.timePickerFragments;
 
 
-import android.app.Dialog;
+import android.content.res.Resources;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.format.DateFormat;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.DialogFragment;
 import com.fixed4fun.alarmclock.R;
@@ -46,6 +51,8 @@ public class NewTimePicker extends DialogFragment implements View.OnClickListene
 
     CustomAdapter adapter;
 
+    TextView sound;
+
     public static int getHour(TimePicker timePicker) {
         //support older versions of API
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -66,9 +73,9 @@ public class NewTimePicker extends DialogFragment implements View.OnClickListene
 
     @NonNull
     @Override
-    public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        View view = getActivity().getLayoutInflater().inflate(R.layout.custom_timepicker, null);
+        View view = inflater.inflate(R.layout.custom_timepicker, container);
         monFriCheckBox = view.findViewById(R.id.mon_fri_checkBox);
         satSunCheckBox = view.findViewById(R.id.sat_sun_checkBox);
         mondayCheckBox = view.findViewById(R.id.monday_check_box);
@@ -79,7 +86,14 @@ public class NewTimePicker extends DialogFragment implements View.OnClickListene
         saturdayCheckBox = view.findViewById(R.id.saturday_check_box);
         sundayCheckBox = view.findViewById(R.id.sunday_check_box);
         vibrateCheckBox = view.findViewById(R.id.vibration_check_box);
+        if (getDialog() != null && getDialog().getWindow() != null) {
+            getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+        }
+        setStyle(DialogFragment.STYLE_NO_FRAME, android.R.style.Theme);
 
+        sound = view.findViewById(R.id.current_sound_textView);
+        sound.setText(getResources().getResourceEntryName(R.raw.pager_beeps));
         timePicker = view.findViewById(R.id.time_picker);
         timePicker.setIs24HourView(DateFormat.is24HourFormat(getContext()));
         builder.setView(view);
@@ -88,7 +102,7 @@ public class NewTimePicker extends DialogFragment implements View.OnClickListene
         setUpButtons();
         alertDialog = builder.create();
 
-        return alertDialog;
+        return view;
     }
 
     public void confirmDays(View v) {
@@ -238,6 +252,7 @@ public class NewTimePicker extends DialogFragment implements View.OnClickListene
 
     public void closeTimePicker() {
         alertDialog.dismiss();
+        getDialog().cancel();
     }
 
 

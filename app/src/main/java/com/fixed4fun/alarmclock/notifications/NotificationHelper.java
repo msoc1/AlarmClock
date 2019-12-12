@@ -52,6 +52,6 @@ public class NotificationHelper extends ContextWrapper {
         return new NotificationCompat.Builder(getApplicationContext(), channel1ID)
                 .setContentTitle(title)
                 .setContentText(message)
-                .setSmallIcon(R.drawable.ch_sat_sun);
+                .setSmallIcon(R.drawable.selected);
     }
 }
