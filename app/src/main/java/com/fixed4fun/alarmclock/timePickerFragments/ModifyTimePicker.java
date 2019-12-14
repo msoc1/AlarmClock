@@ -9,6 +9,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 import androidx.appcompat.app.AlertDialog;
 import android.text.format.DateFormat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,26 +29,26 @@ import com.fixed4fun.alarmclock.R;
 
 public class ModifyTimePicker extends DialogFragment implements View.OnClickListener {
 
-    static AlarmData alarmData;
-    TimePicker timePicker;
-    Button buttoSetAlarm;
-    Button cancelAlarm;
+    private static AlarmData alarmData;
+    private TimePicker timePicker;
+    private Button buttoSetAlarm;
+    private Button cancelAlarm;
     Button changeSound;
 
-    AlertDialog alertDialog;
+    private AlertDialog alertDialog;
 
-    CheckBox monFriCheckBox;
-    CheckBox satSunCheckBox;
-    CheckBox mondayCheckBox;
-    CheckBox tuesdayCheckBox;
-    CheckBox wednesdayCheckBox;
-    CheckBox thursdayCheckBox;
-    CheckBox fridayCheckBox;
-    CheckBox saturdayCheckBox;
-    CheckBox sundayCheckBox;
-    CheckBox vibrateCheckBox;
-    CustomAdapter customAdapter;
-    TextView sound;
+    private CheckBox monFriCheckBox;
+    private CheckBox satSunCheckBox;
+    private CheckBox mondayCheckBox;
+    private CheckBox tuesdayCheckBox;
+    private CheckBox wednesdayCheckBox;
+    private CheckBox thursdayCheckBox;
+    private CheckBox fridayCheckBox;
+    private CheckBox saturdayCheckBox;
+    private CheckBox sundayCheckBox;
+    private CheckBox vibrateCheckBox;
+    private CustomAdapter customAdapter;
+    private TextView sound;
 
 
     @NonNull
@@ -102,7 +103,7 @@ public class ModifyTimePicker extends DialogFragment implements View.OnClickList
         return view;
     }
 
-    public void setUpButtons() {
+    private void setUpButtons() {
         buttoSetAlarm.setOnClickListener(this);
         satSunCheckBox.setOnClickListener(this);
         monFriCheckBox.setOnClickListener(this);
@@ -117,7 +118,7 @@ public class ModifyTimePicker extends DialogFragment implements View.OnClickList
     }
 
 
-    public void modifyAlarm() {
+    private void modifyAlarm() {
         //TODO
         // implement sound modyfying timepicker position
 

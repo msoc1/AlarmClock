@@ -234,20 +234,6 @@ public class AlarmData implements Parcelable {
         return "AlarmData{" +
                 "hour=" + hour +
                 ", minute=" + minute +
-                ", monday_friday=" + monday_friday +
-                ", saturday_sunday=" + saturday_sunday +
-                ", monday=" + monday +
-                ", tuesday=" + tuesday +
-                ", wednesday=" + wednesday +
-                ", thursday=" + thursday +
-                ", friday=" + friday +
-                ", saturday=" + saturday +
-                ", sunday=" + sunday +
-                ", vibrate=" + vibrate +
-                ", sound=" + sound +
-                ", onOrOff=" + onOrOff +
-                ", selected=" + selected +
-                ", notificationIntent=" + notificationIntent +
                 '}';
     }
 }

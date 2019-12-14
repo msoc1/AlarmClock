@@ -1,16 +1,23 @@
 package com.fixed4fun.alarmclock.alarmsList;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
+import android.util.Log;
 
+import com.fixed4fun.alarmclock.activities.MainActivity;
 import com.fixed4fun.alarmclock.alarmObject.AlarmData;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 
 public class Alarms {
     //Test class to add fictional easy to edit alarms
 
 
-    private static ArrayList<AlarmData> alarmDataArrayList = new ArrayList<AlarmData>();
+    public static ArrayList<AlarmData> alarmDataArrayList = new ArrayList<>();
 
     public static void addFirstAlarm() {
 //        alarmDataArrayList.add(new AlarmData(20, 29, true, true
@@ -59,6 +66,7 @@ public class Alarms {
     public static void deleteAlarm(int position) {
         alarmDataArrayList.remove(position);
     }
+
 
 
 }

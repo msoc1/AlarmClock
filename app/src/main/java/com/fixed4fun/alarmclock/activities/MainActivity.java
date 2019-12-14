@@ -2,30 +2,36 @@ package com.fixed4fun.alarmclock.activities;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
-import androidx.appcompat.widget.SwitchCompat;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.tabs.TabLayout;
-import androidx.fragment.app.DialogFragment;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
+import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SwitchCompat;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.fragment.app.DialogFragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.fixed4fun.alarmclock.R;
 import com.fixed4fun.alarmclock.adapters.CustomAdapter;
 import com.fixed4fun.alarmclock.alarmObject.AlarmData;
 import com.fixed4fun.alarmclock.alarmsList.Alarms;
 import com.fixed4fun.alarmclock.notifications.AlarmNotifications;
-import com.fixed4fun.alarmclock.R;
 import com.fixed4fun.alarmclock.timePickerFragments.ChangeAllTimePicker;
 import com.fixed4fun.alarmclock.timePickerFragments.ModifyTimePicker;
 import com.fixed4fun.alarmclock.timePickerFragments.NewTimePicker;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.tabs.TabLayout;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -34,6 +40,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public static int position;
 
     public static boolean listState;
+    CheckBox selectallcheckbox;
 
 
     static String toastMessage;
@@ -81,6 +88,33 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (o1.getMinute() > o2.getMinute()) {
             Collections.swap(a, a.indexOf(o1), a.indexOf(o2));
         }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        SharedPreferences.Editor editor = sharedPrefs.edit();
+        Gson gson = new Gson();
+        editor.remove("ALARMS");
+        String json = gson.toJson(alarms);
+        editor.putString("ALARMS", json);
+        editor.apply();
+    }
+
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        String json2 = sharedPrefs.getString("ALARMS", "");
+        Gson gson = new Gson();
+        Type type = new TypeToken<ArrayList<AlarmData>>() {}.getType();
+        ArrayList<AlarmData> arrayList = gson.fromJson(json2, type);
+        alarms.addAll(arrayList);
+        customAdapter.notifyDataSetChanged();
+        recyclerView.setAdapter(customAdapter);
+
     }
 
     @SuppressLint("ShowToast")
@@ -169,6 +203,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         });
         customAdapter.SetOnLongClickListener(position -> {
             toolbar.setVisibility(View.VISIBLE);
+            selectAll.setChecked(false);
             listState = true;
             MainActivity.position = position;
             customAdapter.notifyDataSetChanged();
