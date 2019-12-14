@@ -1,15 +1,14 @@
-package com.fixed4fun.alarmclock.timePickerFragments;
+package com.fixed4fun.alarmclock.fragments;
 
-import android.app.Dialog;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 import androidx.appcompat.app.AlertDialog;
+
 import android.text.format.DateFormat;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,10 +20,12 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.fixed4fun.alarmclock.alarmObject.AlarmData;
-import com.fixed4fun.alarmclock.alarmsList.Alarms;
+import com.fixed4fun.alarmclock.objectLists.AlarmList;
 import com.fixed4fun.alarmclock.adapters.CustomAdapter;
 import com.fixed4fun.alarmclock.activities.MainActivity;
 import com.fixed4fun.alarmclock.R;
+import com.fixed4fun.alarmclock.notifications.AlarmNotifications;
+import com.fixed4fun.alarmclock.objectLists.SoundsList;
 
 
 public class ModifyTimePicker extends DialogFragment implements View.OnClickListener {
@@ -35,7 +36,6 @@ public class ModifyTimePicker extends DialogFragment implements View.OnClickList
     private Button cancelAlarm;
     Button changeSound;
 
-    private AlertDialog alertDialog;
 
     private CheckBox monFriCheckBox;
     private CheckBox satSunCheckBox;
@@ -46,15 +46,13 @@ public class ModifyTimePicker extends DialogFragment implements View.OnClickList
     private CheckBox fridayCheckBox;
     private CheckBox saturdayCheckBox;
     private CheckBox sundayCheckBox;
-    private CheckBox vibrateCheckBox;
     private CustomAdapter customAdapter;
-    private TextView sound;
+    private AlarmNotifications alarmNotifications;
 
 
     @NonNull
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         View view = inflater.inflate(R.layout.custom_timepicker, container);
 
         timePicker = view.findViewById(R.id.time_picker);
@@ -67,9 +65,10 @@ public class ModifyTimePicker extends DialogFragment implements View.OnClickList
         fridayCheckBox = view.findViewById(R.id.friday_check_box);
         saturdayCheckBox = view.findViewById(R.id.saturday_check_box);
         sundayCheckBox = view.findViewById(R.id.sunday_check_box);
-        vibrateCheckBox = view.findViewById(R.id.vibration_check_box);
         buttoSetAlarm = view.findViewById(R.id.set_alarm);
         cancelAlarm = view.findViewById(R.id.cancel_alarm);
+        alarmNotifications = new AlarmNotifications();
+
 
         Bundle bundle = getArguments();
         if (bundle != null) {
@@ -81,25 +80,20 @@ public class ModifyTimePicker extends DialogFragment implements View.OnClickList
         }
         setStyle(DialogFragment.STYLE_NO_FRAME, android.R.style.Theme);
 
-        sound = view.findViewById(R.id.current_sound_textView);
-        sound.setText(getResources().getResourceEntryName(R.raw.pager_beeps));
         setTimePickerHour();
         setTimePickerMinute();
         timePicker.setIs24HourView(DateFormat.is24HourFormat(getContext()));
-        mondayCheckBox.setChecked(Alarms.getAlarms().get(MainActivity.position).isMonday());
-        tuesdayCheckBox.setChecked(Alarms.getAlarms().get(MainActivity.position).isTuesday());
-        wednesdayCheckBox.setChecked(Alarms.getAlarms().get(MainActivity.position).isWednesday());
-        thursdayCheckBox.setChecked(Alarms.getAlarms().get(MainActivity.position).isThursday());
-        fridayCheckBox.setChecked(Alarms.getAlarms().get(MainActivity.position).isFriday());
-        saturdayCheckBox.setChecked(Alarms.getAlarms().get(MainActivity.position).isSaturday());
-        sundayCheckBox.setChecked(Alarms.getAlarms().get(MainActivity.position).isSunday());
-        monFriCheckBox.setChecked(Alarms.getAlarms().get(MainActivity.position).isMonday_friday());
-        satSunCheckBox.setChecked(Alarms.getAlarms().get(MainActivity.position).isSaturday_sunday());
-        vibrateCheckBox.setChecked(Alarms.getAlarms().get(MainActivity.position).isVibrate());
+        mondayCheckBox.setChecked(AlarmList.getAlarms().get(MainActivity.position).isMonday());
+        tuesdayCheckBox.setChecked(AlarmList.getAlarms().get(MainActivity.position).isTuesday());
+        wednesdayCheckBox.setChecked(AlarmList.getAlarms().get(MainActivity.position).isWednesday());
+        thursdayCheckBox.setChecked(AlarmList.getAlarms().get(MainActivity.position).isThursday());
+        fridayCheckBox.setChecked(AlarmList.getAlarms().get(MainActivity.position).isFriday());
+        saturdayCheckBox.setChecked(AlarmList.getAlarms().get(MainActivity.position).isSaturday());
+        sundayCheckBox.setChecked(AlarmList.getAlarms().get(MainActivity.position).isSunday());
+        monFriCheckBox.setChecked(AlarmList.getAlarms().get(MainActivity.position).isMonday_friday());
+        satSunCheckBox.setChecked(AlarmList.getAlarms().get(MainActivity.position).isSaturday_sunday());
 
-        builder.setView(view);
         setUpButtons();
-        alertDialog = builder.create();
         return view;
     }
 
@@ -119,35 +113,31 @@ public class ModifyTimePicker extends DialogFragment implements View.OnClickList
 
 
     private void modifyAlarm() {
-        //TODO
-        // implement sound modyfying timepicker position
-
         if (!mondayCheckBox.isChecked() && !tuesdayCheckBox.isChecked() && !wednesdayCheckBox.isChecked() && !thursdayCheckBox.isChecked()
                 && !fridayCheckBox.isChecked() && !saturdayCheckBox.isChecked() && !sundayCheckBox.isChecked()) {
-            Alarms.getAlarms().get(MainActivity.position).setMonday(true);
-            Alarms.getAlarms().get(MainActivity.position).setTuesday(true);
-            Alarms.getAlarms().get(MainActivity.position).setWednesday(true);
-            Alarms.getAlarms().get(MainActivity.position).setThursday(true);
-            Alarms.getAlarms().get(MainActivity.position).setFriday(true);
-            Alarms.getAlarms().get(MainActivity.position).setSaturday(true);
-            Alarms.getAlarms().get(MainActivity.position).setSunday(true);
-            Alarms.getAlarms().get(MainActivity.position).setMonday_friday(true);
-            Alarms.getAlarms().get(MainActivity.position).setSaturday_sunday(true);
+            AlarmList.getAlarms().get(MainActivity.position).setMonday(true);
+            AlarmList.getAlarms().get(MainActivity.position).setTuesday(true);
+            AlarmList.getAlarms().get(MainActivity.position).setWednesday(true);
+            AlarmList.getAlarms().get(MainActivity.position).setThursday(true);
+            AlarmList.getAlarms().get(MainActivity.position).setFriday(true);
+            AlarmList.getAlarms().get(MainActivity.position).setSaturday(true);
+            AlarmList.getAlarms().get(MainActivity.position).setSunday(true);
+            AlarmList.getAlarms().get(MainActivity.position).setMonday_friday(true);
+            AlarmList.getAlarms().get(MainActivity.position).setSaturday_sunday(true);
         } else {
-            Alarms.getAlarms().get(MainActivity.position).setMonday(mondayCheckBox.isChecked());
-            Alarms.getAlarms().get(MainActivity.position).setTuesday(tuesdayCheckBox.isChecked());
-            Alarms.getAlarms().get(MainActivity.position).setWednesday(wednesdayCheckBox.isChecked());
-            Alarms.getAlarms().get(MainActivity.position).setThursday(thursdayCheckBox.isChecked());
-            Alarms.getAlarms().get(MainActivity.position).setFriday(fridayCheckBox.isChecked());
-            Alarms.getAlarms().get(MainActivity.position).setSaturday(saturdayCheckBox.isChecked());
-            Alarms.getAlarms().get(MainActivity.position).setSunday(sundayCheckBox.isChecked());
-            Alarms.getAlarms().get(MainActivity.position).setMonday_friday(monFriCheckBox.isChecked());
-            Alarms.getAlarms().get(MainActivity.position).setSaturday_sunday(satSunCheckBox.isChecked());
+            AlarmList.getAlarms().get(MainActivity.position).setMonday(mondayCheckBox.isChecked());
+            AlarmList.getAlarms().get(MainActivity.position).setTuesday(tuesdayCheckBox.isChecked());
+            AlarmList.getAlarms().get(MainActivity.position).setWednesday(wednesdayCheckBox.isChecked());
+            AlarmList.getAlarms().get(MainActivity.position).setThursday(thursdayCheckBox.isChecked());
+            AlarmList.getAlarms().get(MainActivity.position).setFriday(fridayCheckBox.isChecked());
+            AlarmList.getAlarms().get(MainActivity.position).setSaturday(saturdayCheckBox.isChecked());
+            AlarmList.getAlarms().get(MainActivity.position).setSunday(sundayCheckBox.isChecked());
+            AlarmList.getAlarms().get(MainActivity.position).setMonday_friday(monFriCheckBox.isChecked());
+            AlarmList.getAlarms().get(MainActivity.position).setSaturday_sunday(satSunCheckBox.isChecked());
         }
-        Alarms.getAlarms().get(MainActivity.position).setHour(timePicker.getCurrentHour());
-        Alarms.getAlarms().get(MainActivity.position).setMinute(timePicker.getCurrentMinute());
-        Alarms.getAlarms().get(MainActivity.position).setVibrate(vibrateCheckBox.isChecked());
-        Alarms.getAlarms().get(MainActivity.position).setOnOrOff(true);
+        AlarmList.getAlarms().get(MainActivity.position).setHour(timePicker.getCurrentHour());
+        AlarmList.getAlarms().get(MainActivity.position).setMinute(timePicker.getCurrentMinute());
+        AlarmList.getAlarms().get(MainActivity.position).setOnOrOff(true);
 
         String toastMessage =
                 "Modyfied to "
@@ -155,18 +145,18 @@ public class ModifyTimePicker extends DialogFragment implements View.OnClickList
                         + ":"
                         + ((timePicker.getCurrentMinute() > 9) ? timePicker.getCurrentMinute() : "0" + timePicker.getCurrentMinute())
                         + " on: "
-                        + CustomAdapter.daysWhenToRing(Alarms.getAlarms().get(MainActivity.position));
+                        + CustomAdapter.daysWhenToRing(AlarmList.getAlarms().get(MainActivity.position));
         Toast toast = Toast.makeText(getContext(), toastMessage, Toast.LENGTH_LONG);
         toast.show();
         MainActivity.sortList(MainActivity.alarms);
         customAdapter = ((MainActivity) getActivity()).getCustomAdapter();
         customAdapter.notifyDataSetChanged();
+        alarmNotifications.startNotification(getContext());
         closeTimePicker();
     }
 
 
     public void closeTimePicker() {
-        alertDialog.dismiss();
         getDialog().cancel();
     }
 

@@ -1,13 +1,14 @@
 package com.fixed4fun.alarmclock.activities;
 
 import android.annotation.SuppressLint;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
@@ -21,11 +22,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.fixed4fun.alarmclock.R;
 import com.fixed4fun.alarmclock.adapters.CustomAdapter;
 import com.fixed4fun.alarmclock.alarmObject.AlarmData;
-import com.fixed4fun.alarmclock.alarmsList.Alarms;
+import com.fixed4fun.alarmclock.fragments.SelectSongFragment;
+import com.fixed4fun.alarmclock.objectLists.AlarmList;
+import com.fixed4fun.alarmclock.fragments.SettingsFragment;
 import com.fixed4fun.alarmclock.notifications.AlarmNotifications;
-import com.fixed4fun.alarmclock.timePickerFragments.ChangeAllTimePicker;
-import com.fixed4fun.alarmclock.timePickerFragments.ModifyTimePicker;
-import com.fixed4fun.alarmclock.timePickerFragments.NewTimePicker;
+import com.fixed4fun.alarmclock.fragments.ChangeAllTimePicker;
+import com.fixed4fun.alarmclock.fragments.ModifyTimePicker;
+import com.fixed4fun.alarmclock.fragments.NewTimePicker;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
 import com.google.gson.Gson;
@@ -40,7 +43,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public static int position;
 
     public static boolean listState;
-    CheckBox selectallcheckbox;
 
 
     static String toastMessage;
@@ -52,6 +54,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private AlarmNotifications alarmNotifications;
 
     FloatingActionButton floatingActionButton;
+    FloatingActionButton settingButton;
 
     RecyclerView recyclerView;
     SwitchCompat turnOnOrOffAll;
@@ -59,9 +62,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     Button deleteAll;
     Button changeAll;
     Toast notificationToast;
-    Button notificationButton;
     private ConstraintLayout toolbar;
-    Button startalarm;
 
     public static CustomAdapter getCustomAdapter() {
         return customAdapter;
@@ -109,11 +110,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         String json2 = sharedPrefs.getString("ALARMS", "");
         Gson gson = new Gson();
-        Type type = new TypeToken<ArrayList<AlarmData>>() {}.getType();
+        Type type = new TypeToken<ArrayList<AlarmData>>() {
+        }.getType();
         ArrayList<AlarmData> arrayList = gson.fromJson(json2, type);
-        alarms.addAll(arrayList);
+        alarms.clear();
+        if (arrayList != null) {
+            alarms.addAll(arrayList);
+        }
         customAdapter.notifyDataSetChanged();
         recyclerView.setAdapter(customAdapter);
+
 
     }
 
@@ -123,14 +129,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        alarms = Alarms.getAlarms();
+        alarms = AlarmList.getAlarms();
         tempList = new ArrayList<>();
-        Alarms.addFirstAlarm();
-
         sortList(alarms);
-
         customAdapter = new CustomAdapter(alarms, getApplicationContext());
-
         listState = false;
 
         timePicker = findViewById(R.id.time_picker);
@@ -140,14 +142,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         deleteAll = findViewById(R.id.delete_all);
         changeAll = findViewById(R.id.change_all);
         floatingActionButton = findViewById(R.id.new_alarm);
+        settingButton = findViewById(R.id.settings);
         recyclerView = findViewById(R.id.recyclerView);
         TabLayout tableLayout = findViewById(R.id.tabLayout);
-
-        notificationButton = findViewById(R.id.notification);
-        startalarm = findViewById(R.id.startalarm);
-
-        startalarm.setOnClickListener(v -> startActivity(new Intent(MainActivity.this, AlarmGoingOff.class)));
-
         //Toast will be shown later
         toastMessage = "";
         notificationToast = Toast.makeText(this, toastMessage, Toast.LENGTH_LONG);
@@ -157,8 +154,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         toolbarHeight = toolbar.getMaxHeight();
         toolbar.setVisibility(View.GONE);
         alarmNotifications = new AlarmNotifications();
-        notificationButton.setOnClickListener(v ->
-            alarmNotifications.startNotification(getBaseContext()));
 
         setOnClickListeners();
 
@@ -188,7 +183,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         deleteAll.setOnClickListener(this);
         turnOnOrOffAll.setOnClickListener(this);
         floatingActionButton.setOnClickListener(this);
-
+        settingButton.setOnClickListener(this);
 
 
         customAdapter.SetOnClickItemListener(position -> {
@@ -263,6 +258,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 toolbar.setVisibility(View.GONE);
                 listState = false;
                 recyclerView.setAdapter(customAdapter);
+                break;
+            case R.id.settings:
+                DialogFragment settingsFragment = new SettingsFragment();
+                settingsFragment.show(getSupportFragmentManager(), "settings_fragment");
                 break;
         }
     }

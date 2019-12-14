@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.fixed4fun.alarmclock">
+    <uses-permission android:name="android.permission.VIBRATE"/>
+    <uses-permission android:name="android.permission.WAKE_LOCK"/>
+    <uses-permission android:name="android.permission.SET_ALARM"/>
+    <uses-permission android:name="android.permission.DISABLE_KEYGUARD"/>
+
 
     <application
         android:name="com.fixed4fun.alarmclock.alarmObject.ADObject"
@@ -20,8 +25,8 @@
         <activity android:name="com.fixed4fun.alarmclock.notifications.AlarmNotifications"/>
 
 
-        <receiver android:name=".alertReceivers.AlertReceiver"/>
-        <activity android:name=".activities.AlarmGoingOff"></activity>
+        <receiver android:name="com.fixed4fun.alarmclock.alertReceivers.AlertReceiver"/>
+        <activity android:name="com.fixed4fun.alarmclock.activities.AlarmGoingOff"></activity>
 
     </application>
 

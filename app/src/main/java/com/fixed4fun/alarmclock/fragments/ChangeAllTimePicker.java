@@ -1,13 +1,9 @@
-package com.fixed4fun.alarmclock.timePickerFragments;
+package com.fixed4fun.alarmclock.fragments;
 
-import android.app.Dialog;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.os.Build;
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.DialogFragment;
 import androidx.appcompat.app.AlertDialog;
@@ -21,19 +17,20 @@ import android.widget.Button;
 import android.widget.NumberPicker;
 
 import com.fixed4fun.alarmclock.alarmObject.AlarmData;
-import com.fixed4fun.alarmclock.alarmsList.Alarms;
+import com.fixed4fun.alarmclock.objectLists.AlarmList;
 import com.fixed4fun.alarmclock.adapters.CustomAdapter;
 import com.fixed4fun.alarmclock.activities.MainActivity;
 import com.fixed4fun.alarmclock.R;
+import com.fixed4fun.alarmclock.notifications.AlarmNotifications;
 
 import java.util.ArrayList;
 
 public class ChangeAllTimePicker extends DialogFragment implements View.OnClickListener {
-    AlertDialog alertDialog;
 
     NumberPicker hours;
     NumberPicker minutes;
     NumberPicker earlierOrLater;
+    private AlarmNotifications alarmNotifications;
 
     Button cancel;
     Button change;
@@ -48,25 +45,23 @@ public class ChangeAllTimePicker extends DialogFragment implements View.OnClickL
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         View view = inflater.inflate(R.layout.modify_all_timepickers, container);
         if (getDialog() != null && getDialog().getWindow() != null) {
             getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
             getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
         }
         setStyle(DialogFragment.STYLE_NO_FRAME, android.R.style.Theme);
-        builder.setView(view);
         hours = view.findViewById(R.id.hours);
         minutes = view.findViewById(R.id.minutes);
         earlierOrLater = view.findViewById(R.id.earlier_later);
         cancel = view.findViewById(R.id.cancel);
         change = view.findViewById(R.id.change);
-        alarms = Alarms.getAlarms();
+        alarms = AlarmList.getAlarms();
+        alarmNotifications = new AlarmNotifications();
 
         setUpPickers();
         setOnClickListeners();
 
-        alertDialog = builder.create();
         return view;
 
 
@@ -86,7 +81,6 @@ public class ChangeAllTimePicker extends DialogFragment implements View.OnClickL
     }
 
     private void closeChangeDialog() {
-        alertDialog.dismiss();
         getDialog().cancel();
     }
 
@@ -140,6 +134,8 @@ public class ChangeAllTimePicker extends DialogFragment implements View.OnClickL
                     ad.setSelected(false);
                 }
                 adapter.notifyDataSetChanged();
+                alarmNotifications.startNotification(getContext());
+
                 closeChangeDialog();
 
                 break;

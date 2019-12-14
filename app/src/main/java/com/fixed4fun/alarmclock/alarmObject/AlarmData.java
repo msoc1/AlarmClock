@@ -18,8 +18,6 @@ public class AlarmData implements Parcelable {
     private boolean friday;
     private boolean saturday;
     private boolean sunday;
-    private boolean vibrate;
-    private int sound;
     private boolean onOrOff;
     private boolean selected;
     // extra Intent needed for cancelling specific alarm, used to setAction and getAction. Could find other way around it to work
@@ -37,8 +35,6 @@ public class AlarmData implements Parcelable {
         friday = in.readByte() != 0;
         saturday = in.readByte() != 0;
         sunday = in.readByte() != 0;
-        vibrate = in.readByte() != 0;
-        sound = in.readInt();
         onOrOff = in.readByte() != 0;
         selected = in.readByte() != 0;
         notificationIntent = in.readParcelable(Intent.class.getClassLoader());
@@ -145,21 +141,6 @@ public class AlarmData implements Parcelable {
         this.sunday = sunday;
     }
 
-    public boolean isVibrate() {
-        return vibrate;
-    }
-
-    public void setVibrate(boolean vibrate) {
-        this.vibrate = vibrate;
-    }
-
-    public int getSound() {
-        return sound;
-    }
-
-    public void setSound(int sound) {
-        this.sound = sound;
-    }
 
     public boolean isOnOrOff() {
         return onOrOff;
@@ -185,7 +166,7 @@ public class AlarmData implements Parcelable {
         this.notificationIntent = notificationIntent;
     }
 
-    public AlarmData(int hour, int minute, boolean monday_friday, boolean saturday_sunday, boolean monday, boolean tuesday, boolean wednesday, boolean thursday, boolean friday, boolean saturday, boolean sunday, boolean vibrate, int sound, boolean onOrOff, boolean selected, Intent notificationIntent) {
+    public AlarmData(int hour, int minute, boolean monday_friday, boolean saturday_sunday, boolean monday, boolean tuesday, boolean wednesday, boolean thursday, boolean friday, boolean saturday, boolean sunday, boolean onOrOff, boolean selected, Intent notificationIntent) {
         this.hour = hour;
         this.minute = minute;
         this.monday_friday = monday_friday;
@@ -197,8 +178,6 @@ public class AlarmData implements Parcelable {
         this.friday = friday;
         this.saturday = saturday;
         this.sunday = sunday;
-        this.vibrate = vibrate;
-        this.sound = sound;
         this.onOrOff = onOrOff;
         this.selected = selected;
         this.notificationIntent = notificationIntent;
@@ -222,8 +201,6 @@ public class AlarmData implements Parcelable {
         dest.writeByte((byte) (friday ? 1 : 0));
         dest.writeByte((byte) (saturday ? 1 : 0));
         dest.writeByte((byte) (sunday ? 1 : 0));
-        dest.writeByte((byte) (vibrate ? 1 : 0));
-        dest.writeInt(sound);
         dest.writeByte((byte) (onOrOff ? 1 : 0));
         dest.writeByte((byte) (selected ? 1 : 0));
         dest.writeParcelable(notificationIntent, flags);

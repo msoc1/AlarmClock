@@ -1,11 +1,14 @@
 package com.fixed4fun.alarmclock.activities;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.drawable.TransitionDrawable;
 import android.media.AudioAttributes;
-import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Vibrator;
+import android.preference.PreferenceManager;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
@@ -15,6 +18,8 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.fixed4fun.alarmclock.R;
+import com.fixed4fun.alarmclock.alarmObject.ADObject;
+import com.fixed4fun.alarmclock.objectLists.SoundsList;
 
 import java.time.LocalDate;
 import java.util.Calendar;
@@ -29,10 +34,14 @@ public class AlarmGoingOff extends AppCompatActivity {
     Runnable timeRunnable;
     TransitionDrawable transitionDrawable;
     TextView dayOfTheWeek;
+    public static final String VIBRATETAG = "vibrate";
+    Vibrator vibrator;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.alarm_going_off);
+        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(ADObject.getAppContext());
+        boolean vibrate = sharedPrefs.getBoolean(VIBRATETAG, true);
 
         Calendar calendar = Calendar.getInstance();
 
@@ -49,10 +58,20 @@ public class AlarmGoingOff extends AppCompatActivity {
         turnOff.setOnTouchListener(buttonOnTouchListener);
 
         mMediaPlayer = new MediaPlayer();
-        mMediaPlayer = MediaPlayer.create(this,R.raw.pager_beeps);
+
+        int song = sharedPrefs.getInt("SONG_TO_PLAY", 0);
+
+        mMediaPlayer = MediaPlayer.create(this, SoundsList.getAvailableSounds().get(song).getSound());
         mMediaPlayer.setAudioAttributes( new AudioAttributes.Builder().setContentType(AudioAttributes.CONTENT_TYPE_MUSIC).build());
         mMediaPlayer.setLooping(true);
         mMediaPlayer.start();
+        if(vibrate){
+            long[] pattern = { 0, 1000, 300 };
+            vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+            if (vibrator != null) {
+                vibrator.vibrate(pattern, 0);
+            }
+        }
 
 
     }
@@ -65,6 +84,7 @@ public class AlarmGoingOff extends AppCompatActivity {
             mMediaPlayer.release();
             mMediaPlayer = null;
         }
+        vibrator.cancel();
     }
 
     private View.OnTouchListener buttonOnTouchListener = new View.OnTouchListener() {
@@ -74,8 +94,8 @@ public class AlarmGoingOff extends AppCompatActivity {
             switch (event.getAction()) {
                 case MotionEvent.ACTION_DOWN:
                     transitionDrawable = (TransitionDrawable) turnOff.getBackground();
-                    transitionDrawable.startTransition(3000);
-                    mHandler.postDelayed(timeRunnable, 3000);
+                    transitionDrawable.startTransition(0);
+                    mHandler.postDelayed(timeRunnable, 0);
                     break;
                 case MotionEvent.ACTION_UP:
                     transitionDrawable.resetTransition();

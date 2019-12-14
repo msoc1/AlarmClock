@@ -23,7 +23,6 @@ public class AlertReceiver extends BroadcastReceiver {
         String message = "It is " + hour + ":" + minute;
         NotificationCompat.Builder nb = notificationHelper
                 .getChannel1Notification(title, message);
-        // nb.setSmallIcon(R.drawable.ch_sat_sun);
         notificationHelper.getManager().notify(calendar.get(Calendar.MINUTE), nb.build());
         Toast.makeText(context, "current alarm \n" + hour + ":" + minute, Toast.LENGTH_LONG).show();
     }

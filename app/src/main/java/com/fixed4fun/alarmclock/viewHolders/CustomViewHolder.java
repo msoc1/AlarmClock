@@ -3,16 +3,18 @@ package com.fixed4fun.alarmclock.viewHolders;
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.SwitchCompat;
 import androidx.recyclerview.widget.RecyclerView;
+
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.Switch;
 import android.widget.TextView;
 
 import com.fixed4fun.alarmclock.activities.MainActivity;
 import com.fixed4fun.alarmclock.adapters.CustomAdapter;
-import com.fixed4fun.alarmclock.alarmsList.Alarms;
+import com.fixed4fun.alarmclock.alarmObject.ADObject;
+import com.fixed4fun.alarmclock.objectLists.AlarmList;
 import com.fixed4fun.alarmclock.R;
+import com.fixed4fun.alarmclock.notifications.AlarmNotifications;
 
 public class CustomViewHolder extends RecyclerView.ViewHolder {
 
@@ -25,9 +27,11 @@ public class CustomViewHolder extends RecyclerView.ViewHolder {
     public CheckBox selected;
     CustomAdapter adapter;
     private Button deleteAlarm;
+    private AlarmNotifications alarmNotifications;
 
     public CustomViewHolder(@NonNull View itemView, final CustomAdapter.OnItemClickListener listener, final CustomAdapter.OnLongClickListener longListener) {
         super(itemView);
+        alarmNotifications = new AlarmNotifications();
 
         timeOfAlarm = itemView.findViewById(R.id.time_of_alarm);
         setTime = itemView.findViewById(R.id.set_time);
@@ -46,11 +50,14 @@ public class CustomViewHolder extends RecyclerView.ViewHolder {
             }
         });
 
-        onOrOff.setOnClickListener(v -> Alarms.getAlarms().get(getAdapterPosition()).setOnOrOff(onOrOff.isChecked()));
+        onOrOff.setOnClickListener(v -> {
+            AlarmList.getAlarms().get(getAdapterPosition()).setOnOrOff(onOrOff.isChecked());
+            alarmNotifications.startNotification(ADObject.getAppContext());
+        });
 
         if (MainActivity.listState) {
 
-            selected.setOnClickListener(v -> Alarms.getAlarms().get(getAdapterPosition()).setSelected(selected.isChecked()));
+            selected.setOnClickListener(v -> AlarmList.getAlarms().get(getAdapterPosition()).setSelected(selected.isChecked()));
 
             deleteAlarm.setOnClickListener(v -> {
                 deleteSelectedAlarm(getAdapterPosition());
@@ -72,6 +79,6 @@ public class CustomViewHolder extends RecyclerView.ViewHolder {
     }
 
     private void deleteSelectedAlarm(int positon) {
-        Alarms.getAlarms().remove(positon);
+        AlarmList.getAlarms().remove(positon);
     }
 }
