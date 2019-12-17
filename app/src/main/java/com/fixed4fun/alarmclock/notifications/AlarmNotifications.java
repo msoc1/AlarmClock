@@ -4,6 +4,8 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.fixed4fun.alarmclock.activities.AlarmGoingOff;
@@ -21,6 +23,8 @@ public class AlarmNotifications extends AppCompatActivity {
             if (currentAlarmData.getNotificationIntent() != null) {
                 cancelAlarm(currentAlarmData, context);
             }
+        }
+        for (AlarmData currentAlarmData : alarms) {
             Calendar calendar = Calendar.getInstance();
             calendar.set(Calendar.HOUR_OF_DAY, currentAlarmData.getHour());
             calendar.set(Calendar.MINUTE, currentAlarmData.getMinute());
@@ -111,6 +115,8 @@ public class AlarmNotifications extends AppCompatActivity {
             }
             intent.setAction(Long.toString(System.currentTimeMillis()));
             PendingIntent pendingIntent = PendingIntent.getBroadcast(context, alarms.indexOf(ad), intent, PendingIntent.FLAG_CANCEL_CURRENT);
+            Log.d("123456", "startAlarm: " + pendingIntent.hashCode() +" index " +alarms.indexOf(ad));
+            Log.d("123456", "startAlarm: " +intent.getAction());
             alarmManager.setExact(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(), pendingIntent);
         }
     }
@@ -119,9 +125,14 @@ public class AlarmNotifications extends AppCompatActivity {
     private void cancelAlarm(AlarmData ad, Context context) {
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         Intent intent = ad.getNotificationIntent();
+        //intent.getAction();
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context, alarms.indexOf(ad), intent, 0);
-        ad.setNotificationIntent(null);
+        Log.d("123456", "cancelAlarm: " + pendingIntent.hashCode() + " index " + alarms.indexOf(ad));
+        Log.d("123456", "cancelAlarm: " + intent.getAction().isEmpty() + " ine" + intent.getAction());
         alarmManager.cancel(pendingIntent);
+        pendingIntent.cancel();
+        pendingIntent = null;
+        ad.setNotificationIntent(null);
     }
 
     private void resetAlarms() {

@@ -11,6 +11,8 @@ import android.os.Vibrator;
 import android.preference.PreferenceManager;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -36,6 +38,8 @@ public class AlarmGoingOff extends AppCompatActivity {
     TextView dayOfTheWeek;
     public static final String VIBRATETAG = "vibrate";
     Vibrator vibrator;
+    int turnOffAfter;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,7 +56,7 @@ public class AlarmGoingOff extends AppCompatActivity {
 
         hours.setText(String.valueOf(calendar.get(Calendar.HOUR_OF_DAY)));
         int timeInMinutes = calendar.get(Calendar.MINUTE);
-        minutes.setText(((timeInMinutes> 9) ? timeInMinutes : "0" + timeInMinutes).toString());
+        minutes.setText(((timeInMinutes > 9) ? timeInMinutes : "0" + timeInMinutes).toString());
         dayOfTheWeek.setText(LocalDate.now().getDayOfWeek().name());
 
         turnOff.setOnTouchListener(buttonOnTouchListener);
@@ -60,13 +64,14 @@ public class AlarmGoingOff extends AppCompatActivity {
         mMediaPlayer = new MediaPlayer();
 
         int song = sharedPrefs.getInt("SONG_TO_PLAY", 0);
+        turnOffAfter = sharedPrefs.getInt("secondsoff", 0) * 1000;
 
         mMediaPlayer = MediaPlayer.create(this, SoundsList.getAvailableSounds().get(song).getSound());
-        mMediaPlayer.setAudioAttributes( new AudioAttributes.Builder().setContentType(AudioAttributes.CONTENT_TYPE_MUSIC).build());
+        mMediaPlayer.setAudioAttributes(new AudioAttributes.Builder().setContentType(AudioAttributes.CONTENT_TYPE_MUSIC).build());
         mMediaPlayer.setLooping(true);
         mMediaPlayer.start();
-        if(vibrate){
-            long[] pattern = { 0, 1000, 300 };
+        if (vibrate) {
+            long[] pattern = {0, 1000, 300};
             vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
             if (vibrator != null) {
                 vibrator.vibrate(pattern, 0);
@@ -94,8 +99,8 @@ public class AlarmGoingOff extends AppCompatActivity {
             switch (event.getAction()) {
                 case MotionEvent.ACTION_DOWN:
                     transitionDrawable = (TransitionDrawable) turnOff.getBackground();
-                    transitionDrawable.startTransition(0);
-                    mHandler.postDelayed(timeRunnable, 0);
+                    transitionDrawable.startTransition(turnOffAfter);
+                    mHandler.postDelayed(timeRunnable, turnOffAfter);
                     break;
                 case MotionEvent.ACTION_UP:
                     transitionDrawable.resetTransition();
@@ -108,4 +113,16 @@ public class AlarmGoingOff extends AppCompatActivity {
         }
     };
 
+    @Override
+    public void onAttachedToWindow() {
+        super.onAttachedToWindow();
+        Window window = getWindow();
+        window.addFlags(WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON
+                | WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED
+                | WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON
+                | WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD
+                | WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
+        super.onAttachedToWindow();
+    }
 }

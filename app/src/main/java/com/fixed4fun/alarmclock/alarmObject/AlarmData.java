@@ -21,7 +21,8 @@ public class AlarmData implements Parcelable {
     private boolean onOrOff;
     private boolean selected;
     // extra Intent needed for cancelling specific alarm, used to setAction and getAction. Could find other way around it to work
-    private Intent notificationIntent;
+    private long notificationIntent;
+
 
     protected AlarmData(Parcel in) {
         hour = in.readInt();
@@ -37,7 +38,7 @@ public class AlarmData implements Parcelable {
         sunday = in.readByte() != 0;
         onOrOff = in.readByte() != 0;
         selected = in.readByte() != 0;
-        notificationIntent = in.readParcelable(Intent.class.getClassLoader());
+        notificationIntent = in.readLong();
     }
 
     public static final Creator<AlarmData> CREATOR = new Creator<AlarmData>() {
@@ -158,15 +159,15 @@ public class AlarmData implements Parcelable {
         this.selected = selected;
     }
 
-    public Intent getNotificationIntent() {
+    public long getNotificationIntent() {
         return notificationIntent;
     }
 
-    public void setNotificationIntent(Intent notificationIntent) {
+    public void setNotificationIntent(long notificationIntent) {
         this.notificationIntent = notificationIntent;
     }
 
-    public AlarmData(int hour, int minute, boolean monday_friday, boolean saturday_sunday, boolean monday, boolean tuesday, boolean wednesday, boolean thursday, boolean friday, boolean saturday, boolean sunday, boolean onOrOff, boolean selected, Intent notificationIntent) {
+    public AlarmData(int hour, int minute, boolean monday_friday, boolean saturday_sunday, boolean monday, boolean tuesday, boolean wednesday, boolean thursday, boolean friday, boolean saturday, boolean sunday, boolean onOrOff, boolean selected, long notificationIntent) {
         this.hour = hour;
         this.minute = minute;
         this.monday_friday = monday_friday;
@@ -181,6 +182,15 @@ public class AlarmData implements Parcelable {
         this.onOrOff = onOrOff;
         this.selected = selected;
         this.notificationIntent = notificationIntent;
+    }
+
+
+    @Override
+    public String toString() {
+        return "AlarmData{" +
+                "hour=" + hour +
+                ", minute=" + minute +
+                '}';
     }
 
     @Override
@@ -203,14 +213,6 @@ public class AlarmData implements Parcelable {
         dest.writeByte((byte) (sunday ? 1 : 0));
         dest.writeByte((byte) (onOrOff ? 1 : 0));
         dest.writeByte((byte) (selected ? 1 : 0));
-        dest.writeParcelable(notificationIntent, flags);
-    }
-
-    @Override
-    public String toString() {
-        return "AlarmData{" +
-                "hour=" + hour +
-                ", minute=" + minute +
-                '}';
+        dest.writeLong(notificationIntent);
     }
 }
