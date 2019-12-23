@@ -21,8 +21,26 @@ public class AlarmData implements Parcelable {
     private boolean onOrOff;
     private boolean selected;
     // extra Intent needed for cancelling specific alarm, used to setAction and getAction. Could find other way around it to work
-    private long notificationIntent;
+    private Intent notificationIntent;
+    private int flag;
 
+    public AlarmData(int hour, int minute, boolean monday_friday, boolean saturday_sunday, boolean monday, boolean tuesday, boolean wednesday, boolean thursday, boolean friday, boolean saturday, boolean sunday, boolean onOrOff, boolean selected, Intent notificationIntent, int flag) {
+        this.hour = hour;
+        this.minute = minute;
+        this.monday_friday = monday_friday;
+        this.saturday_sunday = saturday_sunday;
+        this.monday = monday;
+        this.tuesday = tuesday;
+        this.wednesday = wednesday;
+        this.thursday = thursday;
+        this.friday = friday;
+        this.saturday = saturday;
+        this.sunday = sunday;
+        this.onOrOff = onOrOff;
+        this.selected = selected;
+        this.notificationIntent = notificationIntent;
+        this.flag = flag;
+    }
 
     protected AlarmData(Parcel in) {
         hour = in.readInt();
@@ -38,7 +56,8 @@ public class AlarmData implements Parcelable {
         sunday = in.readByte() != 0;
         onOrOff = in.readByte() != 0;
         selected = in.readByte() != 0;
-        notificationIntent = in.readLong();
+        notificationIntent = in.readParcelable(Intent.class.getClassLoader());
+        flag = in.readInt();
     }
 
     public static final Creator<AlarmData> CREATOR = new Creator<AlarmData>() {
@@ -60,7 +79,6 @@ public class AlarmData implements Parcelable {
     public void setHour(int hour) {
         this.hour = hour;
     }
-
 
     public int getMinute() {
         return minute;
@@ -142,7 +160,6 @@ public class AlarmData implements Parcelable {
         this.sunday = sunday;
     }
 
-
     public boolean isOnOrOff() {
         return onOrOff;
     }
@@ -159,31 +176,21 @@ public class AlarmData implements Parcelable {
         this.selected = selected;
     }
 
-    public long getNotificationIntent() {
+    public Intent getNotificationIntent() {
         return notificationIntent;
     }
 
-    public void setNotificationIntent(long notificationIntent) {
+    public void setNotificationIntent(Intent notificationIntent) {
         this.notificationIntent = notificationIntent;
     }
 
-    public AlarmData(int hour, int minute, boolean monday_friday, boolean saturday_sunday, boolean monday, boolean tuesday, boolean wednesday, boolean thursday, boolean friday, boolean saturday, boolean sunday, boolean onOrOff, boolean selected, long notificationIntent) {
-        this.hour = hour;
-        this.minute = minute;
-        this.monday_friday = monday_friday;
-        this.saturday_sunday = saturday_sunday;
-        this.monday = monday;
-        this.tuesday = tuesday;
-        this.wednesday = wednesday;
-        this.thursday = thursday;
-        this.friday = friday;
-        this.saturday = saturday;
-        this.sunday = sunday;
-        this.onOrOff = onOrOff;
-        this.selected = selected;
-        this.notificationIntent = notificationIntent;
+    public long getFlag() {
+        return flag;
     }
 
+    public void setFlag(int flag) {
+        this.flag = flag;
+    }
 
     @Override
     public String toString() {
@@ -213,6 +220,7 @@ public class AlarmData implements Parcelable {
         dest.writeByte((byte) (sunday ? 1 : 0));
         dest.writeByte((byte) (onOrOff ? 1 : 0));
         dest.writeByte((byte) (selected ? 1 : 0));
-        dest.writeLong(notificationIntent);
+        dest.writeParcelable(notificationIntent, flags);
+        dest.writeInt(flag);
     }
 }

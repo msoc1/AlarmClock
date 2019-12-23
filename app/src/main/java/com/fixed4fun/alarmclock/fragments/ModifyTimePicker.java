@@ -9,6 +9,7 @@ import androidx.fragment.app.DialogFragment;
 import androidx.appcompat.app.AlertDialog;
 
 import android.text.format.DateFormat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -138,6 +139,7 @@ public class ModifyTimePicker extends DialogFragment implements View.OnClickList
         AlarmList.getAlarms().get(MainActivity.position).setHour(timePicker.getCurrentHour());
         AlarmList.getAlarms().get(MainActivity.position).setMinute(timePicker.getCurrentMinute());
         AlarmList.getAlarms().get(MainActivity.position).setOnOrOff(true);
+
 
         String toastMessage =
                 "Modyfied to "

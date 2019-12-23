@@ -26,4 +26,7 @@ public class AlertReceiver extends BroadcastReceiver {
         notificationHelper.getManager().notify(calendar.get(Calendar.MINUTE), nb.build());
         Toast.makeText(context, "current alarm \n" + hour + ":" + minute, Toast.LENGTH_LONG).show();
     }
+
+
+
 }

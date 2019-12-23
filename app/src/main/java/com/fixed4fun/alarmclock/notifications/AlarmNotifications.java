@@ -19,119 +19,87 @@ import static com.fixed4fun.alarmclock.activities.MainActivity.alarms;
 public class AlarmNotifications extends AppCompatActivity {
 
     public void startNotification(Context context) {
-        for (AlarmData currentAlarmData : alarms) {
-            if (currentAlarmData.getNotificationIntent() != null) {
-                cancelAlarm(currentAlarmData, context);
-            }
+
+        for (int i = 0; i < alarms.size(); i++) {
+            cancelAlarm(alarms.get(i), context);
         }
-        for (AlarmData currentAlarmData : alarms) {
+
+        for (int i = 0; i < alarms.size(); i++) {
             Calendar calendar = Calendar.getInstance();
-            calendar.set(Calendar.HOUR_OF_DAY, currentAlarmData.getHour());
-            calendar.set(Calendar.MINUTE, currentAlarmData.getMinute());
+            calendar.set(Calendar.HOUR_OF_DAY, alarms.get(i).getHour());
+            calendar.set(Calendar.MINUTE, alarms.get(i).getMinute());
             calendar.set(Calendar.SECOND, 0);
-            checkForActiveDays(calendar, currentAlarmData, context);
+            checkForActiveDays(calendar, alarms.get(i), context);
         }
     }
 
     private void checkForActiveDays(Calendar calendar, AlarmData alarmData, Context context) {
         int date = calendar.get(Calendar.DAY_OF_WEEK);
-        switch (date) {
-            //check for monday
-            case 2:
-                if (alarmData.isMonday()) {
-                    startAlarm(calendar, alarmData, context);
-                }
-                if (!alarmData.isMonday() && alarmData.getNotificationIntent() != null) {
-                    cancelAlarm(alarmData, context);
-                }
-                break;
-            //check for tuesday
-            case 3:
-                if (alarmData.isTuesday()) {
-                    startAlarm(calendar, alarmData, context);
-                }
-                if (!alarmData.isTuesday() && alarmData.getNotificationIntent() != null) {
-                    cancelAlarm(alarmData, context);
-                }
-                break;
-            //check for wednesday
-            case 4:
-                if (alarmData.isWednesday()) {
-                    startAlarm(calendar, alarmData, context);
-                }
-                if (!alarmData.isWednesday() && alarmData.getNotificationIntent() != null) {
-                    cancelAlarm(alarmData, context);
-                }
-                break;
-            //check for thursday
-            case 5:
-                if (alarmData.isThursday()) {
-                    startAlarm(calendar, alarmData, context);
-                }
-                if (!alarmData.isThursday() && alarmData.getNotificationIntent() != null) {
-                    cancelAlarm(alarmData, context);
-                }
-                break;
-            //check for friday
-            case 6:
-                if (alarmData.isFriday()) {
-                    startAlarm(calendar, alarmData, context);
-                }
-                if (!alarmData.isFriday() && alarmData.getNotificationIntent() != null) {
-                    cancelAlarm(alarmData, context);
-                }
-                break;
-            //check for saturday
-            case 7:
-                if (alarmData.isSaturday()) {
-                    startAlarm(calendar, alarmData, context);
-                }
-                if (!alarmData.isSaturday() && alarmData.getNotificationIntent() != null) {
-                    cancelAlarm(alarmData, context);
-                }
-                break;
-            //check for sunday
-            case 1:
-                if (alarmData.isSunday()) {
-                    startAlarm(calendar, alarmData, context);
-                }
-                if (!alarmData.isSunday() && alarmData.getNotificationIntent() != null) {
-                    cancelAlarm(alarmData, context);
-                }
-                break;
+        if (alarmData.isOnOrOff() && calendar.after(Calendar.getInstance())) {
+            switch (date) {
+                //check for monday
+                case 2:
+                    if (alarmData.isMonday()) {
+                        startAlarm(calendar, alarmData, context);
+                    }
+                    break;
+                //check for tuesday
+                case 3:
+                    if (alarmData.isTuesday()) {
+                        startAlarm(calendar, alarmData, context);
+                    }
+                    break;
+                //check for wednesday
+                case 4:
+                    if (alarmData.isWednesday()) {
+                        startAlarm(calendar, alarmData, context);
+                    }
+                    break;
+                //check for thursday
+                case 5:
+                    if (alarmData.isThursday()) {
+                        startAlarm(calendar, alarmData, context);
+                    }
+                    break;
+                //check for friday
+                case 6:
+                    if (alarmData.isFriday()) {
+                        startAlarm(calendar, alarmData, context);
+                    }
+                    break;
+                //check for saturday
+                case 7:
+                    if (alarmData.isSaturday()) {
+                        startAlarm(calendar, alarmData, context);
+                    }
+                    break;
+                //check for sunday
+                case 1:
+                    if (alarmData.isSunday()) {
+                        startAlarm(calendar, alarmData, context);
+                    }
+                    break;
+            }
         }
 
     }
 
     private void startAlarm(Calendar c, AlarmData ad, Context context) {
-        Intent intent = ad.getNotificationIntent();
-        if (c.after(Calendar.getInstance()) && ad.isOnOrOff()) {
-            AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-            if (intent == null) {
-                intent = new Intent(context, AlertReceiver.class);
-                ad.setNotificationIntent(intent);
-            } else {
-                intent = ad.getNotificationIntent();
-            }
-            intent.setAction(Long.toString(System.currentTimeMillis()));
-            PendingIntent pendingIntent = PendingIntent.getBroadcast(context, alarms.indexOf(ad), intent, PendingIntent.FLAG_CANCEL_CURRENT);
-            Log.d("123456", "startAlarm: " + pendingIntent.hashCode() +" index " +alarms.indexOf(ad));
-            Log.d("123456", "startAlarm: " +intent.getAction());
-            alarmManager.setExact(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(), pendingIntent);
-        }
+        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+        Intent intent = new Intent(context, AlertReceiver.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, (int) ad.getFlag(), intent, PendingIntent.FLAG_CANCEL_CURRENT);
+        Log.d("123456", "ad.flag start: " + ad.getFlag() + " index " + alarms.indexOf(ad));
+        alarmManager.setExact(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(), pendingIntent);
     }
 
 
     private void cancelAlarm(AlarmData ad, Context context) {
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-        Intent intent = ad.getNotificationIntent();
-        //intent.getAction();
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, alarms.indexOf(ad), intent, 0);
-        Log.d("123456", "cancelAlarm: " + pendingIntent.hashCode() + " index " + alarms.indexOf(ad));
-        Log.d("123456", "cancelAlarm: " + intent.getAction().isEmpty() + " ine" + intent.getAction());
+        Intent intent = new Intent(context, AlertReceiver.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, (int) ad.getFlag(), intent, PendingIntent.FLAG_CANCEL_CURRENT);
+        Log.d("123456", "ad.flag cancel: " + ad.getFlag() + " index " + alarms.indexOf(ad));
         alarmManager.cancel(pendingIntent);
         pendingIntent.cancel();
-        pendingIntent = null;
         ad.setNotificationIntent(null);
     }
 
