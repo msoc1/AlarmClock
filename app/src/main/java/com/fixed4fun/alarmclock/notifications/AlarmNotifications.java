@@ -8,28 +8,26 @@ import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.fixed4fun.alarmclock.activities.AlarmGoingOff;
+import com.fixed4fun.alarmclock.alarmObject.ADObject;
 import com.fixed4fun.alarmclock.alarmObject.AlarmData;
 import com.fixed4fun.alarmclock.alertReceivers.AlertReceiver;
 
+import java.util.ArrayList;
 import java.util.Calendar;
-
-import static com.fixed4fun.alarmclock.activities.MainActivity.alarms;
 
 public class AlarmNotifications extends AppCompatActivity {
 
-    public void startNotification(Context context) {
-
-        for (int i = 0; i < alarms.size(); i++) {
-            cancelAlarm(alarms.get(i), context);
+    public void startNotification(Context context, ArrayList<AlarmData> alarmsList) {
+        for (int i = 0; i < alarmsList.size(); i++) {
+            cancelAlarm(alarmsList.get(i), context);
         }
 
-        for (int i = 0; i < alarms.size(); i++) {
+        for (int i = 0; i < alarmsList.size(); i++) {
             Calendar calendar = Calendar.getInstance();
-            calendar.set(Calendar.HOUR_OF_DAY, alarms.get(i).getHour());
-            calendar.set(Calendar.MINUTE, alarms.get(i).getMinute());
+            calendar.set(Calendar.HOUR_OF_DAY, alarmsList.get(i).getHour());
+            calendar.set(Calendar.MINUTE, alarmsList.get(i).getMinute());
             calendar.set(Calendar.SECOND, 0);
-            checkForActiveDays(calendar, alarms.get(i), context);
+            checkForActiveDays(calendar, alarmsList.get(i), context);
         }
     }
 
@@ -85,30 +83,21 @@ public class AlarmNotifications extends AppCompatActivity {
     }
 
     private void startAlarm(Calendar c, AlarmData ad, Context context) {
+        Log.d("123456", "startAlarm: " + c.getTimeInMillis());
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         Intent intent = new Intent(context, AlertReceiver.class);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context, (int) ad.getFlag(), intent, PendingIntent.FLAG_CANCEL_CURRENT);
-        Log.d("123456", "ad.flag start: " + ad.getFlag() + " index " + alarms.indexOf(ad));
         alarmManager.setExact(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(), pendingIntent);
     }
 
 
     private void cancelAlarm(AlarmData ad, Context context) {
+        Log.d("123456", "cancelAlarm: ");
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         Intent intent = new Intent(context, AlertReceiver.class);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context, (int) ad.getFlag(), intent, PendingIntent.FLAG_CANCEL_CURRENT);
-        Log.d("123456", "ad.flag cancel: " + ad.getFlag() + " index " + alarms.indexOf(ad));
         alarmManager.cancel(pendingIntent);
         pendingIntent.cancel();
-        ad.setNotificationIntent(null);
     }
-
-    private void resetAlarms() {
-        for (AlarmData currentAlarmData : alarms) {
-            // cancelAlarm(currentAlarmData);
-        }
-        // startNotification();
-    }
-
 
 }

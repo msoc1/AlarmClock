@@ -21,6 +21,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.fixed4fun.alarmclock.R;
 import com.fixed4fun.alarmclock.adapters.CustomAdapter;
+import com.fixed4fun.alarmclock.alarmObject.ADObject;
 import com.fixed4fun.alarmclock.alarmObject.AlarmData;
 import com.fixed4fun.alarmclock.fragments.SelectSongFragment;
 import com.fixed4fun.alarmclock.objectLists.AlarmList;
@@ -51,7 +52,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @SuppressLint("StaticFieldLeak")
     static private CustomAdapter customAdapter;
     TimePicker timePicker;
-    private AlarmNotifications alarmNotifications;
+    public static AlarmNotifications alarmNotifications;
 
     FloatingActionButton floatingActionButton;
     FloatingActionButton settingButton;
@@ -63,6 +64,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     Button changeAll;
     Toast notificationToast;
     private ConstraintLayout toolbar;
+
 
     public static CustomAdapter getCustomAdapter() {
         return customAdapter;
@@ -234,6 +236,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 tempList.clear();
                 customAdapter.notifyDataSetChanged();
                 recyclerView.setAdapter(customAdapter);
+                alarmNotifications.startNotification(ADObject.getAppContext(), alarms);
                 break;
 
             case R.id.change_all:
@@ -272,6 +275,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     public ConstraintLayout getToolbar() {
         return toolbar;
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        alarmNotifications.recurringAlarms(ADObject.getAppContext());
     }
 
     @Override

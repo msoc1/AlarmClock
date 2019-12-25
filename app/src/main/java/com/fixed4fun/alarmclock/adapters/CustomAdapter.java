@@ -56,7 +56,6 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomViewHolder> {
             //normal list item view
             customViewHolder.timeOfAlarm.setText(displayTimeOfAlarm(alarmDataArrayList.get(i)));
             customViewHolder.onOrOff.setChecked(alarmDataArrayList.get(i).isOnOrOff());
-            customViewHolder.howLong.setText(timeUntilAlarm(context.getApplicationContext(), alarmDataArrayList.get(i)));
             customViewHolder.setTime.setText(daysWhenToRing(alarmDataArrayList.get(i)));
 
         } else {

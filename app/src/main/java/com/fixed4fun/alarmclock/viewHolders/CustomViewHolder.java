@@ -20,7 +20,6 @@ public class CustomViewHolder extends RecyclerView.ViewHolder {
 
     public TextView timeOfAlarm;
     public TextView setTime;
-    public TextView howLong;
 
     public SwitchCompat onOrOff;
 
@@ -35,7 +34,6 @@ public class CustomViewHolder extends RecyclerView.ViewHolder {
 
         timeOfAlarm = itemView.findViewById(R.id.time_of_alarm);
         setTime = itemView.findViewById(R.id.set_time);
-        howLong = itemView.findViewById(R.id.how_long);
         onOrOff = itemView.findViewById(R.id.on_or_off);
         deleteAlarm = itemView.findViewById(R.id.delete_alarm);
         selected = itemView.findViewById(R.id.selected);
@@ -52,7 +50,7 @@ public class CustomViewHolder extends RecyclerView.ViewHolder {
 
         onOrOff.setOnClickListener(v -> {
             AlarmList.getAlarms().get(getAdapterPosition()).setOnOrOff(onOrOff.isChecked());
-            alarmNotifications.startNotification(ADObject.getAppContext());
+            alarmNotifications.startNotification(ADObject.getAppContext(), MainActivity.alarms);
         });
 
         if (MainActivity.listState) {
@@ -64,6 +62,7 @@ public class CustomViewHolder extends RecyclerView.ViewHolder {
                 adapter = MainActivity.getCustomAdapter();
                 adapter.notifyDataSetChanged();
                 adapter = null;
+                alarmNotifications.startNotification(ADObject.getAppContext(), MainActivity.alarms);
             });
         }
 

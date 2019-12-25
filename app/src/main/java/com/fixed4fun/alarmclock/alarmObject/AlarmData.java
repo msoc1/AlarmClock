@@ -20,11 +20,9 @@ public class AlarmData implements Parcelable {
     private boolean sunday;
     private boolean onOrOff;
     private boolean selected;
-    // extra Intent needed for cancelling specific alarm, used to setAction and getAction. Could find other way around it to work
-    private Intent notificationIntent;
     private int flag;
 
-    public AlarmData(int hour, int minute, boolean monday_friday, boolean saturday_sunday, boolean monday, boolean tuesday, boolean wednesday, boolean thursday, boolean friday, boolean saturday, boolean sunday, boolean onOrOff, boolean selected, Intent notificationIntent, int flag) {
+    public AlarmData(int hour, int minute, boolean monday_friday, boolean saturday_sunday, boolean monday, boolean tuesday, boolean wednesday, boolean thursday, boolean friday, boolean saturday, boolean sunday, boolean onOrOff, boolean selected, int flag) {
         this.hour = hour;
         this.minute = minute;
         this.monday_friday = monday_friday;
@@ -38,7 +36,6 @@ public class AlarmData implements Parcelable {
         this.sunday = sunday;
         this.onOrOff = onOrOff;
         this.selected = selected;
-        this.notificationIntent = notificationIntent;
         this.flag = flag;
     }
 
@@ -56,7 +53,6 @@ public class AlarmData implements Parcelable {
         sunday = in.readByte() != 0;
         onOrOff = in.readByte() != 0;
         selected = in.readByte() != 0;
-        notificationIntent = in.readParcelable(Intent.class.getClassLoader());
         flag = in.readInt();
     }
 
@@ -176,13 +172,6 @@ public class AlarmData implements Parcelable {
         this.selected = selected;
     }
 
-    public Intent getNotificationIntent() {
-        return notificationIntent;
-    }
-
-    public void setNotificationIntent(Intent notificationIntent) {
-        this.notificationIntent = notificationIntent;
-    }
 
     public long getFlag() {
         return flag;
@@ -220,7 +209,6 @@ public class AlarmData implements Parcelable {
         dest.writeByte((byte) (sunday ? 1 : 0));
         dest.writeByte((byte) (onOrOff ? 1 : 0));
         dest.writeByte((byte) (selected ? 1 : 0));
-        dest.writeParcelable(notificationIntent, flags);
         dest.writeInt(flag);
     }
 }

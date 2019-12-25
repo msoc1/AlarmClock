@@ -153,7 +153,7 @@ public class ModifyTimePicker extends DialogFragment implements View.OnClickList
         MainActivity.sortList(MainActivity.alarms);
         customAdapter = ((MainActivity) getActivity()).getCustomAdapter();
         customAdapter.notifyDataSetChanged();
-        alarmNotifications.startNotification(getContext());
+        alarmNotifications.startNotification(getContext(), MainActivity.alarms);
         closeTimePicker();
     }
 

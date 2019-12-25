@@ -1,6 +1,9 @@
 package com.fixed4fun.alarmclock.activities;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.TransitionDrawable;
 import android.media.AudioAttributes;
@@ -9,19 +12,23 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Vibrator;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.fixed4fun.alarmclock.R;
 import com.fixed4fun.alarmclock.alarmObject.ADObject;
+import com.fixed4fun.alarmclock.alertReceivers.AlertReceiver;
 import com.fixed4fun.alarmclock.objectLists.SoundsList;
+import com.google.android.material.button.MaterialButton;
 
 import java.time.LocalDate;
 import java.util.Calendar;
@@ -31,12 +38,14 @@ public class AlarmGoingOff extends AppCompatActivity {
     TextView hours;
     TextView minutes;
     Button turnOff;
+    Button napTime;
     MediaPlayer mMediaPlayer;
     Handler mHandler = new Handler();
     Runnable timeRunnable;
     TransitionDrawable transitionDrawable;
     TextView dayOfTheWeek;
     public static final String VIBRATETAG = "vibrate";
+    public static final String NAPTAG = "nap";
     Vibrator vibrator;
     int turnOffAfter;
 
@@ -53,6 +62,7 @@ public class AlarmGoingOff extends AppCompatActivity {
         minutes = findViewById(R.id.minutes_alarm);
         turnOff = findViewById(R.id.turnoff_alarm);
         dayOfTheWeek = findViewById(R.id.day_of_the_week);
+        napTime = findViewById(R.id.nap_time);
 
         hours.setText(String.valueOf(calendar.get(Calendar.HOUR_OF_DAY)));
         int timeInMinutes = calendar.get(Calendar.MINUTE);
@@ -60,6 +70,22 @@ public class AlarmGoingOff extends AppCompatActivity {
         dayOfTheWeek.setText(LocalDate.now().getDayOfWeek().name());
 
         turnOff.setOnTouchListener(buttonOnTouchListener);
+
+        napTime.setOnClickListener(v -> {
+            int napTimeInMinutes = sharedPrefs.getInt(NAPTAG, 5)*5;
+            Log.d("123456", "onCreate: "+ calendar.getTimeInMillis());
+            Log.d("123456", "onCreate: " + napTimeInMinutes);
+            Log.d("123456", "onCreate: " + napTimeInMinutes*60000);
+            long time = calendar.getTimeInMillis() + (napTimeInMinutes*60000);
+            Log.d("123456", "onCreate: " + (calendar.getTimeInMillis() + (napTimeInMinutes * 1000 * 60)));
+            AlarmManager alarmManager = (AlarmManager) ADObject.getAppContext().getSystemService(Context.ALARM_SERVICE);
+            Intent intent = new Intent(ADObject.getAppContext(), AlertReceiver.class);
+            PendingIntent pendingIntent = PendingIntent.getBroadcast(ADObject.getAppContext(), 0, intent, PendingIntent.FLAG_ONE_SHOT);
+            alarmManager.setExact(AlarmManager.RTC_WAKEUP, time, pendingIntent);
+            finish();
+            Toast.makeText(ADObject.getAppContext(), "Nap Time: "+ napTimeInMinutes+"minutes", Toast.LENGTH_LONG).show();
+        });
+
 
         mMediaPlayer = new MediaPlayer();
 

@@ -134,7 +134,7 @@ public class ChangeAllTimePicker extends DialogFragment implements View.OnClickL
                     ad.setSelected(false);
                 }
                 adapter.notifyDataSetChanged();
-                alarmNotifications.startNotification(getContext());
+                alarmNotifications.startNotification(getContext(), alarms);
 
                 closeChangeDialog();
 
