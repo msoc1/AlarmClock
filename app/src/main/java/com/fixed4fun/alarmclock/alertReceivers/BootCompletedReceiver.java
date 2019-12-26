@@ -29,6 +29,7 @@ public class BootCompletedReceiver extends BroadcastReceiver {
             ArrayList<AlarmData> arrayList = gson.fromJson(json2, type);
             alarmNotifications = new AlarmNotifications();
             alarmNotifications.startNotification(ADObject.getAppContext(), arrayList);
+            alarmNotifications.midnightAlarms(ADObject.getAppContext());
         }
 
     }

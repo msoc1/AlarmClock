@@ -3,30 +3,25 @@ package com.fixed4fun.alarmclock.fragments;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.fragment.app.DialogFragment;
-import androidx.appcompat.app.AlertDialog;
-
 import android.text.format.DateFormat;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
-import com.fixed4fun.alarmclock.alarmObject.AlarmData;
-import com.fixed4fun.alarmclock.objectLists.AlarmList;
-import com.fixed4fun.alarmclock.adapters.CustomAdapter;
-import com.fixed4fun.alarmclock.activities.MainActivity;
+import androidx.annotation.NonNull;
+import androidx.fragment.app.DialogFragment;
+
 import com.fixed4fun.alarmclock.R;
+import com.fixed4fun.alarmclock.activities.MainActivity;
+import com.fixed4fun.alarmclock.adapters.CustomAdapter;
+import com.fixed4fun.alarmclock.alarmObject.AlarmData;
 import com.fixed4fun.alarmclock.notifications.AlarmNotifications;
-import com.fixed4fun.alarmclock.objectLists.SoundsList;
+import com.fixed4fun.alarmclock.objectLists.AlarmList;
 
 
 public class ModifyTimePicker extends DialogFragment implements View.OnClickListener {
@@ -35,7 +30,6 @@ public class ModifyTimePicker extends DialogFragment implements View.OnClickList
     private TimePicker timePicker;
     private Button buttoSetAlarm;
     private Button cancelAlarm;
-    Button changeSound;
 
 
     private CheckBox monFriCheckBox;

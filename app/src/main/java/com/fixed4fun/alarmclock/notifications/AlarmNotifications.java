@@ -4,13 +4,13 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.fixed4fun.alarmclock.alarmObject.ADObject;
 import com.fixed4fun.alarmclock.alarmObject.AlarmData;
 import com.fixed4fun.alarmclock.alertReceivers.AlertReceiver;
+import com.fixed4fun.alarmclock.alertReceivers.MidnightReceiver;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -83,7 +83,6 @@ public class AlarmNotifications extends AppCompatActivity {
     }
 
     private void startAlarm(Calendar c, AlarmData ad, Context context) {
-        Log.d("123456", "startAlarm: " + c.getTimeInMillis());
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         Intent intent = new Intent(context, AlertReceiver.class);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context, (int) ad.getFlag(), intent, PendingIntent.FLAG_CANCEL_CURRENT);
@@ -92,12 +91,27 @@ public class AlarmNotifications extends AppCompatActivity {
 
 
     private void cancelAlarm(AlarmData ad, Context context) {
-        Log.d("123456", "cancelAlarm: ");
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         Intent intent = new Intent(context, AlertReceiver.class);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context, (int) ad.getFlag(), intent, PendingIntent.FLAG_CANCEL_CURRENT);
         alarmManager.cancel(pendingIntent);
         pendingIntent.cancel();
+    }
+
+    public void midnightAlarms(Context context) {
+        //needed to reset alarms at midnight
+        Intent dialogIntent = new Intent(ADObject.getAppContext(), MidnightReceiver.class);
+        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+        Calendar calendar = Calendar.getInstance();
+
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 1);
+        calendar.set(Calendar.SECOND, 0);
+
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 7734, dialogIntent, PendingIntent.FLAG_CANCEL_CURRENT);
+
+        alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntent);
+
     }
 
 }

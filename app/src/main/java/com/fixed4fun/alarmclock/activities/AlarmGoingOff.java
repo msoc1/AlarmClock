@@ -12,7 +12,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Vibrator;
 import android.preference.PreferenceManager;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
@@ -28,7 +27,6 @@ import com.fixed4fun.alarmclock.R;
 import com.fixed4fun.alarmclock.alarmObject.ADObject;
 import com.fixed4fun.alarmclock.alertReceivers.AlertReceiver;
 import com.fixed4fun.alarmclock.objectLists.SoundsList;
-import com.google.android.material.button.MaterialButton;
 
 import java.time.LocalDate;
 import java.util.Calendar;
@@ -72,18 +70,14 @@ public class AlarmGoingOff extends AppCompatActivity {
         turnOff.setOnTouchListener(buttonOnTouchListener);
 
         napTime.setOnClickListener(v -> {
-            int napTimeInMinutes = sharedPrefs.getInt(NAPTAG, 5)*5;
-            Log.d("123456", "onCreate: "+ calendar.getTimeInMillis());
-            Log.d("123456", "onCreate: " + napTimeInMinutes);
-            Log.d("123456", "onCreate: " + napTimeInMinutes*60000);
-            long time = calendar.getTimeInMillis() + (napTimeInMinutes*60000);
-            Log.d("123456", "onCreate: " + (calendar.getTimeInMillis() + (napTimeInMinutes * 1000 * 60)));
+            int napTimeInMinutes = sharedPrefs.getInt(NAPTAG, 5) * 5;
+            long time = calendar.getTimeInMillis() + (napTimeInMinutes * 60000);
             AlarmManager alarmManager = (AlarmManager) ADObject.getAppContext().getSystemService(Context.ALARM_SERVICE);
             Intent intent = new Intent(ADObject.getAppContext(), AlertReceiver.class);
             PendingIntent pendingIntent = PendingIntent.getBroadcast(ADObject.getAppContext(), 0, intent, PendingIntent.FLAG_ONE_SHOT);
             alarmManager.setExact(AlarmManager.RTC_WAKEUP, time, pendingIntent);
             finish();
-            Toast.makeText(ADObject.getAppContext(), "Nap Time: "+ napTimeInMinutes+"minutes", Toast.LENGTH_LONG).show();
+            Toast.makeText(ADObject.getAppContext(), "Nap Time: " + napTimeInMinutes + "minutes", Toast.LENGTH_LONG).show();
         });
 
 

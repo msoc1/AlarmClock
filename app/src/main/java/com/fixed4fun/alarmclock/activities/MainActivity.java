@@ -8,7 +8,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
@@ -23,7 +22,6 @@ import com.fixed4fun.alarmclock.R;
 import com.fixed4fun.alarmclock.adapters.CustomAdapter;
 import com.fixed4fun.alarmclock.alarmObject.ADObject;
 import com.fixed4fun.alarmclock.alarmObject.AlarmData;
-import com.fixed4fun.alarmclock.fragments.SelectSongFragment;
 import com.fixed4fun.alarmclock.objectLists.AlarmList;
 import com.fixed4fun.alarmclock.fragments.SettingsFragment;
 import com.fixed4fun.alarmclock.notifications.AlarmNotifications;
@@ -280,7 +278,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        alarmNotifications.recurringAlarms(ADObject.getAppContext());
+        Log.d("123456", "onDestroy: ");
+        alarmNotifications.midnightAlarms(ADObject.getAppContext());
     }
 
     @Override

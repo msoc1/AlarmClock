@@ -31,9 +31,9 @@
             </intent-filter>
         </activity>
         <activity android:name="com.fixed4fun.alarmclock.notifications.AlarmNotifications" />
-
-
         <receiver android:name="com.fixed4fun.alarmclock.alertReceivers.AlertReceiver" />
+        <receiver android:name="com.fixed4fun.alarmclock.alertReceivers.MidnightReceiver" />
+
         <receiver android:name="com.fixed4fun.alarmclock.alertReceivers.BootCompletedReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
