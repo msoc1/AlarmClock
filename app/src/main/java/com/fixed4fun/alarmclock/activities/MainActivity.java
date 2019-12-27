@@ -1,6 +1,8 @@
 package com.fixed4fun.alarmclock.activities;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -11,6 +13,8 @@ import android.widget.CheckBox;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SwitchCompat;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -36,8 +40,13 @@ import com.google.gson.reflect.TypeToken;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+import pub.devrel.easypermissions.AfterPermissionGranted;
+import pub.devrel.easypermissions.AppSettingsDialog;
+import pub.devrel.easypermissions.EasyPermissions;
+
+public class MainActivity extends AppCompatActivity implements View.OnClickListener, EasyPermissions.PermissionCallbacks {
     static int toolbarHeight;
     public static int position;
 
@@ -62,6 +71,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     Button changeAll;
     Toast notificationToast;
     private ConstraintLayout toolbar;
+
+    private static final int PERMISION_REQUESTCODE = 456;
 
 
     public static CustomAdapter getCustomAdapter() {
@@ -253,6 +264,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
 
             case R.id.new_alarm:
+//                addAnAlarm();
                 DialogFragment timePickerFragment = new NewTimePicker();
                 timePickerFragment.show(getSupportFragmentManager()
                         , "time picker");
@@ -298,10 +310,61 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+    String[] perms = {Manifest.permission.WAKE_LOCK, Manifest.permission.SET_ALARM, Manifest.permission.DISABLE_KEYGUARD, Manifest.permission.RECEIVE_BOOT_COMPLETED, };
+
+    @AfterPermissionGranted(PERMISION_REQUESTCODE)
+    private void addAnAlarm() {
+        if (EasyPermissions.hasPermissions(this, perms)) {
+            DialogFragment timePickerFragment = new NewTimePicker();
+            timePickerFragment.show(getSupportFragmentManager()
+                    , "time picker");
+            toolbar.setVisibility(View.GONE);
+            listState = false;
+            recyclerView.setAdapter(customAdapter);
+        } else {
+            EasyPermissions.requestPermissions(this, "Permissions needed for full functionallity",
+                    PERMISION_REQUESTCODE, perms);
+        }
+    }
+// <uses-permission android:name="android.permission.VIBRATE" />
+//    <uses-permission android:name="android.permission.WAKE_LOCK" />
+//    <uses-permission android:name="android.permission.SET_ALARM" />
+//    <uses-permission android:name="android.permission.DISABLE_KEYGUARD" />
+//    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+//    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
+    }
+
     @Override
     public void onClick(View v) {
         onClickListeners(v);
     }
 
 
+    @Override
+    public void onPermissionsGranted(int requestCode, @NonNull List<String> perms) {
+        addAnAlarm();
+    }
+
+    @Override
+    public void onPermissionsDenied(int requestCode, @NonNull List<String> perms) {
+        if (EasyPermissions.somePermissionPermanentlyDenied(this, perms)) {
+            Log.d("123456", "onPermissionsDenied: " + perms.toString());
+            new AppSettingsDialog.Builder(this).build().show();
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == AppSettingsDialog.DEFAULT_SETTINGS_REQ_CODE) {
+            addAnAlarm();
+        }
+
+    }
 }
