@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -15,6 +16,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SwitchCompat;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -37,6 +39,9 @@ import com.google.android.material.tabs.TabLayout;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -73,6 +78,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private ConstraintLayout toolbar;
 
     private static final int PERMISION_REQUESTCODE = 456;
+    public static final String XIAOMI_PERMISSION = "xiaomi";
+    public static final int XIAOMI_REQUESTCODE = 7890;
+    String[] PERMISSIONS_NEEDED = {Manifest.permission.WAKE_LOCK, Manifest.permission.SET_ALARM, Manifest.permission.DISABLE_KEYGUARD, Manifest.permission.RECEIVE_BOOT_COMPLETED,};
 
 
     public static CustomAdapter getCustomAdapter() {
@@ -264,13 +272,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
 
             case R.id.new_alarm:
-//                addAnAlarm();
-                DialogFragment timePickerFragment = new NewTimePicker();
-                timePickerFragment.show(getSupportFragmentManager()
-                        , "time picker");
-                toolbar.setVisibility(View.GONE);
-                listState = false;
-                recyclerView.setAdapter(customAdapter);
+                checkPermissionsAndAddAlarm();
+//                DialogFragment timePickerFragment = new NewTimePicker();
+//                timePickerFragment.show(getSupportFragmentManager()
+//                        , "time picker");
+//                toolbar.setVisibility(View.GONE);
+//                listState = false;
+//                recyclerView.setAdapter(customAdapter);
                 break;
             case R.id.settings:
                 DialogFragment settingsFragment = new SettingsFragment();
@@ -310,11 +318,30 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-    String[] perms = {Manifest.permission.WAKE_LOCK, Manifest.permission.SET_ALARM, Manifest.permission.DISABLE_KEYGUARD, Manifest.permission.RECEIVE_BOOT_COMPLETED, };
-
     @AfterPermissionGranted(PERMISION_REQUESTCODE)
-    private void addAnAlarm() {
-        if (EasyPermissions.hasPermissions(this, perms)) {
+    private void checkPermissionsAndAddAlarm() {
+        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        boolean xiaomiPermission = sharedPrefs.getBoolean(XIAOMI_PERMISSION, false);
+        if (isMiUi() && !xiaomiPermission) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("Alarm Information");
+            builder.setMessage("Accept permissions for full functionallity");
+            builder.setPositiveButton("Continue", (dialog, which) -> {
+                //open system settings to get other permissions needed specifically for xioami phones
+                startActivity(new Intent("miui.intent.action.APP_PERM_EDITOR").putExtra("extra_pkgname", getPackageName()));
+                SharedPreferences.Editor editor = sharedPrefs.edit();
+                editor.putBoolean(XIAOMI_PERMISSION, true);
+                editor.apply();
+            });
+            AlertDialog dialog = builder.create();
+            dialog.show();
+        } else {
+            addAlarm();
+        }
+    }
+
+    public void addAlarm() {
+        if (EasyPermissions.hasPermissions(this, PERMISSIONS_NEEDED)) {
             DialogFragment timePickerFragment = new NewTimePicker();
             timePickerFragment.show(getSupportFragmentManager()
                     , "time picker");
@@ -323,15 +350,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             recyclerView.setAdapter(customAdapter);
         } else {
             EasyPermissions.requestPermissions(this, "Permissions needed for full functionallity",
-                    PERMISION_REQUESTCODE, perms);
+                    PERMISION_REQUESTCODE, PERMISSIONS_NEEDED);
         }
     }
-// <uses-permission android:name="android.permission.VIBRATE" />
-//    <uses-permission android:name="android.permission.WAKE_LOCK" />
-//    <uses-permission android:name="android.permission.SET_ALARM" />
-//    <uses-permission android:name="android.permission.DISABLE_KEYGUARD" />
-//    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
-//    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -347,13 +368,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onPermissionsGranted(int requestCode, @NonNull List<String> perms) {
-        addAnAlarm();
+        checkPermissionsAndAddAlarm();
     }
 
     @Override
     public void onPermissionsDenied(int requestCode, @NonNull List<String> perms) {
         if (EasyPermissions.somePermissionPermanentlyDenied(this, perms)) {
-            Log.d("123456", "onPermissionsDenied: " + perms.toString());
             new AppSettingsDialog.Builder(this).build().show();
         }
     }
@@ -361,10 +381,34 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
-        if (requestCode == AppSettingsDialog.DEFAULT_SETTINGS_REQ_CODE) {
-            addAnAlarm();
+        if (requestCode == AppSettingsDialog.DEFAULT_SETTINGS_REQ_CODE || requestCode == XIAOMI_REQUESTCODE) {
+            checkPermissionsAndAddAlarm();
         }
+    }
 
+    public static boolean isMiUi() {
+        return !TextUtils.isEmpty(getSystemProperty("ro.miui.ui.version.name"));
+    }
+
+    public static String getSystemProperty(String propName) {
+        String line;
+        BufferedReader input = null;
+        try {
+            java.lang.Process p = Runtime.getRuntime().exec("getprop " + propName);
+            input = new BufferedReader(new InputStreamReader(p.getInputStream()), 1024);
+            line = input.readLine();
+            input.close();
+        } catch (IOException ex) {
+            return null;
+        } finally {
+            if (input != null) {
+                try {
+                    input.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return line;
     }
 }

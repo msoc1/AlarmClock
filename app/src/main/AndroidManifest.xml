@@ -23,7 +23,8 @@
         <activity
             android:name="com.fixed4fun.alarmclock.activities.AlarmGoingOff"
             android:screenOrientation="sensorPortrait"
-            android:showOnLockScreen="true"></activity>
+            android:showOnLockScreen="true"
+            android:exported="true"></activity>
         <activity android:name="com.fixed4fun.alarmclock.activities.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
