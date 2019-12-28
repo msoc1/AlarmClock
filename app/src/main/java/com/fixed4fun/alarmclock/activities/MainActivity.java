@@ -273,12 +273,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             case R.id.new_alarm:
                 checkPermissionsAndAddAlarm();
-//                DialogFragment timePickerFragment = new NewTimePicker();
-//                timePickerFragment.show(getSupportFragmentManager()
-//                        , "time picker");
-//                toolbar.setVisibility(View.GONE);
-//                listState = false;
-//                recyclerView.setAdapter(customAdapter);
                 break;
             case R.id.settings:
                 DialogFragment settingsFragment = new SettingsFragment();

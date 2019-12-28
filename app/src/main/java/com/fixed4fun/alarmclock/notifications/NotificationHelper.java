@@ -38,7 +38,6 @@ public class NotificationHelper extends ContextWrapper {
         Intent intent = new Intent(NotificationHelper.this, AlarmGoingOff.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
-
         getManager().createNotificationChannel(channel1);
     }
 

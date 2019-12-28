@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Vibrator;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
@@ -70,14 +71,15 @@ public class AlarmGoingOff extends AppCompatActivity {
         turnOff.setOnTouchListener(buttonOnTouchListener);
 
         napTime.setOnClickListener(v -> {
-            int napTimeInMinutes = sharedPrefs.getInt(NAPTAG, 5) * 5;
-            long time = calendar.getTimeInMillis() + (napTimeInMinutes * 60000);
+            int napTimeInMinutes = sharedPrefs.getInt(NAPTAG, 1);
+            long time = calendar.getTimeInMillis() + (napTimeInMinutes * 60000 * 5);
+            Log.d("123456", "onCreate: " + (napTimeInMinutes * 60000 * 5));
             AlarmManager alarmManager = (AlarmManager) ADObject.getAppContext().getSystemService(Context.ALARM_SERVICE);
             Intent intent = new Intent(ADObject.getAppContext(), AlertReceiver.class);
             PendingIntent pendingIntent = PendingIntent.getBroadcast(ADObject.getAppContext(), 0, intent, PendingIntent.FLAG_ONE_SHOT);
             alarmManager.setExact(AlarmManager.RTC_WAKEUP, time, pendingIntent);
             finish();
-            Toast.makeText(ADObject.getAppContext(), "Nap Time: " + napTimeInMinutes + "minutes", Toast.LENGTH_LONG).show();
+            Toast.makeText(ADObject.getAppContext(), "Nap Time: " + napTimeInMinutes*5 + "minutes", Toast.LENGTH_LONG).show();
         });
 
 
