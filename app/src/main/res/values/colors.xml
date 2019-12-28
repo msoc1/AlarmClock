@@ -8,7 +8,7 @@
 
     <color name="floatingActionButtonColor">#4F80FF</color>
 
-    <color name="textColor">#FFFFFF</color>
+    <color name="textColor">#B6D0FF</color>
 
     <color name="topBarColor">#4F52B3</color>
 
@@ -19,6 +19,5 @@
     <color name="backgroundTimePickerColor">#FAFAFA</color>
     <color name="numbersSelectorColor">#6666CC</color>
     <color name="numbersBackgroundColor">#4961B7</color>
-
     <color name="checkboxes_text_color">#FFFFFF</color>
 </resources>

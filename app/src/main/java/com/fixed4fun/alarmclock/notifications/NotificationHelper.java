@@ -13,6 +13,7 @@ import androidx.core.app.NotificationCompat;
 
 import com.fixed4fun.alarmclock.R;
 import com.fixed4fun.alarmclock.activities.AlarmGoingOff;
+import com.fixed4fun.alarmclock.alarmObject.ADObject;
 
 public class NotificationHelper extends ContextWrapper {
 
@@ -22,13 +23,17 @@ public class NotificationHelper extends ContextWrapper {
 
     public NotificationHelper(Context base) {
         super(base);
-        if(Build.VERSION.SDK_INT>= Build.VERSION_CODES.O) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             createChannels();
         }
     }
 
+    public NotificationHelper() {
+        super(ADObject.getAppContext());
+    }
+
     @TargetApi(Build.VERSION_CODES.O)
-    public void createChannels(){
+    public void createChannels() {
         NotificationChannel channel1 = new NotificationChannel(channel1ID, channel1Name,
                 NotificationManager.IMPORTANCE_DEFAULT);
         channel1.enableLights(true);
@@ -41,14 +46,14 @@ public class NotificationHelper extends ContextWrapper {
         getManager().createNotificationChannel(channel1);
     }
 
-    public NotificationManager getManager(){
-        if(mManager == null){
+    public NotificationManager getManager() {
+        if (mManager == null) {
             mManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         }
         return mManager;
     }
 
-    public NotificationCompat.Builder getChannel1Notification(String title, String message){
+    public NotificationCompat.Builder getChannel1Notification(String title, String message) {
         return new NotificationCompat.Builder(getApplicationContext(), channel1ID)
                 .setContentTitle(title)
                 .setContentText(message)

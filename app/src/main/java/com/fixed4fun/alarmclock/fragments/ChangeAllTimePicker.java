@@ -25,22 +25,20 @@ import com.fixed4fun.alarmclock.notifications.AlarmNotifications;
 
 import java.util.ArrayList;
 
+import cn.carbswang.android.numberpickerview.library.NumberPickerView;
+
 public class ChangeAllTimePicker extends DialogFragment implements View.OnClickListener {
 
-    NumberPicker hours;
-    NumberPicker minutes;
-    NumberPicker earlierOrLater;
-    private AlarmNotifications alarmNotifications;
-
+    NumberPickerView hours;
+    NumberPickerView minutes;
+    NumberPickerView earlierOrLater;
     Button cancel;
     Button change;
     ArrayList<AlarmData> alarms;
-
     CustomAdapter adapter;
-
     RecyclerView recyclerView;
-
     ConstraintLayout mainActivityToolbar;
+    private AlarmNotifications alarmNotifications;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -68,16 +66,28 @@ public class ChangeAllTimePicker extends DialogFragment implements View.OnClickL
     }
 
     private void setUpPickers() {
+        String[] displayedHours = new String[24];
+        for (int i = 0; i < 24; i++) {
+            displayedHours[i] = "" + i;
+        }
+        hours.setDisplayedValues(displayedHours);
+        hours.setValue(0);
         hours.setMinValue(0);
         hours.setMaxValue(23);
 
+        String[] displayedMinutes = new String[60];
+        for (int i = 0; i < 60; i++) {
+            displayedMinutes[i] = "" + i;
+        }
+        minutes.setDisplayedValues(displayedMinutes);
+        minutes.setValue(0);
         minutes.setMinValue(0);
         minutes.setMaxValue(59);
 
+        earlierOrLater.setDisplayedValues(new String[]{"Earlier", "Later"});
         earlierOrLater.setMinValue(0);
         earlierOrLater.setMaxValue(1);
-        earlierOrLater.setDisplayedValues(new String[]{"Earlier", "Later"});
-
+        earlierOrLater.setValue(0);
     }
 
     private void closeChangeDialog() {

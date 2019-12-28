@@ -10,10 +10,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
-import android.widget.Switch;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.SwitchCompat;
 import androidx.fragment.app.DialogFragment;
 
 import com.fixed4fun.alarmclock.R;
@@ -33,8 +33,8 @@ public class SettingsFragment extends DialogFragment {
     public static final String ALERTOFFTAG = "secondsoff";
 
 
-    Switch vibrateSwitch;
-    Switch themeSwitch;
+    SwitchCompat vibrateSwitch;
+    SwitchCompat themeSwitch;
     int napTime;
     int turnOffAfter;
 
@@ -59,7 +59,7 @@ public class SettingsFragment extends DialogFragment {
         turnoffTimer = view.findViewById(R.id.turnoff_timer);
 
 
-        closeSettings.setOnClickListener(v ->{
+        closeSettings.setOnClickListener(v -> {
             SharedPreferences.Editor editor = sharedPrefs.edit();
             editor.putBoolean(VIBRATETAG, vibrateSwitch.isChecked());
             editor.putBoolean(THEMETAG, themeSwitch.isChecked());
@@ -70,7 +70,7 @@ public class SettingsFragment extends DialogFragment {
         });
 
         napTime = sharedPrefs.getInt(NAPTAG, 1);
-        turnOffAfter = sharedPrefs.getInt(ALERTOFFTAG,3);
+        turnOffAfter = sharedPrefs.getInt(ALERTOFFTAG, 3);
         vibrateSwitch.setChecked(sharedPrefs.getBoolean(VIBRATETAG, true));
         themeSwitch.setChecked(sharedPrefs.getBoolean(THEMETAG, false));
 
@@ -80,9 +80,9 @@ public class SettingsFragment extends DialogFragment {
         napTimes.setValue(napTime);
 
 
-        String[] availableSeconds= new String[11];
-        for(int i =0 ; i<11; i ++){
-            availableSeconds[i] = ""+i;
+        String[] availableSeconds = new String[11];
+        for (int i = 0; i < 11; i++) {
+            availableSeconds[i] = "" + i;
         }
         turnoffTimer.setDisplayedValues(availableSeconds);
         turnoffTimer.setMinValue(0);
@@ -90,18 +90,16 @@ public class SettingsFragment extends DialogFragment {
         turnoffTimer.setValue(turnOffAfter);
 
 
-        selectSong.setOnClickListener(v->{
+        selectSong.setOnClickListener(v -> {
             SelectSongFragment songFragment = new SelectSongFragment();
             assert getFragmentManager() != null;
             songFragment.show(getFragmentManager().beginTransaction(), "settings_fragment");
         });
 
 
-
         int song = sharedPrefs.getInt("SONG_TO_PLAY", 0);
 
         selectSong.setText(SoundsList.getAvailableSounds().get(song).getName());
-
 
 
         return view;

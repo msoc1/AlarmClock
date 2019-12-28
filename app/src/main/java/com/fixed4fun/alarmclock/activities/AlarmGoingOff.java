@@ -12,7 +12,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Vibrator;
 import android.preference.PreferenceManager;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
@@ -27,6 +26,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.fixed4fun.alarmclock.R;
 import com.fixed4fun.alarmclock.alarmObject.ADObject;
 import com.fixed4fun.alarmclock.alertReceivers.AlertReceiver;
+import com.fixed4fun.alarmclock.notifications.NotificationHelper;
 import com.fixed4fun.alarmclock.objectLists.SoundsList;
 
 import java.time.LocalDate;
@@ -47,6 +47,7 @@ public class AlarmGoingOff extends AppCompatActivity {
     public static final String NAPTAG = "nap";
     Vibrator vibrator;
     int turnOffAfter;
+    Handler turnOffHandler = new Handler();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -73,13 +74,12 @@ public class AlarmGoingOff extends AppCompatActivity {
         napTime.setOnClickListener(v -> {
             int napTimeInMinutes = sharedPrefs.getInt(NAPTAG, 1);
             long time = calendar.getTimeInMillis() + (napTimeInMinutes * 60000 * 5);
-            Log.d("123456", "onCreate: " + (napTimeInMinutes * 60000 * 5));
             AlarmManager alarmManager = (AlarmManager) ADObject.getAppContext().getSystemService(Context.ALARM_SERVICE);
             Intent intent = new Intent(ADObject.getAppContext(), AlertReceiver.class);
             PendingIntent pendingIntent = PendingIntent.getBroadcast(ADObject.getAppContext(), 0, intent, PendingIntent.FLAG_ONE_SHOT);
             alarmManager.setExact(AlarmManager.RTC_WAKEUP, time, pendingIntent);
             finish();
-            Toast.makeText(ADObject.getAppContext(), "Nap Time: " + napTimeInMinutes*5 + "minutes", Toast.LENGTH_LONG).show();
+            Toast.makeText(ADObject.getAppContext(), "Nap Time: " + napTimeInMinutes * 5 + "minutes", Toast.LENGTH_LONG).show();
         });
 
 
@@ -99,6 +99,8 @@ public class AlarmGoingOff extends AppCompatActivity {
                 vibrator.vibrate(pattern, 0);
             }
         }
+        //start handler to finish activity after minute has passed
+        turnOffHandler.postDelayed(this::finish, 60000);
 
 
     }
@@ -123,6 +125,9 @@ public class AlarmGoingOff extends AppCompatActivity {
                     transitionDrawable = (TransitionDrawable) turnOff.getBackground();
                     transitionDrawable.startTransition(turnOffAfter);
                     mHandler.postDelayed(timeRunnable, turnOffAfter);
+                    //dissapear notification on turning off alarm
+                    NotificationHelper n = new NotificationHelper();
+                    n.getManager().cancelAll();
                     break;
                 case MotionEvent.ACTION_UP:
                     transitionDrawable.resetTransition();

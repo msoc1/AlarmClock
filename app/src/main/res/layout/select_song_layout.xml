@@ -4,7 +4,7 @@
     android:id="@+id/linearLayout2"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:background="@drawable/timepicker_background"
+    android:background="@drawable/settings_background"
     >
 
     <cn.carbswang.android.numberpickerview.library.NumberPickerView
@@ -19,9 +19,15 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:npv_TextSizeNormal="10sp"
-        app:npv_TextSizeSelected="22sp" />
+        app:npv_TextSizeSelected="22sp"
+        app:npv_TextColorNormal="@color/textColor"
+        app:npv_TextColorHint="@color/textColor"
+        app:npv_TextColorSelected="@color/textColor"
+        app:npv_DividerColor="@color/selected_checkbox_color"/>
 
     <Button
+        android:textColor="@color/textColor"
+        android:background="#00ffffff"
         android:id="@+id/save_songs"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
