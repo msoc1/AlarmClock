@@ -2,13 +2,17 @@ package com.fixed4fun.alarmclock.adapters;
 
 import android.content.Context;
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.graphics.Typeface;
 import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.fixed4fun.alarmclock.activities.MainActivity;
+import com.fixed4fun.alarmclock.alarmObject.ADObject;
 import com.fixed4fun.alarmclock.alarmObject.AlarmData;
 import com.fixed4fun.alarmclock.viewHolders.CustomViewHolder;
 import com.fixed4fun.alarmclock.R;
@@ -57,13 +61,26 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomViewHolder> {
             customViewHolder.timeOfAlarm.setText(displayTimeOfAlarm(alarmDataArrayList.get(i)));
             customViewHolder.onOrOff.setChecked(alarmDataArrayList.get(i).isOnOrOff());
             customViewHolder.setTime.setText(daysWhenToRing(alarmDataArrayList.get(i)));
+            if(alarmDataArrayList.get(i).isOnOrOff()){
+                customViewHolder.setTime.setTextColor(ContextCompat.getColor(ADObject.getAppContext(), R.color.textColor));
+            } else {
+                customViewHolder.setTime.setTextColor(ContextCompat.getColor(ADObject.getAppContext(), R.color.textColorAlarmOff));
+            }
 
         } else {
             customViewHolder.timeOfAlarm.setText(displayTimeOfAlarm(alarmDataArrayList.get(i)));
             customViewHolder.onOrOff.setChecked(alarmDataArrayList.get(i).isOnOrOff());
             customViewHolder.selected.setChecked(alarmDataArrayList.get(i).isSelected());
-
         }
+
+        if(alarmDataArrayList.get(i).isOnOrOff()){
+            customViewHolder.timeOfAlarm.setTypeface(customViewHolder.timeOfAlarm.getTypeface(), Typeface.BOLD);
+            customViewHolder.timeOfAlarm.setTextColor(ContextCompat.getColor(ADObject.getAppContext(), R.color.textColor));
+        } else {
+            customViewHolder.timeOfAlarm.setTypeface(customViewHolder.timeOfAlarm.getTypeface(), Typeface.NORMAL);
+            customViewHolder.timeOfAlarm.setTextColor(ContextCompat.getColor(ADObject.getAppContext(), R.color.textColorAlarmOff));
+        }
+
     }
 
     private String displayTimeOfAlarm(AlarmData alarmData) {

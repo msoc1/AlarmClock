@@ -2,8 +2,11 @@ package com.fixed4fun.alarmclock.viewHolders;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.SwitchCompat;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.res.Resources;
+import android.graphics.Typeface;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -51,6 +54,15 @@ public class CustomViewHolder extends RecyclerView.ViewHolder {
         onOrOff.setOnClickListener(v -> {
             AlarmList.getAlarms().get(getAdapterPosition()).setOnOrOff(onOrOff.isChecked());
             alarmNotifications.startNotification(ADObject.getAppContext(), MainActivity.alarms);
+            if(onOrOff.isChecked()){
+                timeOfAlarm.setTypeface(null, Typeface.BOLD);
+                timeOfAlarm.setTextColor(ContextCompat.getColor(ADObject.getAppContext(), R.color.textColor));
+                setTime.setTextColor(ContextCompat.getColor(ADObject.getAppContext(), R.color.textColor));
+            } else {
+                timeOfAlarm.setTypeface(null, Typeface.NORMAL);
+                timeOfAlarm.setTextColor(ContextCompat.getColor(ADObject.getAppContext(), R.color.textColorAlarmOff));
+                setTime.setTextColor(ContextCompat.getColor(ADObject.getAppContext(), R.color.textColorAlarmOff));
+            }
         });
 
         if (MainActivity.listState) {
