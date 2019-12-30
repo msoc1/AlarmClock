@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="friday">P</string>
+    <string name="mon_fri">PON-PT</string>
+    <string name="monday_friday_short">P-P</string>
+    <string name="monday">P</string>
+    <string name="sat_sun">SOB-NIE</string>
+    <string name="saturday_sunday_short">S-N</string>
+    <string name="saturday">S</string>
+    <string name="sunday">N</string>
+    <string name="thursday">C</string>
+    <string name="tuesday">W</string>
+    <string name="wednesday">Ś</string>
+    <string name="mon_sat">Pon - Sob</string>
+    <string name="mon_fri_sun"><![CDATA[Pon - Pt & Nie]]></string>
+    <string name="mon_fri_adapter">Pon - Pt</string>
+    <string name="later">Później</string>
+    <string name="it_is_notification">Jest teraz</string>
+    <string name="everyday">Codziennie</string>
+    <string name="earlier">Wcześniej</string>
+    <string name="current_alarm_notification">Alarm o:</string>
+    <string name="deleted">Usunięto</string>
+    <string name="alarmy_toast_main">alarmy</string>
+    <string name="alarm_sound">Dźwięk alarmu:</string>
+    <string name="cancel_time_picker">anuluj</string>
+    <string name="change_selected">zmień zaznaczone</string>
+    <string name="continue_xiaomi_permissions">kontynuuj</string>
+    <string name="days_to_ring">Dni dzwonienia:</string>
+    <string name="delete_selected">usuń zaznaczone</string>
+    <string name="hour">Godzina</string>
+    <string name="message_dialog_xiaomi_permissions">Zaakceptuj zezwolenia w celu prawidłowego działania</string>
+    <string name="minute">minuta</string>
+    <string name="minutes">minuty</string>
+    <string name="modified_onmodify_timepicker_toas">Zmienione na</string>
+    <string name="nap_time">drzemka</string>
+    <string name="nap_time_l">Czas drzemki:</string>
+    <string name="new_alarm_toast_message">Nowy alarm ustawiono na</string>
+    <string name="on_onmodify_timepicker_toas">na</string>
+    <string name="press_hold">naciśnij i przytrzymaj żeby wyłączyć</string>
+    <string name="save_and_close">Zapisz i zamknij</string>
+    <string name="seconds">sekundy</string>
+    <string name="set_time_picker">ustaw</string>
+    <string name="theme_mode">Motyw</string>
+    <string name="turn_off_after">Wyłącz po:</string>
+    <string name="vibrate_long">Wibracja:</string>
+    <string name="when">kiedy</string>
+</resources>

@@ -23,6 +23,7 @@ import androidx.fragment.app.DialogFragment;
 import com.fixed4fun.alarmclock.R;
 import com.fixed4fun.alarmclock.activities.MainActivity;
 import com.fixed4fun.alarmclock.adapters.CustomAdapter;
+import com.fixed4fun.alarmclock.alarmObject.ADObject;
 import com.fixed4fun.alarmclock.alarmObject.AlarmData;
 import com.fixed4fun.alarmclock.objectLists.AlarmList;
 import com.fixed4fun.alarmclock.notifications.AlarmNotifications;
@@ -228,12 +229,11 @@ public class NewTimePicker extends DialogFragment implements View.OnClickListene
         }
 
 
-        String toastMessage = "New Alarm change to "
+        String toastMessage = ADObject.getAppContext().getResources().getString(R.string.new_alarm_toast_message)+ " "
                 + timePicker.getCurrentHour()
                 + ":"
                 + ((timePicker.getCurrentMinute() > 9) ? timePicker.getCurrentMinute() : "0" + timePicker.getCurrentMinute())
-                + " on: "
-                + CustomAdapter.daysWhenToRing(alarmData);
+                + "\n" + ADObject.getAppContext().getResources().getString(R.string.on_onmodify_timepicker_toas)+": "+ CustomAdapter.daysWhenToRing(alarmData);
         Toast toast = Toast.makeText(getContext(), toastMessage, Toast.LENGTH_LONG);
         toast.show();
         adapter = ((MainActivity) getActivity()).getCustomAdapter();

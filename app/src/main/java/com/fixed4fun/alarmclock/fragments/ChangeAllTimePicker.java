@@ -84,7 +84,7 @@ public class ChangeAllTimePicker extends DialogFragment implements View.OnClickL
         minutes.setMinValue(0);
         minutes.setMaxValue(59);
 
-        earlierOrLater.setDisplayedValues(new String[]{"Earlier", "Later"});
+        earlierOrLater.setDisplayedValues(new String[]{getString(R.string.earlier), getString(R.string.later)});
         earlierOrLater.setMinValue(0);
         earlierOrLater.setMaxValue(1);
         earlierOrLater.setValue(0);

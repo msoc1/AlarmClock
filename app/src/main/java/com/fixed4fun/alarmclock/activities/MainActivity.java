@@ -28,14 +28,13 @@ import com.fixed4fun.alarmclock.R;
 import com.fixed4fun.alarmclock.adapters.CustomAdapter;
 import com.fixed4fun.alarmclock.alarmObject.ADObject;
 import com.fixed4fun.alarmclock.alarmObject.AlarmData;
-import com.fixed4fun.alarmclock.objectLists.AlarmList;
-import com.fixed4fun.alarmclock.fragments.SettingsFragment;
-import com.fixed4fun.alarmclock.notifications.AlarmNotifications;
 import com.fixed4fun.alarmclock.fragments.ChangeAllTimePicker;
 import com.fixed4fun.alarmclock.fragments.ModifyTimePicker;
 import com.fixed4fun.alarmclock.fragments.NewTimePicker;
+import com.fixed4fun.alarmclock.fragments.SettingsFragment;
+import com.fixed4fun.alarmclock.notifications.AlarmNotifications;
+import com.fixed4fun.alarmclock.objectLists.AlarmList;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.tabs.TabLayout;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -46,6 +45,7 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 
 import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.AppSettingsDialog;
@@ -163,7 +163,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         floatingActionButton = findViewById(R.id.new_alarm);
         settingButton = findViewById(R.id.settings);
         recyclerView = findViewById(R.id.recyclerView);
-        TabLayout tableLayout = findViewById(R.id.tabLayout);
         //Toast will be shown later
         toastMessage = "";
         notificationToast = Toast.makeText(this, toastMessage, Toast.LENGTH_LONG);
@@ -175,25 +174,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         alarmNotifications = new AlarmNotifications();
 
         setOnClickListeners();
-
-        tableLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-                if (tab.getPosition() == 0) {
-                    recyclerView.setAdapter(customAdapter);
-                    recyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
-                }
-            }
-
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-                recyclerView.setAdapter(null);
-            }
-
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-            }
-        });
     }
 
     public void setOnClickListeners() {
@@ -247,7 +227,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     }
                 }
                 alarms.removeAll(tempList);
-                toastMessage = "Deleted " + tempList.size() + " alarms.";
+                toastMessage = ADObject.getAppContext().getResources().getString(R.string.deleted) + " " + tempList.size()+ " " + ADObject.getAppContext().getResources().getString(R.string.alarmy_toast_main)+".";
                 notificationToast.setText(toastMessage);
                 notificationToast.show();
                 tempList.clear();
@@ -272,6 +252,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
 
             case R.id.new_alarm:
+                Locale current = getResources().getConfiguration().locale;
+                Log.d("123456", "onClickListeners: " + current);
                 checkPermissionsAndAddAlarm();
                 break;
             case R.id.settings:
@@ -318,9 +300,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         boolean xiaomiPermission = sharedPrefs.getBoolean(XIAOMI_PERMISSION, false);
         if (isMiUi() && !xiaomiPermission) {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setTitle("Alarm Information");
-            builder.setMessage("Accept permissions for full functionallity");
-            builder.setPositiveButton("Continue", (dialog, which) -> {
+            builder.setTitle(ADObject.getAppContext().getResources().getString(R.string.alarm_information_dialog_title));
+            builder.setMessage(ADObject.getAppContext().getResources().getString(R.string.message_dialog_xiaomi_permissions));
+            builder.setPositiveButton(ADObject.getAppContext().getResources().getString(R.string.continue_xiaomi_permissions), (dialog, which) -> {
                 //open system settings to get other permissions needed specifically for xioami phones
                 startActivity(new Intent("miui.intent.action.APP_PERM_EDITOR").putExtra("extra_pkgname", getPackageName()));
                 SharedPreferences.Editor editor = sharedPrefs.edit();

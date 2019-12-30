@@ -14,7 +14,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="24dp"
-        android:text="Vibrate:"
+        android:text="@string/vibrate_long"
         android:textSize="20sp"
         app:layout_constraintBottom_toTopOf="@+id/textView9"
         app:layout_constraintStart_toStartOf="parent"
@@ -35,7 +35,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="40dp"
-        android:text="Theme Mode:"
+        android:text="@string/theme_mode"
         android:textSize="20sp"
         app:layout_constraintBottom_toTopOf="@+id/textView12"
         app:layout_constraintStart_toStartOf="@+id/textView7"
@@ -56,7 +56,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="40dp"
-        android:text="Alarm Sound:"
+        android:text="@string/alarm_sound"
         android:textSize="20sp"
         app:layout_constraintBottom_toTopOf="@+id/textView6"
         app:layout_constraintStart_toStartOf="@+id/textView12"
@@ -81,7 +81,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="40dp"
-        android:text="Nap Time:"
+        android:text="@string/nap_time_l"
         android:textSize="20sp"
         app:layout_constraintBottom_toTopOf="@+id/textView10"
         app:layout_constraintStart_toStartOf="@+id/textView9"
@@ -94,7 +94,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="40dp"
-        android:text="Save and Close"
+        android:text="@string/save_and_close"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -109,12 +109,13 @@
         app:layout_constraintEnd_toEndOf="@+id/theme_switch"
         app:layout_constraintStart_toStartOf="@+id/theme_switch"
         app:layout_constraintTop_toTopOf="@+id/textView12"
-        app:npv_TextSizeNormal="10sp"
-        app:npv_TextSizeSelected="22sp"
-        app:npv_TextColorNormal="@color/numbersBackgroundColor"
+        app:npv_DividerColor="@color/selected_checkbox_color"
+        app:npv_ItemPaddingVertical="4dp"
         app:npv_TextColorHint="@color/textColor"
+        app:npv_TextColorNormal="@color/numbersBackgroundColor"
         app:npv_TextColorSelected="@color/textColor"
-        app:npv_DividerColor="@color/selected_checkbox_color"/>
+        app:npv_TextSizeNormal="10sp"
+        app:npv_TextSizeSelected="22sp" />
 
 
     <TextView
@@ -123,7 +124,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="40dp"
-        android:text="Turn off after:"
+        android:text="@string/turn_off_after"
         android:textSize="20sp"
         app:layout_constraintBottom_toTopOf="@+id/close_settings"
         app:layout_constraintStart_toStartOf="@+id/textView10"
@@ -137,12 +138,13 @@
         app:layout_constraintEnd_toEndOf="@+id/nap_length"
         app:layout_constraintStart_toStartOf="@+id/nap_length"
         app:layout_constraintTop_toTopOf="@+id/textView6"
-        app:npv_TextSizeNormal="10sp"
-        app:npv_TextSizeSelected="22sp"
-        app:npv_TextColorNormal="@color/numbersBackgroundColor"
+        app:npv_DividerColor="@color/selected_checkbox_color"
+        app:npv_ItemPaddingVertical="4dp"
         app:npv_TextColorHint="@color/textColor"
+        app:npv_TextColorNormal="@color/numbersBackgroundColor"
         app:npv_TextColorSelected="@color/textColor"
-        app:npv_DividerColor="@color/selected_checkbox_color"/>
+        app:npv_TextSizeNormal="10sp"
+        app:npv_TextSizeSelected="22sp" />
 
     <TextView
         android:textColor="@color/textColor"
@@ -150,7 +152,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:text="seconds"
+        android:text="@string/seconds"
         app:layout_constraintBaseline_toBaselineOf="@+id/textView6"
         app:layout_constraintStart_toEndOf="@+id/turnoff_timer" />
 
@@ -160,7 +162,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="5dp"
-        android:text="minutes"
+        android:text="@string/minutes"
         app:layout_constraintBaseline_toBaselineOf="@+id/textView12"
         app:layout_constraintStart_toEndOf="@+id/nap_length" />
 

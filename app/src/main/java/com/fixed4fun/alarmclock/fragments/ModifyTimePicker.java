@@ -19,6 +19,7 @@ import androidx.fragment.app.DialogFragment;
 import com.fixed4fun.alarmclock.R;
 import com.fixed4fun.alarmclock.activities.MainActivity;
 import com.fixed4fun.alarmclock.adapters.CustomAdapter;
+import com.fixed4fun.alarmclock.alarmObject.ADObject;
 import com.fixed4fun.alarmclock.alarmObject.AlarmData;
 import com.fixed4fun.alarmclock.notifications.AlarmNotifications;
 import com.fixed4fun.alarmclock.objectLists.AlarmList;
@@ -136,11 +137,11 @@ public class ModifyTimePicker extends DialogFragment implements View.OnClickList
 
 
         String toastMessage =
-                "Modyfied to "
+                ADObject.getAppContext().getResources().getString(R.string.modified_onmodify_timepicker_toas)
                         + timePicker.getCurrentHour()
                         + ":"
                         + ((timePicker.getCurrentMinute() > 9) ? timePicker.getCurrentMinute() : "0" + timePicker.getCurrentMinute())
-                        + " on: "
+                        + ADObject.getAppContext().getResources().getString(R.string.on_onmodify_timepicker_toas)+": "
                         + CustomAdapter.daysWhenToRing(AlarmList.getAlarms().get(MainActivity.position));
         Toast toast = Toast.makeText(getContext(), toastMessage, Toast.LENGTH_LONG);
         toast.show();

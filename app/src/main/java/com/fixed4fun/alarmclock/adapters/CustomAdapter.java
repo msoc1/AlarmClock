@@ -1,24 +1,23 @@
 package com.fixed4fun.alarmclock.adapters;
 
 import android.content.Context;
-import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.graphics.Typeface;
-import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.fixed4fun.alarmclock.R;
+import com.fixed4fun.alarmclock.R.string;
 import com.fixed4fun.alarmclock.activities.MainActivity;
 import com.fixed4fun.alarmclock.alarmObject.ADObject;
 import com.fixed4fun.alarmclock.alarmObject.AlarmData;
 import com.fixed4fun.alarmclock.viewHolders.CustomViewHolder;
-import com.fixed4fun.alarmclock.R;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 
 public class CustomAdapter extends RecyclerView.Adapter<CustomViewHolder> {
 
@@ -98,58 +97,41 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomViewHolder> {
         boolean wholeWeek = alarm.isMonday() && alarm.isTuesday() && alarm.isWednesday() && alarm.isThursday() && alarm.isFriday() && alarm.isSaturday() && alarm.isSunday();
 
         if (workDays && weekend || wholeWeek) {
-            return "Everyday";
+
+            return ADObject.getAppContext().getResources().getString(R.string.everyday);
         } else if (workDays) {
             if (alarm.isSaturday()) {
-                return "Mon - Sat";
+                return ADObject.getAppContext().getResources().getString(R.string.mon_sat);
             }
             if (alarm.isSunday()) {
-                return "Mon - Fri & Sun";
+                return ADObject.getAppContext().getResources().getString(R.string.mon_fri_sun);
             } else {
-                return "Mon - Fri";
+                return ADObject.getAppContext().getResources().getString(R.string.mon_fri_adapter);
             }
         } else {
             if (alarm.isMonday()) {
-                message += "M ";
+                message += ADObject.getAppContext().getResources().getString(R.string.monday) + " ";
             }
             if (alarm.isTuesday()) {
-                message += "T ";
+                message += ADObject.getAppContext().getResources().getString(R.string.tuesday)+ " ";
             }
             if (alarm.isWednesday()) {
-                message += "W ";
+                message += ADObject.getAppContext().getResources().getString(R.string.wednesday)+ " ";
             }
             if (alarm.isThursday()) {
-                message += "T ";
+                message += ADObject.getAppContext().getResources().getString(R.string.thursday)+ " ";
             }
             if (alarm.isFriday()) {
-                message += "F ";
+                message += ADObject.getAppContext().getResources().getString(R.string.friday)+ " ";
             }
             if (alarm.isSaturday()) {
-                message += "S ";
+                message += ADObject.getAppContext().getResources().getString(R.string.saturday)+ " ";
             }
             if (alarm.isSunday()) {
-                message += "S";
+                message += ADObject.getAppContext().getResources().getString(R.string.sunday);
             }
         }
         return message;
-    }
-
-
-    private String timeUntilAlarm(Context context, AlarmData alarmData) {
-
-        Calendar c = Calendar.getInstance();
-        int hour = alarmData.getHour();
-        int minute = alarmData.getMinute();
-
-
-        if (DateFormat.is24HourFormat(context)) {
-            // hour = c.get(Calendar.HOUR_OF_DAY);
-        } else {
-            //  hour = c.get(Calendar.HOUR);
-        }
-        //TODO
-        //find way to get time difference
-        return "Time difference is: XX:XX";
     }
 
 

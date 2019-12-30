@@ -18,10 +18,10 @@
     </style>
 
     <style name="my_switch" parent="Theme.AppCompat.Light">
-        <item name="colorAccent">#4F80FF</item>
+        <item name="android:colorAccent">#4F80FF</item>
         <item name="android:colorForeground">#B6D0FF</item>
-        <item name="colorSwitchThumbNormal">#4F80FF</item>
-        <item name="colorControlActivated">#B6D0FF</item>
+        <item name="colorSwitchThumbNormal">#FAFAFA</item>
+        <item name="colorControlActivated">#FAFAFA</item>
     </style>
 
 

@@ -16,13 +16,12 @@
 
     <Button
         android:background="#00ffffff"
-        android:textColor="@color/notselected_checkbox_color"
+        android:textColor="@color/textColor"
         android:id="@+id/change_all"
         android:layout_width="113dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:drawableStart="@android:drawable/ic_menu_rotate"
-        android:text="change"
+        android:text="@string/change_selected"
         app:layout_constraintBaseline_toBaselineOf="@+id/select_all"
         app:layout_constraintStart_toEndOf="@+id/select_all" />
 
@@ -37,13 +36,13 @@
 
     <Button
         android:background="#00ffffff"
-        android:textColor="@color/notselected_checkbox_color"
+        android:textColor="@color/textColor"
         android:id="@+id/delete_all"
         android:layout_width="113dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
-        android:text="delete"
+        android:text="@string/delete_selected"
         app:layout_constraintBaseline_toBaselineOf="@+id/turn_all"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/turn_all" />

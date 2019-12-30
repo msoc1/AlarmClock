@@ -1,15 +1,50 @@
 <resources>
-    <string name="app_name">My Application</string>
-    <string name="sunday_text">S</string>
-    <string name="saturday_text">S</string>
-    <string name="friday_text">F</string>
-    <string name="thursday_text">T</string>
-    <string name="wednesday_text">W</string>
-    <string name="tuesday_text">T</string>
-    <string name="monday_text">M</string>
-    <string name="saturday_sunday_short_text">S-S</string>
-    <string name="monday_friday_short_text">M-F</string>
-    <string name="vibrate">V</string>
-    <string name="sat_sun_text">SAT-SUN</string>
-    <string name="mon_fri_text">MON-FRI</string>
+    <string name="app_name" translatable="false">My Application</string>
+    <string name="sunday">S</string>
+    <string name="saturday">S</string>
+    <string name="friday">F</string>
+    <string name="thursday">T</string>
+    <string name="wednesday">W</string>
+    <string name="tuesday">T</string>
+    <string name="monday">M</string>
+    <string name="saturday_sunday_short">S-S</string>
+    <string name="monday_friday_short">M-F</string>
+    <string name="vibrate" translatable="false">V</string>
+    <string name="sat_sun">SAT-SUN</string>
+    <string name="mon_fri">MON-FRI</string>
+    <string name="alarm_notification" translatable="false">Alarm!!!</string>
+    <string name="it_is_notification">It is</string>
+    <string name="current_alarm_notification">Current alarm</string>
+    <string name="earlier">Earlier</string>
+    <string name="later">Later</string>
+    <string name="everyday">Everyday</string>
+    <string name="mon_sat">Mon - Sat</string>
+    <string name="mon_fri_sun"><![CDATA[Mon - Fri & Sun]]></string>
+    <string name="mon_fri_adapter">Mon - Fri</string>
+    <string name="deleted">Deleted</string>
+    <string name="alarmy_toast_main">alarms</string>
+    <string name="alarm_information_dialog_title" translatable="false">Alarm Information</string>
+    <string name="message_dialog_xiaomi_permissions">Accept permissions for full functionallity</string>
+    <string name="continue_xiaomi_permissions">Continue</string>
+    <string name="modified_onmodify_timepicker_toas">Modified to</string>
+    <string name="on_onmodify_timepicker_toas">on</string>
+    <string name="new_alarm_toast_message">New Alarm set to</string>
+    <string name="nap_time">nap time</string>
+    <string name="press_hold">press &amp; hold to turn off</string>
+    <string name="set_time_picker">set</string>
+    <string name="cancel_time_picker">cancel</string>
+    <string name="days_to_ring">Days to ring:</string>
+    <string name="hour">Hour</string>
+    <string name="minute">minute</string>
+    <string name="when">when</string>
+    <string name="save_and_close">Save and Close</string>
+    <string name="vibrate_long">Vibrate:</string>
+    <string name="theme_mode">Theme Mode:</string>
+    <string name="nap_time_l">Nap Time:</string>
+    <string name="turn_off_after">Turn off after:</string>
+    <string name="seconds">seconds</string>
+    <string name="minutes">minutes</string>
+    <string name="alarm_sound">Alarm sound:</string>
+    <string name="change_selected">change selected</string>
+    <string name="delete_selected">delete selected</string>
 </resources>
