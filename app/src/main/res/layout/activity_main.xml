@@ -43,14 +43,14 @@
         android:backgroundTintMode="src_over"
         android:clickable="true"
         android:focusable="true"
-        android:scaleX="0.7"
-        android:scaleY="0.7"
-        android:src="?attr/actionModePasteDrawable"
+        android:scaleX="0.8"
+        android:scaleY="0.8"
+        android:src="@drawable/settings"
         app:backgroundTint="#ff0000 "
         app:backgroundTintMode="add"
         app:layout_constraintBottom_toBottomOf="@+id/recyclerView"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.75"
+        app:layout_constraintHorizontal_bias="0.8"
         app:layout_constraintStart_toStartOf="parent" />
 
 

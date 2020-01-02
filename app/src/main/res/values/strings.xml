@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name" translatable="false">My Application</string>
+    <string name="app_name" translatable="false">Multi Alarm</string>
     <string name="sunday">S</string>
     <string name="saturday">S</string>
     <string name="friday">F</string>
@@ -13,8 +13,8 @@
     <string name="sat_sun">SAT-SUN</string>
     <string name="mon_fri">MON-FRI</string>
     <string name="alarm_notification" translatable="false">Alarm!!!</string>
-    <string name="it_is_notification">It is</string>
-    <string name="current_alarm_notification">Current alarm</string>
+    <string name="it_is_notification">"It is "</string>
+    <string name="current_alarm_notification">"Current alarm "</string>
     <string name="earlier">Earlier</string>
     <string name="later">Later</string>
     <string name="everyday">Everyday</string>
@@ -25,18 +25,18 @@
     <string name="alarmy_toast_main">alarms</string>
     <string name="alarm_information_dialog_title" translatable="false">Alarm Information</string>
     <string name="message_dialog_xiaomi_permissions">Accept permissions for full functionallity</string>
-    <string name="continue_xiaomi_permissions">Continue</string>
-    <string name="modified_onmodify_timepicker_toas">Modified to</string>
-    <string name="on_onmodify_timepicker_toas">on</string>
-    <string name="new_alarm_toast_message">New Alarm set to</string>
-    <string name="nap_time">nap time</string>
+    <string name="continue_xiaomi_permissions">CONTINUE</string>
+    <string name="modified_onmodify_timepicker_toas">"Modified to "</string>
+    <string name="on_onmodify_timepicker_toas">On</string>
+    <string name="new_alarm_toast_message">"New Alarm set to "</string>
+    <string name="nap_time">NAP TIME</string>
     <string name="press_hold">press &amp; hold to turn off</string>
-    <string name="set_time_picker">set</string>
-    <string name="cancel_time_picker">cancel</string>
-    <string name="days_to_ring">Days to ring:</string>
+    <string name="set_time_picker">SET</string>
+    <string name="cancel_time_picker">CANCEL</string>
+    <string name="days_to_ring">"Days to ring: "</string>
     <string name="hour">Hour</string>
-    <string name="minute">minute</string>
-    <string name="when">when</string>
+    <string name="minute">Minute</string>
+    <string name="when">When</string>
     <string name="save_and_close">Save and Close</string>
     <string name="vibrate_long">Vibrate:</string>
     <string name="theme_mode">Theme Mode:</string>
@@ -45,6 +45,6 @@
     <string name="seconds">seconds</string>
     <string name="minutes">minutes</string>
     <string name="alarm_sound">Alarm sound:</string>
-    <string name="change_selected">change selected</string>
-    <string name="delete_selected">delete selected</string>
+    <string name="change_selected">CHANGE SELECTED</string>
+    <string name="delete_selected">DELETE SELECTED</string>
 </resources>

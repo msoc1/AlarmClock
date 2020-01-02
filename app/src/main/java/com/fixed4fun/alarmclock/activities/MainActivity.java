@@ -77,11 +77,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     Toast notificationToast;
     private ConstraintLayout toolbar;
 
+
     private static final int PERMISION_REQUESTCODE = 456;
     public static final String XIAOMI_PERMISSION = "xiaomi";
     public static final int XIAOMI_REQUESTCODE = 7890;
     String[] PERMISSIONS_NEEDED = {Manifest.permission.WAKE_LOCK, Manifest.permission.SET_ALARM, Manifest.permission.DISABLE_KEYGUARD, Manifest.permission.RECEIVE_BOOT_COMPLETED,};
 
+    public static final String THEMETAG = "theme";
 
     public static CustomAdapter getCustomAdapter() {
         return customAdapter;
@@ -146,6 +148,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        boolean th = sharedPrefs.getBoolean(THEMETAG, true);
+
+        if(!th){
+            setTheme(R.style.AppTheme_Dark);
+        }
+
         setContentView(R.layout.activity_main);
 
         alarms = AlarmList.getAlarms();

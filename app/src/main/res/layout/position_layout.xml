@@ -10,23 +10,28 @@
         android:id="@+id/time_of_alarm"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="28dp"
+        android:layout_marginBottom="28dp"
         android:text="HH:MM"
         android:textColor="@color/textColor"
-        android:textSize="24sp"
+        android:textSize="34sp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.appcompat.widget.SwitchCompat
-        android:theme="@style/my_switch"
         android:id="@+id/on_or_off"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:padding="16dp"
-        app:layout_constraintBaseline_toBaselineOf="@+id/time_of_alarm"
-        app:layout_constraintEnd_toEndOf="parent" />
+        android:theme="@style/my_switch"
+        app:layout_constraintBottom_toBottomOf="@+id/time_of_alarm"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/time_of_alarm"
+        android:scaleX="1.1"
+        android:scaleY="1.1"/>
 
     <TextView
         android:id="@+id/set_time"
@@ -35,6 +40,7 @@
         android:layout_marginStart="8dp"
         android:text="setTime"
         android:textColor="@color/textColor"
+        android:textSize="18dp"
         app:layout_constraintBottom_toBottomOf="@+id/time_of_alarm"
         app:layout_constraintEnd_toStartOf="@+id/on_or_off"
         app:layout_constraintHorizontal_bias="0.0"
@@ -42,25 +48,21 @@
         app:layout_constraintTop_toTopOf="@+id/time_of_alarm" />
 
 
-    <View
-        android:id="@+id/view"
-        android:layout_width="match_parent"
-        android:layout_height="2dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="16dp"
-        android:background="@color/selected_checkbox_color"
-        android:clickable="false"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/time_of_alarm" />
-
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintGuide_percent="0.27" />
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:background="#383f70"
+        android:clickable="false"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

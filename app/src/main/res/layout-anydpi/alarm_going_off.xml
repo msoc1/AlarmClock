@@ -30,6 +30,7 @@
         android:gravity="right"
         android:textColor="@color/textColor"
         android:textSize="100sp"
+        app:fontFamily="@font/roboto_light"
         app:layout_constraintEnd_toStartOf="@+id/textView5"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"

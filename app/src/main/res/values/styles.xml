@@ -6,6 +6,14 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:textViewStyle">@style/RobotoTextViewStyle</item>
+        <item name="android:buttonStyle">@style/RobotoButtonStyle</item>
+    </style>
+
+    <style name="AppTheme.Dark" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">#fafafa</item>
+        <item name="colorPrimaryDark">#fafafa</item>
+        <item name="colorAccent">#fafafa</item>
     </style>
 
     <style name="checkboxes_style">
@@ -17,11 +25,18 @@
         <item name="android:textColor">@color/textColor</item>
     </style>
 
-    <style name="my_switch" parent="Theme.AppCompat.Light">
+    <style name="my_switch" parent="Widget.AppCompat.CompoundButton.Switch">
         <item name="android:colorAccent">#4F80FF</item>
         <item name="android:colorForeground">#B6D0FF</item>
         <item name="colorSwitchThumbNormal">#FAFAFA</item>
-        <item name="colorControlActivated">#FAFAFA</item>
+        <item name="colorControlActivated">#4F80FF</item>
+    </style>
+    <style name="RobotoTextViewStyle" parent="android:Widget.TextView">
+        <item name="fontFamily">@font/roboto_light</item>
+    </style>
+
+    <style name="RobotoButtonStyle" parent="android:Widget.Holo.Button">
+        <item name="fontFamily">@font/roboto_bold</item>
     </style>
 
 

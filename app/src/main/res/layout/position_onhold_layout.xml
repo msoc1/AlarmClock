@@ -1,64 +1,72 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/positionConstraintLayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <Button
+    <ImageView
         android:id="@+id/delete_alarm"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:drawableStart="@android:drawable/star_big_off"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginEnd="16dp"
+        android:background="@color/backgroundActivity"
         android:minWidth="0dp"
-        app:layout_constraintBaseline_toBaselineOf="@+id/time_of_alarm"
-        app:layout_constraintEnd_toEndOf="parent" />
+        android:src="@drawable/delete"
+        app:layout_constraintBottom_toBottomOf="@+id/on_or_off"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/on_or_off"
+        app:layout_constraintVertical_bias="0.516" />
 
     <CheckBox
         android:id="@+id/selected"
-        android:theme="@style/my_switch"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="16dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="28dp"
+        android:layout_marginBottom="28dp"
+        android:theme="@style/my_switch"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.appcompat.widget.SwitchCompat
-        android:theme="@style/my_switch"
         android:id="@+id/on_or_off"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
         android:padding="16dp"
-        app:layout_constraintBaseline_toBaselineOf="@+id/time_of_alarm"
+        android:theme="@style/my_switch"
+        app:layout_constraintBottom_toBottomOf="@+id/time_of_alarm"
         app:layout_constraintEnd_toStartOf="@+id/delete_alarm"
-        app:layout_constraintStart_toEndOf="@+id/time_of_alarm" />
+        app:layout_constraintStart_toEndOf="@+id/time_of_alarm"
+        app:layout_constraintTop_toTopOf="@+id/time_of_alarm"
+        android:scaleX="1.1"
+        android:scaleY="1.1"/>
 
     <TextView
         android:id="@+id/time_of_alarm"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
+        android:layout_marginStart="16dp"
         android:text="timeOfAlarm"
         android:textColor="@color/textColor"
-        android:textSize="24sp"
-        app:layout_constraintBaseline_toBaselineOf="@+id/selected"
-        app:layout_constraintStart_toEndOf="@+id/selected" />
+        android:textSize="32sp"
+        app:layout_constraintBottom_toBottomOf="@+id/selected"
+        app:layout_constraintStart_toEndOf="@+id/selected"
+        app:layout_constraintTop_toTopOf="@+id/selected" />
 
     <View
         android:layout_width="match_parent"
         android:layout_height="2dp"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
-        android:layout_marginBottom="8dp"
-        android:background="@color/selected_checkbox_color"
+        android:background="#383f70"
         android:clickable="false"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -7,9 +7,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.res.Resources;
 import android.graphics.Typeface;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.fixed4fun.alarmclock.activities.MainActivity;
@@ -28,7 +30,7 @@ public class CustomViewHolder extends RecyclerView.ViewHolder {
 
     public CheckBox selected;
     CustomAdapter adapter;
-    private Button deleteAlarm;
+    private ImageView deleteAlarm;
     private AlarmNotifications alarmNotifications;
 
     public CustomViewHolder(@NonNull View itemView, final CustomAdapter.OnItemClickListener listener, final CustomAdapter.OnLongClickListener longListener) {
@@ -40,6 +42,8 @@ public class CustomViewHolder extends RecyclerView.ViewHolder {
         onOrOff = itemView.findViewById(R.id.on_or_off);
         deleteAlarm = itemView.findViewById(R.id.delete_alarm);
         selected = itemView.findViewById(R.id.selected);
+
+
 
 
         itemView.setOnClickListener(v -> {
@@ -54,14 +58,25 @@ public class CustomViewHolder extends RecyclerView.ViewHolder {
         onOrOff.setOnClickListener(v -> {
             AlarmList.getAlarms().get(getAdapterPosition()).setOnOrOff(onOrOff.isChecked());
             alarmNotifications.startNotification(ADObject.getAppContext(), MainActivity.alarms);
-            if(onOrOff.isChecked()){
-                timeOfAlarm.setTypeface(null, Typeface.BOLD);
+            if (onOrOff.isChecked()) {
+                Typeface roboto_bold = Typeface.createFromAsset(ADObject.getAppContext().getAssets(), "fonts/roboto_bold.ttf");
+
+                timeOfAlarm.setTypeface(roboto_bold);
                 timeOfAlarm.setTextColor(ContextCompat.getColor(ADObject.getAppContext(), R.color.textColor));
-                setTime.setTextColor(ContextCompat.getColor(ADObject.getAppContext(), R.color.textColor));
+                if (!MainActivity.listState) {
+                    setTime.setTextColor(ContextCompat.getColor(ADObject.getAppContext(), R.color.textColor));
+                    setTime.setTypeface(roboto_bold);
+                }
             } else {
-                timeOfAlarm.setTypeface(null, Typeface.NORMAL);
+
+                Typeface roboto_light = Typeface.createFromAsset(ADObject.getAppContext().getAssets(), "fonts/roboto_light.ttf");
+
+                timeOfAlarm.setTypeface(roboto_light);
                 timeOfAlarm.setTextColor(ContextCompat.getColor(ADObject.getAppContext(), R.color.textColorAlarmOff));
-                setTime.setTextColor(ContextCompat.getColor(ADObject.getAppContext(), R.color.textColorAlarmOff));
+                if (!MainActivity.listState) {
+                    setTime.setTextColor(ContextCompat.getColor(ADObject.getAppContext(), R.color.textColorAlarmOff));
+                    setTime.setTypeface(roboto_light);
+                }
             }
         });
 

@@ -55,6 +55,9 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull CustomViewHolder customViewHolder, int i) {
+        Typeface roboto_bold = Typeface.createFromAsset(ADObject.getAppContext().getAssets(), "fonts/roboto_bold.ttf");
+        Typeface roboto_light = Typeface.createFromAsset(ADObject.getAppContext().getAssets(), "fonts/roboto_light.ttf");
+
         if (!MainActivity.listState) {
             //normal list item view
             customViewHolder.timeOfAlarm.setText(displayTimeOfAlarm(alarmDataArrayList.get(i)));
@@ -62,8 +65,12 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomViewHolder> {
             customViewHolder.setTime.setText(daysWhenToRing(alarmDataArrayList.get(i)));
             if(alarmDataArrayList.get(i).isOnOrOff()){
                 customViewHolder.setTime.setTextColor(ContextCompat.getColor(ADObject.getAppContext(), R.color.textColor));
+                customViewHolder.setTime.setTypeface(roboto_bold);
+
             } else {
                 customViewHolder.setTime.setTextColor(ContextCompat.getColor(ADObject.getAppContext(), R.color.textColorAlarmOff));
+                customViewHolder.setTime.setTypeface(roboto_light);
+
             }
 
         } else {
@@ -73,10 +80,10 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomViewHolder> {
         }
 
         if(alarmDataArrayList.get(i).isOnOrOff()){
-            customViewHolder.timeOfAlarm.setTypeface(customViewHolder.timeOfAlarm.getTypeface(), Typeface.BOLD);
+            customViewHolder.timeOfAlarm.setTypeface(roboto_bold);
             customViewHolder.timeOfAlarm.setTextColor(ContextCompat.getColor(ADObject.getAppContext(), R.color.textColor));
         } else {
-            customViewHolder.timeOfAlarm.setTypeface(customViewHolder.timeOfAlarm.getTypeface(), Typeface.NORMAL);
+            customViewHolder.timeOfAlarm.setTypeface(roboto_light);
             customViewHolder.timeOfAlarm.setTextColor(ContextCompat.getColor(ADObject.getAppContext(), R.color.textColorAlarmOff));
         }
 

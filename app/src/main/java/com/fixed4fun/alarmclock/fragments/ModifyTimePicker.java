@@ -141,7 +141,7 @@ public class ModifyTimePicker extends DialogFragment implements View.OnClickList
                         + timePicker.getCurrentHour()
                         + ":"
                         + ((timePicker.getCurrentMinute() > 9) ? timePicker.getCurrentMinute() : "0" + timePicker.getCurrentMinute())
-                        + ADObject.getAppContext().getResources().getString(R.string.on_onmodify_timepicker_toas)+": "
+                        + "\n" +ADObject.getAppContext().getResources().getString(R.string.on_onmodify_timepicker_toas)+": "
                         + CustomAdapter.daysWhenToRing(AlarmList.getAlarms().get(MainActivity.position));
         Toast toast = Toast.makeText(getContext(), toastMessage, Toast.LENGTH_LONG);
         toast.show();
