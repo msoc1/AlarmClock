@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.NumberPicker;
+import android.widget.Toast;
 
 import com.fixed4fun.alarmclock.alarmObject.AlarmData;
 import com.fixed4fun.alarmclock.objectLists.AlarmList;
@@ -102,51 +103,68 @@ public class ChangeAllTimePicker extends DialogFragment implements View.OnClickL
     private void onClickListeners(View v) {
         switch (v.getId()) {
             case R.id.change:
+                int turnedOn = 0;
+
                 for (AlarmData ad : alarms) {
                     if (ad.isSelected()) {
-                        if (earlierOrLater.getValue() == 0) {
-                            if (ad.getMinute() - minutes.getValue() < 0) {
-                                ad.setMinute((ad.getMinute() - minutes.getValue() + 60));
-                                ad.setHour(ad.getHour() - 1);
+                        turnedOn++;
+                    }
+                }
+
+                if(hours.getValue() !=0 || minutes.getValue()!=0) {
+
+                    for (AlarmData ad : alarms) {
+                        if (ad.isSelected()) {
+                            if (earlierOrLater.getValue() == 0) {
+                                if (ad.getMinute() - minutes.getValue() < 0) {
+                                    ad.setMinute((ad.getMinute() - minutes.getValue() + 60));
+                                    ad.setHour(ad.getHour() - 1);
+                                } else {
+                                    ad.setMinute(ad.getMinute() - minutes.getValue());
+                                }
+                                if (ad.getHour() - hours.getValue() < 0) {
+                                    ad.setHour(ad.getHour() - hours.getValue() + 24);
+                                } else {
+                                    ad.setHour(ad.getHour() - hours.getValue());
+                                }
                             } else {
-                                ad.setMinute(ad.getMinute() - minutes.getValue());
-                            }
-                            if (ad.getHour() - hours.getValue() < 0) {
-                                ad.setHour(ad.getHour() - hours.getValue() + 24);
-                            } else {
-                                ad.setHour(ad.getHour() - hours.getValue());
-                            }
-                        } else {
-                            if (ad.getMinute() + minutes.getValue() > 59) {
-                                ad.setMinute((ad.getMinute() + minutes.getValue() - 60));
-                                ad.setHour(ad.getHour() + 1);
-                            } else {
-                                ad.setMinute(ad.getMinute() + minutes.getValue());
-                            }
-                            if (ad.getHour() + hours.getValue() > 23) {
-                                ad.setHour(ad.getHour() + hours.getValue() - 24);
-                            } else {
-                                ad.setHour(ad.getHour() + hours.getValue());
+                                if (ad.getMinute() + minutes.getValue() > 59) {
+                                    ad.setMinute((ad.getMinute() + minutes.getValue() - 60));
+                                    ad.setHour(ad.getHour() + 1);
+                                } else {
+                                    ad.setMinute(ad.getMinute() + minutes.getValue());
+                                }
+                                if (ad.getHour() + hours.getValue() > 23) {
+                                    ad.setHour(ad.getHour() + hours.getValue() - 24);
+                                } else {
+                                    ad.setHour(ad.getHour() + hours.getValue());
+                                }
                             }
                         }
                     }
+                    MainActivity.listState = false;
+                    MainActivity.sortList(MainActivity.alarms);
+
+                    adapter = ((MainActivity) getActivity()).getCustomAdapter();
+                    recyclerView = ((MainActivity) getActivity()).getRecyclerView();
+                    recyclerView.setAdapter(adapter);
+                    mainActivityToolbar = ((MainActivity) getActivity()).getToolbar();
+                    mainActivityToolbar.setVisibility(View.GONE);
+
+
+                    for (AlarmData ad : alarms) {
+                        ad.setSelected(false);
+                    }
+                    adapter.notifyDataSetChanged();
+                    alarmNotifications.startNotification(getContext(), alarms);
+
+                    Toast.makeText(getContext(), R.string.changed + turnedOn + R.string.alarmy_toast_main, Toast.LENGTH_SHORT).show();
+
+                    closeChangeDialog();
+                } else {
+                    Toast.makeText(getContext(), R.string.select_times, Toast.LENGTH_SHORT).show();
+
                 }
-                MainActivity.listState = false;
-                MainActivity.sortList(MainActivity.alarms);
-
-                adapter = ((MainActivity) getActivity()).getCustomAdapter();
-                recyclerView = ((MainActivity) getActivity()).getRecyclerView();
-                recyclerView.setAdapter(adapter);
-                mainActivityToolbar = ((MainActivity) getActivity()).getToolbar();
-                mainActivityToolbar.setVisibility(View.GONE);
-
-                for (AlarmData ad : alarms) {
-                    ad.setSelected(false);
-                }
-                adapter.notifyDataSetChanged();
-                alarmNotifications.startNotification(getContext(), alarms);
-
-                closeChangeDialog();
 
                 break;
             case R.id.cancel:

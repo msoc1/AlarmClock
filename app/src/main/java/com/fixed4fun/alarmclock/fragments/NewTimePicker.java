@@ -228,11 +228,31 @@ public class NewTimePicker extends DialogFragment implements View.OnClickListene
                     , true, false, (int) System.currentTimeMillis());
         }
 
+        String amPMmessageText = "";
+        if(!timePicker.is24HourView()){
+            if(timePicker.getCurrentHour() < 12){
+                amPMmessageText += " AM";
+            } else {
+                amPMmessageText += " PM";
+            }
+        }
+
+        String hourString = "";
+        if(!timePicker.is24HourView()){
+            if(timePicker.getCurrentHour()>12){
+                hourString += timePicker.getCurrentHour()-12;
+            } else {
+                hourString += timePicker.getCurrentHour();
+            }
+        } else {
+            hourString += timePicker.getCurrentHour();
+        }
+
 
         String toastMessage = ADObject.getAppContext().getResources().getString(R.string.new_alarm_toast_message)+ " "
-                + timePicker.getCurrentHour()
+                + hourString
                 + ":"
-                + ((timePicker.getCurrentMinute() > 9) ? timePicker.getCurrentMinute() : "0" + timePicker.getCurrentMinute())
+                + ((timePicker.getCurrentMinute() > 9) ? timePicker.getCurrentMinute() : "0" + timePicker.getCurrentMinute()) +amPMmessageText
                 + "\n" + ADObject.getAppContext().getResources().getString(R.string.on_onmodify_timepicker_toas)+": "+ CustomAdapter.daysWhenToRing(alarmData);
         Toast toast = Toast.makeText(getContext(), toastMessage, Toast.LENGTH_LONG);
         toast.show();

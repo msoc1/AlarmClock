@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Vibrator;
 import android.preference.PreferenceManager;
+import android.text.format.DateFormat;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
@@ -30,12 +31,15 @@ import com.fixed4fun.alarmclock.notifications.NotificationHelper;
 import com.fixed4fun.alarmclock.objectLists.SoundsList;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
+import java.util.Locale;
 
 public class AlarmGoingOff extends AppCompatActivity {
 
     TextView hours;
     TextView minutes;
+    TextView amPM;
     Button turnOff;
     Button napTime;
     MediaPlayer mMediaPlayer;
@@ -63,11 +67,36 @@ public class AlarmGoingOff extends AppCompatActivity {
         turnOff = findViewById(R.id.turnoff_alarm);
         dayOfTheWeek = findViewById(R.id.day_of_the_week);
         napTime = findViewById(R.id.nap_time);
+        amPM =findViewById(R.id.am_pm_text_view);
 
-        hours.setText(String.valueOf(calendar.get(Calendar.HOUR_OF_DAY)));
+        if (!DateFormat.is24HourFormat(ADObject.getAppContext())) {
+             int mHour = calendar.get(Calendar.HOUR_OF_DAY);
+            if (mHour >= 12) {
+                amPM.setText("PM");
+            } else {
+                amPM.setText("AM");
+            }
+        } else {
+            amPM.setText("");
+        }
+
+        String hourString = "";
+        if(!DateFormat.is24HourFormat(ADObject.getAppContext())){
+            if(calendar.get(Calendar.HOUR_OF_DAY)>12){
+                hourString += calendar.get(Calendar.HOUR_OF_DAY)-12;
+            } else {
+                hourString += calendar.get(Calendar.HOUR_OF_DAY);
+            }
+        } else {
+            hourString += calendar.get(Calendar.HOUR_OF_DAY);
+        }
+
+        hours.setText(hourString);
         int timeInMinutes = calendar.get(Calendar.MINUTE);
         minutes.setText(((timeInMinutes > 9) ? timeInMinutes : "0" + timeInMinutes).toString());
-        dayOfTheWeek.setText(LocalDate.now().getDayOfWeek().name());
+        LocalDate localDate = LocalDate.now();
+        //"EEEE" is for day of the week in it's full name
+        dayOfTheWeek.setText(localDate.format(DateTimeFormatter.ofPattern("EEEE", Locale.getDefault())));
 
         turnOff.setOnTouchListener(buttonOnTouchListener);
 
@@ -85,7 +114,7 @@ public class AlarmGoingOff extends AppCompatActivity {
 
         mMediaPlayer = new MediaPlayer();
 
-        int song = sharedPrefs.getInt("SONG_TO_PLAY", 0);
+        int song = sharedPrefs.getInt("SONG_TO_PLAY", 1);
         turnOffAfter = sharedPrefs.getInt("secondsoff", 0) * 1000;
 
         mMediaPlayer = MediaPlayer.create(this, SoundsList.getAvailableSounds().get(song).getSound());

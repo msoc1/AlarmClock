@@ -46,7 +46,7 @@
         android:scaleX="0.8"
         android:scaleY="0.8"
         android:src="@drawable/settings"
-        app:backgroundTint="#ff0000 "
+        app:backgroundTint="#d10909 "
         app:backgroundTintMode="add"
         app:layout_constraintBottom_toBottomOf="@+id/recyclerView"
         app:layout_constraintEnd_toEndOf="parent"

@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.SwitchCompat;
@@ -60,6 +61,7 @@ public class SettingsFragment extends DialogFragment {
 
 
         closeSettings.setOnClickListener(v -> {
+            Toast.makeText(getContext(), R.string.saved, Toast.LENGTH_SHORT).show();
             SharedPreferences.Editor editor = sharedPrefs.edit();
             editor.putBoolean(VIBRATETAG, vibrateSwitch.isChecked());
             editor.putBoolean(THEMETAG, themeSwitch.isChecked());
@@ -104,6 +106,16 @@ public class SettingsFragment extends DialogFragment {
 
         return view;
 
+
+    }
+
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(ADObject.getAppContext());
+        int song = sharedPrefs.getInt("SONG_TO_PLAY", 0);
+        selectSong.setText(SoundsList.getAvailableSounds().get(song).getName());
 
     }
 }

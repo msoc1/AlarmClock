@@ -1,11 +1,11 @@
 <resources>
     <string name="app_name" translatable="false">Multi Alarm</string>
-    <string name="sunday">S</string>
-    <string name="saturday">S</string>
+    <string name="sunday">Su</string>
+    <string name="saturday">Sa</string>
     <string name="friday">F</string>
-    <string name="thursday">T</string>
+    <string name="thursday">Th</string>
     <string name="wednesday">W</string>
-    <string name="tuesday">T</string>
+    <string name="tuesday">Tu</string>
     <string name="monday">M</string>
     <string name="saturday_sunday_short">S-S</string>
     <string name="monday_friday_short">M-F</string>
@@ -30,7 +30,7 @@
     <string name="on_onmodify_timepicker_toas">On</string>
     <string name="new_alarm_toast_message">"New Alarm set to "</string>
     <string name="nap_time">NAP TIME</string>
-    <string name="press_hold">press &amp; hold to turn off</string>
+    <string name="press_hold">press and hold to turn off</string>
     <string name="set_time_picker">SET</string>
     <string name="cancel_time_picker">CANCEL</string>
     <string name="days_to_ring">"Days to ring: "</string>
@@ -47,4 +47,8 @@
     <string name="alarm_sound">Alarm sound:</string>
     <string name="change_selected">CHANGE SELECTED</string>
     <string name="delete_selected">DELETE SELECTED</string>
+    <string name="saved">Saved.</string>
+    <string name="select_alarms">Select alarms.</string>
+    <string name="changed">Changed </string>
+    <string name="select_times">Select hours or minutes.</string>
 </resources>

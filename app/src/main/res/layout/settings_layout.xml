@@ -37,6 +37,7 @@
         android:layout_marginTop="40dp"
         android:text="@string/theme_mode"
         android:textSize="20sp"
+        android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@+id/textView12"
         app:layout_constraintStart_toStartOf="@+id/textView7"
         app:layout_constraintTop_toBottomOf="@+id/textView7" />
@@ -44,6 +45,7 @@
     <androidx.appcompat.widget.SwitchCompat
         android:theme="@style/my_switch"
         android:id="@+id/theme_switch"
+        android:visibility="gone"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintBaseline_toBaselineOf="@+id/textView9"
@@ -106,8 +108,8 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="@+id/textView12"
-        app:layout_constraintEnd_toEndOf="@+id/theme_switch"
-        app:layout_constraintStart_toStartOf="@+id/theme_switch"
+        app:layout_constraintEnd_toEndOf="@+id/vibrate_switch"
+        app:layout_constraintStart_toStartOf="@+id/vibrate_switch"
         app:layout_constraintTop_toTopOf="@+id/textView12"
         app:npv_DividerColor="@color/selected_checkbox_color"
         app:npv_ItemPaddingVertical="4dp"
@@ -147,13 +149,15 @@
         app:npv_TextSizeSelected="22sp" />
 
     <TextView
-        android:textColor="@color/textColor"
         android:id="@+id/textView8"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
+        android:layout_marginEnd="16dp"
         android:text="@string/seconds"
+        android:textColor="@color/textColor"
         app:layout_constraintBaseline_toBaselineOf="@+id/textView6"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/turnoff_timer" />
 
     <TextView

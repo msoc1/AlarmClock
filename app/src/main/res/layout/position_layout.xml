@@ -37,7 +37,6 @@
         android:id="@+id/set_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
         android:text="setTime"
         android:textColor="@color/textColor"
         android:textSize="18dp"
@@ -53,7 +52,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.27" />
+        app:layout_constraintGuide_percent="0.4" />
     <View
         android:layout_width="match_parent"
         android:layout_height="2dp"
@@ -64,5 +63,16 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/am_pm_textview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="AM"
+        android:textColor="@color/textColor"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="@+id/time_of_alarm"
+        app:layout_constraintStart_toEndOf="@+id/time_of_alarm"
+        app:layout_constraintTop_toTopOf="@+id/time_of_alarm" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

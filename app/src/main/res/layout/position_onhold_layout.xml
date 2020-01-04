@@ -51,7 +51,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:text="timeOfAlarm"
+        android:text="HH:MM"
         android:textColor="@color/textColor"
         android:textSize="32sp"
         app:layout_constraintBottom_toBottomOf="@+id/selected"
@@ -68,5 +68,16 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/am_pm_textview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="AM"
+        android:textColor="@color/textColor"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="@+id/time_of_alarm"
+        app:layout_constraintStart_toEndOf="@+id/time_of_alarm"
+        app:layout_constraintTop_toTopOf="@+id/time_of_alarm" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

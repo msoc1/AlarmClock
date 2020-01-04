@@ -7,7 +7,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -45,7 +44,6 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Locale;
 
 import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.AppSettingsDialog;
@@ -77,13 +75,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     Toast notificationToast;
     private ConstraintLayout toolbar;
 
+    public static DialogFragment settingsFragment;
 
     private static final int PERMISION_REQUESTCODE = 456;
     public static final String XIAOMI_PERMISSION = "xiaomi";
     public static final int XIAOMI_REQUESTCODE = 7890;
     String[] PERMISSIONS_NEEDED = {Manifest.permission.WAKE_LOCK, Manifest.permission.SET_ALARM, Manifest.permission.DISABLE_KEYGUARD, Manifest.permission.RECEIVE_BOOT_COMPLETED,};
-
-    public static final String THEMETAG = "theme";
 
     public static CustomAdapter getCustomAdapter() {
         return customAdapter;
@@ -122,6 +119,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         String json = gson.toJson(alarms);
         editor.putString("ALARMS", json);
         editor.apply();
+        alarmNotifications.midnightAlarms(ADObject.getAppContext());
     }
 
 
@@ -148,14 +146,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        boolean th = sharedPrefs.getBoolean(THEMETAG, true);
-
-        if(!th){
-            setTheme(R.style.AppTheme_Dark);
-        }
-
         setContentView(R.layout.activity_main);
 
         alarms = AlarmList.getAlarms();
@@ -175,7 +165,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         recyclerView = findViewById(R.id.recyclerView);
         //Toast will be shown later
         toastMessage = "";
-        notificationToast = Toast.makeText(this, toastMessage, Toast.LENGTH_LONG);
+        notificationToast = Toast.makeText(this, toastMessage, Toast.LENGTH_SHORT);
 
         recyclerView.setAdapter(customAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
@@ -202,10 +192,24 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             bundle.putParcelable("modify", alarms.get(position));
             dialogFragment.setArguments(bundle);
             dialogFragment.show(getSupportFragmentManager(), "as");
+            if(listState){
+                listState = false;
+                toolbar.setVisibility(View.GONE);
+            }
             customAdapter.notifyDataSetChanged();
             recyclerView.setAdapter(customAdapter);
         });
         customAdapter.SetOnLongClickListener(position -> {
+            int howManyOn =0;
+            for (AlarmData ad : alarms){
+                if(ad.isOnOrOff())
+                    howManyOn++;
+            }
+
+            if(howManyOn>alarms.size()/2){
+                turnOnOrOffAll.setChecked(true);
+            }
+
             toolbar.setVisibility(View.VISIBLE);
             selectAll.setChecked(false);
             listState = true;
@@ -231,25 +235,50 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
 
             case R.id.delete_all:
+                int turnedOn = 0;
                 for (AlarmData ad : alarms) {
                     if (ad.isSelected()) {
+                        turnedOn++;
                         tempList.add(ad);
                     }
                 }
-                alarms.removeAll(tempList);
-                toastMessage = ADObject.getAppContext().getResources().getString(R.string.deleted) + " " + tempList.size()+ " " + ADObject.getAppContext().getResources().getString(R.string.alarmy_toast_main)+".";
-                notificationToast.setText(toastMessage);
-                notificationToast.show();
-                tempList.clear();
-                customAdapter.notifyDataSetChanged();
-                recyclerView.setAdapter(customAdapter);
-                alarmNotifications.startNotification(ADObject.getAppContext(), alarms);
+                if (turnedOn != 0) {
+                    alarms.removeAll(tempList);
+                    toastMessage = ADObject.getAppContext().getResources().getString(R.string.deleted) + " " + tempList.size() + " " + ADObject.getAppContext().getResources().getString(R.string.alarmy_toast_main) + ".";
+                    notificationToast.setText(toastMessage);
+                    notificationToast.show();
+                    tempList.clear();
+                    listState = false;
+                    toolbar.setVisibility(View.GONE);
+                    customAdapter.notifyDataSetChanged();
+                    recyclerView.setAdapter(customAdapter);
+                    alarmNotifications.startNotification(ADObject.getAppContext(), alarms);
+                } else {
+                    Toast.makeText(getApplicationContext(),
+                            ADObject.getAppContext().getResources().getString(R.string.select_alarms),
+                            Toast.LENGTH_SHORT).show();
+                }
                 break;
 
             case R.id.change_all:
-                ChangeAllTimePicker dialogFragment = new ChangeAllTimePicker();
-                dialogFragment.show(getSupportFragmentManager(), "asa");
-                customAdapter.notifyDataSetChanged();
+
+                turnedOn = 0;
+
+                for (AlarmData ad : alarms) {
+                    if (ad.isSelected()) {
+                        turnedOn++;
+                    }
+                }
+                if (turnedOn != 0) {
+
+                    ChangeAllTimePicker dialogFragment = new ChangeAllTimePicker();
+                    dialogFragment.show(getSupportFragmentManager(), "asa");
+                    customAdapter.notifyDataSetChanged();
+                } else {
+                    Toast.makeText(getApplicationContext(),
+                            ADObject.getAppContext().getResources().getString(R.string.select_alarms),
+                            Toast.LENGTH_SHORT).show();
+                }
                 break;
 
             case R.id.turn_all:
@@ -262,12 +291,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
 
             case R.id.new_alarm:
-                Locale current = getResources().getConfiguration().locale;
-                Log.d("123456", "onClickListeners: " + current);
                 checkPermissionsAndAddAlarm();
                 break;
             case R.id.settings:
-                DialogFragment settingsFragment = new SettingsFragment();
+                settingsFragment = new SettingsFragment();
                 settingsFragment.show(getSupportFragmentManager(), "settings_fragment");
                 break;
         }
@@ -281,12 +308,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         return toolbar;
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        Log.d("123456", "onDestroy: ");
-        alarmNotifications.midnightAlarms(ADObject.getAppContext());
-    }
 
     @Override
     public void onBackPressed() {
@@ -334,6 +355,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             toolbar.setVisibility(View.GONE);
             listState = false;
             recyclerView.setAdapter(customAdapter);
+            for(AlarmData ad: alarms){
+                ad.setSelected(false);
+            }
         } else {
             EasyPermissions.requestPermissions(this, "Permissions needed for full functionallity",
                     PERMISION_REQUESTCODE, PERMISSIONS_NEEDED);

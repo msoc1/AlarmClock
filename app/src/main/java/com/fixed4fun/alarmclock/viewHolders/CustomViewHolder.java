@@ -25,6 +25,7 @@ public class CustomViewHolder extends RecyclerView.ViewHolder {
 
     public TextView timeOfAlarm;
     public TextView setTime;
+    public TextView amPmText;
 
     public SwitchCompat onOrOff;
 
@@ -42,6 +43,7 @@ public class CustomViewHolder extends RecyclerView.ViewHolder {
         onOrOff = itemView.findViewById(R.id.on_or_off);
         deleteAlarm = itemView.findViewById(R.id.delete_alarm);
         selected = itemView.findViewById(R.id.selected);
+        amPmText = itemView.findViewById(R.id.am_pm_textview);
 
 
 
@@ -63,6 +65,8 @@ public class CustomViewHolder extends RecyclerView.ViewHolder {
 
                 timeOfAlarm.setTypeface(roboto_bold);
                 timeOfAlarm.setTextColor(ContextCompat.getColor(ADObject.getAppContext(), R.color.textColor));
+                amPmText.setTypeface(roboto_bold);
+                amPmText.setTextColor(ContextCompat.getColor(ADObject.getAppContext(), R.color.textColor));
                 if (!MainActivity.listState) {
                     setTime.setTextColor(ContextCompat.getColor(ADObject.getAppContext(), R.color.textColor));
                     setTime.setTypeface(roboto_bold);
@@ -73,6 +77,8 @@ public class CustomViewHolder extends RecyclerView.ViewHolder {
 
                 timeOfAlarm.setTypeface(roboto_light);
                 timeOfAlarm.setTextColor(ContextCompat.getColor(ADObject.getAppContext(), R.color.textColorAlarmOff));
+                amPmText.setTypeface(roboto_light);
+                amPmText.setTextColor(ContextCompat.getColor(ADObject.getAppContext(), R.color.textColorAlarmOff));
                 if (!MainActivity.listState) {
                     setTime.setTextColor(ContextCompat.getColor(ADObject.getAppContext(), R.color.textColorAlarmOff));
                     setTime.setTypeface(roboto_light);

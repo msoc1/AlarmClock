@@ -2,6 +2,7 @@ package com.fixed4fun.alarmclock.adapters;
 
 import android.content.Context;
 import android.graphics.Typeface;
+import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,13 +12,13 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.fixed4fun.alarmclock.R;
-import com.fixed4fun.alarmclock.R.string;
 import com.fixed4fun.alarmclock.activities.MainActivity;
 import com.fixed4fun.alarmclock.alarmObject.ADObject;
 import com.fixed4fun.alarmclock.alarmObject.AlarmData;
 import com.fixed4fun.alarmclock.viewHolders.CustomViewHolder;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 public class CustomAdapter extends RecyclerView.Adapter<CustomViewHolder> {
 
@@ -57,13 +58,26 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomViewHolder> {
     public void onBindViewHolder(@NonNull CustomViewHolder customViewHolder, int i) {
         Typeface roboto_bold = Typeface.createFromAsset(ADObject.getAppContext().getAssets(), "fonts/roboto_bold.ttf");
         Typeface roboto_light = Typeface.createFromAsset(ADObject.getAppContext().getAssets(), "fonts/roboto_light.ttf");
+        Calendar calendar = Calendar.getInstance();
+
+        if (!DateFormat.is24HourFormat(ADObject.getAppContext())) {
+            int mHour = alarmDataArrayList.get(i).getHour();
+            if (mHour >= 12) {
+                customViewHolder.amPmText.setText("PM");
+            } else {
+                customViewHolder.amPmText.setText("AM");
+            }
+        } else {
+            customViewHolder.amPmText.setText("");
+        }
+
 
         if (!MainActivity.listState) {
             //normal list item view
             customViewHolder.timeOfAlarm.setText(displayTimeOfAlarm(alarmDataArrayList.get(i)));
             customViewHolder.onOrOff.setChecked(alarmDataArrayList.get(i).isOnOrOff());
             customViewHolder.setTime.setText(daysWhenToRing(alarmDataArrayList.get(i)));
-            if(alarmDataArrayList.get(i).isOnOrOff()){
+            if (alarmDataArrayList.get(i).isOnOrOff()) {
                 customViewHolder.setTime.setTextColor(ContextCompat.getColor(ADObject.getAppContext(), R.color.textColor));
                 customViewHolder.setTime.setTypeface(roboto_bold);
 
@@ -79,10 +93,14 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomViewHolder> {
             customViewHolder.selected.setChecked(alarmDataArrayList.get(i).isSelected());
         }
 
-        if(alarmDataArrayList.get(i).isOnOrOff()){
+        if (alarmDataArrayList.get(i).isOnOrOff()) {
+            customViewHolder.amPmText.setTypeface(roboto_bold);
+            customViewHolder.amPmText.setTextColor(ContextCompat.getColor(ADObject.getAppContext(), R.color.textColor));
             customViewHolder.timeOfAlarm.setTypeface(roboto_bold);
             customViewHolder.timeOfAlarm.setTextColor(ContextCompat.getColor(ADObject.getAppContext(), R.color.textColor));
         } else {
+            customViewHolder.amPmText.setTypeface(roboto_light);
+            customViewHolder.amPmText.setTextColor(ContextCompat.getColor(ADObject.getAppContext(), R.color.textColorAlarmOff));
             customViewHolder.timeOfAlarm.setTypeface(roboto_light);
             customViewHolder.timeOfAlarm.setTextColor(ContextCompat.getColor(ADObject.getAppContext(), R.color.textColorAlarmOff));
         }
@@ -90,7 +108,24 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomViewHolder> {
     }
 
     private String displayTimeOfAlarm(AlarmData alarmData) {
-        return ((alarmData.getHour() > 9) ? alarmData.getHour() : ("0" + alarmData.getHour()))
+
+        String hourString = "";
+        if (!DateFormat.is24HourFormat(ADObject.getAppContext())) {
+            if((alarmData.getHour()<9 && alarmData.getHour()!=0 )||   ( alarmData.getHour()<22 && alarmData.getHour()>13)){
+                hourString += "0";
+            }
+            if (alarmData.getHour() == 0) {
+                hourString += "12";
+            } else if (alarmData.getHour() > 12) {
+                hourString += (alarmData.getHour() - 12);
+            } else {
+                hourString += alarmData.getHour();
+            }
+        } else {
+            hourString += alarmData.getHour();
+        }
+
+        return hourString
                 + ":"
                 + ((alarmData.getMinute() > 9) ? alarmData.getMinute() : ("0" + alarmData.getMinute()));
     }
@@ -120,19 +155,19 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomViewHolder> {
                 message += ADObject.getAppContext().getResources().getString(R.string.monday) + " ";
             }
             if (alarm.isTuesday()) {
-                message += ADObject.getAppContext().getResources().getString(R.string.tuesday)+ " ";
+                message += ADObject.getAppContext().getResources().getString(R.string.tuesday) + " ";
             }
             if (alarm.isWednesday()) {
-                message += ADObject.getAppContext().getResources().getString(R.string.wednesday)+ " ";
+                message += ADObject.getAppContext().getResources().getString(R.string.wednesday) + " ";
             }
             if (alarm.isThursday()) {
-                message += ADObject.getAppContext().getResources().getString(R.string.thursday)+ " ";
+                message += ADObject.getAppContext().getResources().getString(R.string.thursday) + " ";
             }
             if (alarm.isFriday()) {
-                message += ADObject.getAppContext().getResources().getString(R.string.friday)+ " ";
+                message += ADObject.getAppContext().getResources().getString(R.string.friday) + " ";
             }
             if (alarm.isSaturday()) {
-                message += ADObject.getAppContext().getResources().getString(R.string.saturday)+ " ";
+                message += ADObject.getAppContext().getResources().getString(R.string.saturday) + " ";
             }
             if (alarm.isSunday()) {
                 message += ADObject.getAppContext().getResources().getString(R.string.sunday);

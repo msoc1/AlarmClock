@@ -136,11 +136,31 @@ public class ModifyTimePicker extends DialogFragment implements View.OnClickList
         AlarmList.getAlarms().get(MainActivity.position).setOnOrOff(true);
 
 
+        String amPMmessageText = "";
+        if(!timePicker.is24HourView()){
+            if(timePicker.getCurrentHour() < 12){
+                amPMmessageText += " AM";
+            } else {
+                amPMmessageText += " PM";
+            }
+        }
+
+        String hourString = "";
+        if(!timePicker.is24HourView()){
+            if(timePicker.getCurrentHour()>12){
+                hourString += timePicker.getCurrentHour()-12;
+            } else {
+                hourString += timePicker.getCurrentHour();
+            }
+        } else {
+            hourString += timePicker.getCurrentHour();
+        }
+
         String toastMessage =
                 ADObject.getAppContext().getResources().getString(R.string.modified_onmodify_timepicker_toas)
-                        + timePicker.getCurrentHour()
+                        + hourString
                         + ":"
-                        + ((timePicker.getCurrentMinute() > 9) ? timePicker.getCurrentMinute() : "0" + timePicker.getCurrentMinute())
+                        + ((timePicker.getCurrentMinute() > 9) ? timePicker.getCurrentMinute() : "0" + timePicker.getCurrentMinute()) + amPMmessageText
                         + "\n" +ADObject.getAppContext().getResources().getString(R.string.on_onmodify_timepicker_toas)+": "
                         + CustomAdapter.daysWhenToRing(AlarmList.getAlarms().get(MainActivity.position));
         Toast toast = Toast.makeText(getContext(), toastMessage, Toast.LENGTH_LONG);

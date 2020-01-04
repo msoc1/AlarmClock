@@ -4,6 +4,7 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -18,16 +19,19 @@ import java.util.Calendar;
 public class AlarmNotifications extends AppCompatActivity {
 
     public void startNotification(Context context, ArrayList<AlarmData> alarmsList) {
-        for (int i = 0; i < alarmsList.size(); i++) {
-            cancelAlarm(alarmsList.get(i), context);
-        }
+        Log.d("123456", "startNotification: ");
+        if(alarmsList!=null) {
+            for (int i = 0; i < alarmsList.size(); i++) {
+                cancelAlarm(alarmsList.get(i), context);
+            }
 
-        for (int i = 0; i < alarmsList.size(); i++) {
-            Calendar calendar = Calendar.getInstance();
-            calendar.set(Calendar.HOUR_OF_DAY, alarmsList.get(i).getHour());
-            calendar.set(Calendar.MINUTE, alarmsList.get(i).getMinute());
-            calendar.set(Calendar.SECOND, 0);
-            checkForActiveDays(calendar, alarmsList.get(i), context);
+            for (int i = 0; i < alarmsList.size(); i++) {
+                Calendar calendar = Calendar.getInstance();
+                calendar.set(Calendar.HOUR_OF_DAY, alarmsList.get(i).getHour());
+                calendar.set(Calendar.MINUTE, alarmsList.get(i).getMinute());
+                calendar.set(Calendar.SECOND, 0);
+                checkForActiveDays(calendar, alarmsList.get(i), context);
+            }
         }
     }
 
