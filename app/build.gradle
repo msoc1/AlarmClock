@@ -48,6 +48,7 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.8.2'
     implementation 'pub.devrel:easypermissions:2.0.1'
     implementation 'cn.carbswang.android:NumberPickerView:1.2.0'
+    implementation 'com.github.MFlisar:DragSelectRecyclerView:0.3'
 
 
 

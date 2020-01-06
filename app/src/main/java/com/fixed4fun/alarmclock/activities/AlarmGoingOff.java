@@ -108,7 +108,9 @@ public class AlarmGoingOff extends AppCompatActivity {
             PendingIntent pendingIntent = PendingIntent.getBroadcast(ADObject.getAppContext(), 0, intent, PendingIntent.FLAG_ONE_SHOT);
             alarmManager.setExact(AlarmManager.RTC_WAKEUP, time, pendingIntent);
             finish();
-            Toast.makeText(ADObject.getAppContext(), "Nap Time: " + napTimeInMinutes * 5 + "minutes", Toast.LENGTH_LONG).show();
+            Toast.makeText(ADObject.getAppContext(),
+                    ""+ getResources().getText(R.string.nap_time_l) + napTimeInMinutes * 5 + " " + getResources().getText(R.string.minutes),
+                    Toast.LENGTH_LONG).show();
         });
 
 

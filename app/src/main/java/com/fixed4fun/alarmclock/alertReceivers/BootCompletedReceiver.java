@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.widget.Toast;
 
 import com.fixed4fun.alarmclock.alarmObject.ADObject;
 import com.fixed4fun.alarmclock.alarmObject.AlarmData;
@@ -30,6 +31,7 @@ public class BootCompletedReceiver extends BroadcastReceiver {
             alarmNotifications = new AlarmNotifications();
             alarmNotifications.startNotification(ADObject.getAppContext(), arrayList);
             alarmNotifications.midnightAlarms(ADObject.getAppContext());
+            Toast.makeText(ADObject.getAppContext(), "toast", Toast.LENGTH_LONG).show();
         }
 
     }

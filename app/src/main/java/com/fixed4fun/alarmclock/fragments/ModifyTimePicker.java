@@ -175,6 +175,7 @@ public class ModifyTimePicker extends DialogFragment implements View.OnClickList
 
     public void closeTimePicker() {
         getDialog().cancel();
+        MainActivity.showFABs();
     }
 
     public void setTimePickerHour() {

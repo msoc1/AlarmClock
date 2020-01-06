@@ -53,6 +53,8 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomViewHolder> {
         return new CustomViewHolder(v, mListener, mLongListener);
     }
 
+
+
     @Override
     public void onBindViewHolder(@NonNull CustomViewHolder customViewHolder, int i) {
         Typeface roboto_bold = Typeface.createFromAsset(ADObject.getAppContext().getAssets(), "fonts/roboto_bold.ttf");
@@ -109,7 +111,7 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomViewHolder> {
 
         String hourString = "";
         if (!DateFormat.is24HourFormat(ADObject.getAppContext())) {
-            if ((alarmData.getHour() < 9 && alarmData.getHour() != 0) || (alarmData.getHour() < 22 && alarmData.getHour() > 13)) {
+            if ((alarmData.getHour() < 10 && alarmData.getHour() != 0) || (alarmData.getHour() < 22 && alarmData.getHour() > 12)) {
                 hourString += "0";
             }
             if (alarmData.getHour() == 0) {
@@ -120,6 +122,9 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomViewHolder> {
                 hourString += alarmData.getHour();
             }
         } else {
+            if(alarmData.getHour() <10){
+                hourString+="0";
+            }
             hourString += alarmData.getHour();
         }
 

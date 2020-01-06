@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -101,7 +100,6 @@ public class MovableFloatingActionButton extends FloatingActionButton implements
 
                 if (view.getId() == getResources().getIdentifier(String.valueOf(R.id.new_alarm), "id",
                         ADObject.getAppContext().getPackageName())) {
-                    Log.d("123456", "onTouch: UP " + view.getX() + " Y " + view.getY() + " ID " + view.getId());
                     editor.putFloat(FAB_NEW_ALARM_X, view.getX());
                     editor.putFloat(FAB_NEW_ALARM_Y, view.getY());
 
@@ -109,7 +107,6 @@ public class MovableFloatingActionButton extends FloatingActionButton implements
 
                 if (view.getId() == getResources().getIdentifier(String.valueOf(R.id.settings), "id",
                         ADObject.getAppContext().getPackageName())) {
-                    Log.d("123456", "onTouch: UP " + view.getX() + " Y " + view.getY() + " ID " + view.getId());
                     editor.putFloat(FAB_SETTINGS_X, view.getX());
                     editor.putFloat(FAB_SETTINGS_Y, view.getY());
                 }

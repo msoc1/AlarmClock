@@ -111,7 +111,7 @@ public class ChangeAllTimePicker extends DialogFragment implements View.OnClickL
                     }
                 }
 
-                if(hours.getValue() !=0 || minutes.getValue()!=0) {
+                if (hours.getValue() != 0 || minutes.getValue() != 0) {
 
                     for (AlarmData ad : alarms) {
                         if (ad.isSelected()) {
@@ -157,9 +157,10 @@ public class ChangeAllTimePicker extends DialogFragment implements View.OnClickL
                     }
                     adapter.notifyDataSetChanged();
                     alarmNotifications.startNotification(getContext(), alarms);
-
-                    Toast.makeText(getContext(), R.string.changed + turnedOn + R.string.alarmy_toast_main, Toast.LENGTH_SHORT).show();
-
+                    Toast.makeText(getContext(),
+                            "" + getResources().getText(R.string.changed) + " " + turnedOn + " " + getResources().getText(R.string.alarmy_toast_main),
+                            Toast.LENGTH_SHORT).show();
+                    MainActivity.showFABs();
                     closeChangeDialog();
                 } else {
                     Toast.makeText(getContext(), R.string.select_times, Toast.LENGTH_SHORT).show();

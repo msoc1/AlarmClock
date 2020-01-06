@@ -38,6 +38,10 @@
         <receiver android:name="com.fixed4fun.alarmclock.alertReceivers.BootCompletedReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.QUICKBOOT_POWERON" />
+                <action android:name="com.htc.intent.action.QUICKBOOT_POWERON"/>
+                <action android:name="android.intent.action.REBOOT"/>
+
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </receiver>

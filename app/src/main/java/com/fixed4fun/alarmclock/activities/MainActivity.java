@@ -10,7 +10,6 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.TimePicker;
@@ -41,6 +40,7 @@ import com.fixed4fun.alarmclock.objectLists.MovableFloatingActionButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.michaelflisar.dragselectrecyclerview.DragSelectTouchListener;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -69,8 +69,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     TimePicker timePicker;
     public static AlarmNotifications alarmNotifications;
 
-    MovableFloatingActionButton floatingActionButton;
-    MovableFloatingActionButton settingButton;
+    static MovableFloatingActionButton floatingActionButton;
+    static MovableFloatingActionButton settingButton;
 
     RecyclerView recyclerView;
     SwitchCompat turnOnOrOffAll;
@@ -80,6 +80,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     Toast notificationToast;
     private ConstraintLayout toolbar;
     ConstraintLayout mainLayout;
+    DragSelectTouchListener mDragSelectTouchListener;
 
     public static DialogFragment settingsFragment;
 
@@ -150,15 +151,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         customAdapter.notifyDataSetChanged();
         recyclerView.setAdapter(customAdapter);
         mainLayout.getViewTreeObserver().addOnGlobalLayoutListener(() -> {
-            fabNewAlarmX = sharedPrefs.getFloat(FAB_NEW_ALARM_X, (0.75f) * mainLayout.getWidth());
+            fabNewAlarmX = sharedPrefs.getFloat(FAB_NEW_ALARM_X, (0.70f) * mainLayout.getWidth());
             fabNewAlarmY = sharedPrefs.getFloat(FAB_NEW_ALARM_Y, (0.80f) * mainLayout.getHeight());
-            fabSettingsX = sharedPrefs.getFloat(FAB_SETTINGS_X, (0.77f) * mainLayout.getWidth());
+            fabSettingsX = sharedPrefs.getFloat(FAB_SETTINGS_X, (0.72f) * mainLayout.getWidth());
             fabSettingsY = sharedPrefs.getFloat(FAB_SETTINGS_Y, (0.9f) * mainLayout.getHeight());
             floatingActionButton.setX(fabNewAlarmX);
             floatingActionButton.setY(fabNewAlarmY);
             settingButton.setX(fabSettingsX);
             settingButton.setY(fabSettingsY);
-
+            if (!listState) {
+                floatingActionButton.show();
+                settingButton.show();
+            }
         });
 
     }
@@ -193,11 +197,34 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         recyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
         new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(recyclerView);
         recyclerView.setAdapter(customAdapter);
-
         toolbarHeight = toolbar.getMaxHeight();
         toolbar.setVisibility(View.GONE);
         alarmNotifications = new AlarmNotifications();
 
+        mDragSelectTouchListener = new DragSelectTouchListener().withSelectListener(new DragSelectTouchListener.OnAdvancedDragSelectListener() {
+            @Override
+            public void onSelectionStarted(int i) {
+                if (alarms.get(i).isSelected()) {
+                    alarms.get(i).setSelected(false);
+                } else if (!alarms.get(i).isSelected()) {
+                    alarms.get(i).setSelected(true);
+                }
+                customAdapter.notifyItemChanged(i);
+            }
+            @Override
+            public void onSelectionFinished(int i) {
+            }
+            @Override
+            public void onSelectChange(int i, int i1, boolean b) {
+                if (alarms.get(i).isSelected()) {
+                    alarms.get(i).setSelected(false);
+                } else if (!alarms.get(i).isSelected()) {
+                    alarms.get(i).setSelected(true);
+                }
+                customAdapter.notifyItemChanged(i);
+            }
+        }).withMaxScrollDistance(32);
+        recyclerView.addOnItemTouchListener(mDragSelectTouchListener);
         setOnClickListeners();
     }
 
@@ -210,12 +237,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         floatingActionButton.setOnClickListener(this);
         settingButton.setOnClickListener(this);
 
-        turnOnOrOffAll.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                return event.getActionMasked() == MotionEvent.ACTION_MOVE;
-            }
-        });
+        turnOnOrOffAll.setOnTouchListener((v, event) -> event.getActionMasked() == MotionEvent.ACTION_MOVE);
         customAdapter.SetOnClickItemListener(position -> {
             MainActivity.position = position;
             Bundle bundle = new Bundle();
@@ -231,26 +253,33 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             recyclerView.setAdapter(customAdapter);
         });
         customAdapter.SetOnLongClickListener(position -> {
-            floatingActionButton.hide();
-            settingButton.hide();
-            int howManyOn = 0;
-            for (AlarmData ad : alarms) {
-                if (ad.isOnOrOff())
-                    howManyOn++;
-            }
+            if (!listState) {
+                floatingActionButton.hide();
+                settingButton.hide();
+                int howManyOn = 0;
+                for (AlarmData ad : alarms) {
+                    if (ad.isOnOrOff())
+                        howManyOn++;
+                }
 
-            if (howManyOn > alarms.size() / 2) {
-                turnOnOrOffAll.setChecked(true);
-            }
+                if (howManyOn > alarms.size() / 2) {
+                    turnOnOrOffAll.setChecked(true);
+                }
 
-            toolbar.setVisibility(View.VISIBLE);
-            selectAll.setChecked(false);
-            listState = true;
-            MainActivity.position = position;
-            customAdapter.notifyDataSetChanged();
-            recyclerView.setAdapter(customAdapter);
+                toolbar.setVisibility(View.VISIBLE);
+                selectAll.setChecked(false);
+                listState = true;
+                MainActivity.position = position;
+                customAdapter.notifyDataSetChanged();
+                recyclerView.setAdapter(customAdapter);
+            } else {
+
+                mDragSelectTouchListener.startDragSelection(position);
+
+            }
         });
     }
+
 
     private void onClickListeners(View v) {
         switch (v.getId()) {
@@ -385,12 +414,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-    public void showFABs() {
+    public static void showFABs() {
         floatingActionButton.show();
         settingButton.show();
         settingButton.setSize(FloatingActionButton.SIZE_MINI);
-//        settingButton.setScaleX(1.2f);
-//        settingButton.setScaleY(1.2f);
     }
 
 

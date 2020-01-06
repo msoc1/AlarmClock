@@ -7,6 +7,7 @@
     android:layout_height="wrap_content"
     android:background="@drawable/timepicker_background">
 
+
     <TimePicker
         android:id="@+id/time_picker"
         android:layout_width="0dp"
@@ -24,7 +25,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-
     <Button
         android:id="@+id/set_alarm"
         android:layout_width="wrap_content"
@@ -34,7 +34,7 @@
         android:background="?android:attr/selectableItemBackground"
         android:minWidth="0dp"
         android:minHeight="0dp"
-        android:padding="8dp"
+        android:padding="18dp"
         android:text="@string/set_time_picker"
         android:textColor="@color/textColor"
         android:textSize="12sp"
@@ -49,7 +49,7 @@
         android:background="?android:attr/selectableItemBackground"
         android:minWidth="0dp"
         android:minHeight="0dp"
-        android:padding="8dp"
+        android:padding="18dp"
         android:text="@string/cancel_time_picker"
         android:textColor="@color/textColor"
         android:textSize="12sp"

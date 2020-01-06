@@ -30,10 +30,10 @@
     <string name="hour">Godzina</string>
     <string name="message_dialog_xiaomi_permissions">Zaakceptuj zezwolenia w celu prawidłowego działania</string>
     <string name="minute">Minuta</string>
-    <string name="minutes">minuty</string>
+    <string name="minutes">minut</string>
     <string name="modified_onmodify_timepicker_toas">"Zmienione na "</string>
     <string name="nap_time">DRZEMKA</string>
-    <string name="nap_time_l">Czas drzemki:</string>
+    <string name="nap_time_l">"Czas drzemki: "</string>
     <string name="new_alarm_toast_message">"Nowy budzik ustawiono na "</string>
     <string name="on_onmodify_timepicker_toas">Na</string>
     <string name="press_hold">naciśnij i przytrzymaj żeby wyłączyć</string>
