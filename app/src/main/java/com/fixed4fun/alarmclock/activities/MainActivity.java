@@ -7,7 +7,10 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.text.TextUtils;
+import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.TimePicker;
@@ -20,6 +23,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SwitchCompat;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.DialogFragment;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -33,6 +37,7 @@ import com.fixed4fun.alarmclock.fragments.NewTimePicker;
 import com.fixed4fun.alarmclock.fragments.SettingsFragment;
 import com.fixed4fun.alarmclock.notifications.AlarmNotifications;
 import com.fixed4fun.alarmclock.objectLists.AlarmList;
+import com.fixed4fun.alarmclock.objectLists.MovableFloatingActionButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -64,8 +69,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     TimePicker timePicker;
     public static AlarmNotifications alarmNotifications;
 
-    FloatingActionButton floatingActionButton;
-    FloatingActionButton settingButton;
+    MovableFloatingActionButton floatingActionButton;
+    MovableFloatingActionButton settingButton;
 
     RecyclerView recyclerView;
     SwitchCompat turnOnOrOffAll;
@@ -74,12 +79,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     Button changeAll;
     Toast notificationToast;
     private ConstraintLayout toolbar;
+    ConstraintLayout mainLayout;
 
     public static DialogFragment settingsFragment;
 
     private static final int PERMISION_REQUESTCODE = 456;
     public static final String XIAOMI_PERMISSION = "xiaomi";
     public static final int XIAOMI_REQUESTCODE = 7890;
+    float fabNewAlarmX, fabNewAlarmY, fabSettingsX, fabSettingsY;
+    public final static String FAB_NEW_ALARM_X = "FAB_NEW_ALARM_X";
+    public final static String FAB_NEW_ALARM_Y = "FAB_NEW_ALARM_Y";
+    public final static String FAB_SETTINGS_X = "FAB_SETTINGS_X";
+    public final static String FAB_SETTINGS_Y = "FAB_SETTINGS_Y";
     String[] PERMISSIONS_NEEDED = {Manifest.permission.WAKE_LOCK, Manifest.permission.SET_ALARM, Manifest.permission.DISABLE_KEYGUARD, Manifest.permission.RECEIVE_BOOT_COMPLETED,};
 
     public static CustomAdapter getCustomAdapter() {
@@ -138,9 +149,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
         customAdapter.notifyDataSetChanged();
         recyclerView.setAdapter(customAdapter);
+        mainLayout.getViewTreeObserver().addOnGlobalLayoutListener(() -> {
+            fabNewAlarmX = sharedPrefs.getFloat(FAB_NEW_ALARM_X, (0.75f) * mainLayout.getWidth());
+            fabNewAlarmY = sharedPrefs.getFloat(FAB_NEW_ALARM_Y, (0.80f) * mainLayout.getHeight());
+            fabSettingsX = sharedPrefs.getFloat(FAB_SETTINGS_X, (0.77f) * mainLayout.getWidth());
+            fabSettingsY = sharedPrefs.getFloat(FAB_SETTINGS_Y, (0.9f) * mainLayout.getHeight());
+            floatingActionButton.setX(fabNewAlarmX);
+            floatingActionButton.setY(fabNewAlarmY);
+            settingButton.setX(fabSettingsX);
+            settingButton.setY(fabSettingsY);
 
+        });
 
     }
+
 
     @SuppressLint("ShowToast")
     @Override
@@ -163,12 +185,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         floatingActionButton = findViewById(R.id.new_alarm);
         settingButton = findViewById(R.id.settings);
         recyclerView = findViewById(R.id.recyclerView);
+        mainLayout = findViewById(R.id.main_layout);
         //Toast will be shown later
         toastMessage = "";
         notificationToast = Toast.makeText(this, toastMessage, Toast.LENGTH_SHORT);
 
-        recyclerView.setAdapter(customAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
+        new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(recyclerView);
+        recyclerView.setAdapter(customAdapter);
+
         toolbarHeight = toolbar.getMaxHeight();
         toolbar.setVisibility(View.GONE);
         alarmNotifications = new AlarmNotifications();
@@ -176,6 +201,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setOnClickListeners();
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     public void setOnClickListeners() {
         changeAll.setOnClickListener(this);
         selectAll.setOnClickListener(this);
@@ -184,7 +210,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         floatingActionButton.setOnClickListener(this);
         settingButton.setOnClickListener(this);
 
-
+        turnOnOrOffAll.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                return event.getActionMasked() == MotionEvent.ACTION_MOVE;
+            }
+        });
         customAdapter.SetOnClickItemListener(position -> {
             MainActivity.position = position;
             Bundle bundle = new Bundle();
@@ -192,7 +223,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             bundle.putParcelable("modify", alarms.get(position));
             dialogFragment.setArguments(bundle);
             dialogFragment.show(getSupportFragmentManager(), "as");
-            if(listState){
+            if (listState) {
                 listState = false;
                 toolbar.setVisibility(View.GONE);
             }
@@ -200,13 +231,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             recyclerView.setAdapter(customAdapter);
         });
         customAdapter.SetOnLongClickListener(position -> {
-            int howManyOn =0;
-            for (AlarmData ad : alarms){
-                if(ad.isOnOrOff())
+            floatingActionButton.hide();
+            settingButton.hide();
+            int howManyOn = 0;
+            for (AlarmData ad : alarms) {
+                if (ad.isOnOrOff())
                     howManyOn++;
             }
 
-            if(howManyOn>alarms.size()/2){
+            if (howManyOn > alarms.size() / 2) {
                 turnOnOrOffAll.setChecked(true);
             }
 
@@ -243,11 +276,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     }
                 }
                 if (turnedOn != 0) {
+                    for (AlarmData ad : alarms) {
+                        alarmNotifications.cancelAlarm(ad, getApplicationContext());
+                    }
                     alarms.removeAll(tempList);
                     toastMessage = ADObject.getAppContext().getResources().getString(R.string.deleted) + " " + tempList.size() + " " + ADObject.getAppContext().getResources().getString(R.string.alarmy_toast_main) + ".";
                     notificationToast.setText(toastMessage);
                     notificationToast.show();
                     tempList.clear();
+                    showFABs();
                     listState = false;
                     toolbar.setVisibility(View.GONE);
                     customAdapter.notifyDataSetChanged();
@@ -312,6 +349,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onBackPressed() {
         if (listState) {
+            showFABs();
             listState = false;
             selectAll.setChecked(false);
             turnOnOrOffAll.setChecked(false);
@@ -347,15 +385,25 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+    public void showFABs() {
+        floatingActionButton.show();
+        settingButton.show();
+        settingButton.setSize(FloatingActionButton.SIZE_MINI);
+//        settingButton.setScaleX(1.2f);
+//        settingButton.setScaleY(1.2f);
+    }
+
+
     public void addAlarm() {
         if (EasyPermissions.hasPermissions(this, PERMISSIONS_NEEDED)) {
             DialogFragment timePickerFragment = new NewTimePicker();
             timePickerFragment.show(getSupportFragmentManager()
                     , "time picker");
             toolbar.setVisibility(View.GONE);
+            showFABs();
             listState = false;
             recyclerView.setAdapter(customAdapter);
-            for(AlarmData ad: alarms){
+            for (AlarmData ad : alarms) {
                 ad.setSelected(false);
             }
         } else {
@@ -421,4 +469,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
         return line;
     }
+
+    ItemTouchHelper.SimpleCallback itemTouchHelperCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
+        @Override
+        public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+            return false;
+        }
+
+        @Override
+        public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+            alarmNotifications.cancelAlarm(MainActivity.alarms.get(viewHolder.getAdapterPosition()), ADObject.getAppContext());
+            AlarmList.getAlarms().remove(viewHolder.getAdapterPosition());
+            Toast.makeText(getApplicationContext(), ADObject.getAppContext().getResources().getString(R.string.alarm_deleted), Toast.LENGTH_SHORT).show();
+            customAdapter = MainActivity.getCustomAdapter();
+            customAdapter.notifyDataSetChanged();
+        }
+    };
+
 }

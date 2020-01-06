@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/backgroundActivity"
-    tools:context=".activities.MainActivity">
+    tools:context=".activities.MainActivity"
+    android:id="@+id/main_layout">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
@@ -22,20 +23,20 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/include" />
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
+    <com.fixed4fun.alarmclock.objectLists.MovableFloatingActionButton
         android:id="@+id/new_alarm"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
         android:backgroundTintMode="src_over"
         android:clickable="true"
         android:focusable="true"
         android:src="@drawable/new_alarm"
         app:backgroundTint="@color/floatingActionButtonColor"
         app:backgroundTintMode="add"
-        app:layout_constraintBottom_toTopOf="@+id/settings"
-        app:layout_constraintEnd_toEndOf="@+id/settings" />
+        tools:ignore="MissingConstraints" />
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
+    <com.fixed4fun.alarmclock.objectLists.MovableFloatingActionButton
         android:id="@+id/settings"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -43,15 +44,11 @@
         android:backgroundTintMode="src_over"
         android:clickable="true"
         android:focusable="true"
-        android:scaleX="0.8"
-        android:scaleY="0.8"
+        app:fabSize="mini"
         android:src="@drawable/settings"
         app:backgroundTint="#d10909 "
         app:backgroundTintMode="add"
-        app:layout_constraintBottom_toBottomOf="@+id/recyclerView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.8"
-        app:layout_constraintStart_toStartOf="parent" />
+        tools:ignore="MissingConstraints" />
 
 
     <include

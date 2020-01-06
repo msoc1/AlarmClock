@@ -18,7 +18,6 @@ import com.fixed4fun.alarmclock.alarmObject.AlarmData;
 import com.fixed4fun.alarmclock.viewHolders.CustomViewHolder;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 
 public class CustomAdapter extends RecyclerView.Adapter<CustomViewHolder> {
 
@@ -58,7 +57,6 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomViewHolder> {
     public void onBindViewHolder(@NonNull CustomViewHolder customViewHolder, int i) {
         Typeface roboto_bold = Typeface.createFromAsset(ADObject.getAppContext().getAssets(), "fonts/roboto_bold.ttf");
         Typeface roboto_light = Typeface.createFromAsset(ADObject.getAppContext().getAssets(), "fonts/roboto_light.ttf");
-        Calendar calendar = Calendar.getInstance();
 
         if (!DateFormat.is24HourFormat(ADObject.getAppContext())) {
             int mHour = alarmDataArrayList.get(i).getHour();
@@ -111,7 +109,7 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomViewHolder> {
 
         String hourString = "";
         if (!DateFormat.is24HourFormat(ADObject.getAppContext())) {
-            if((alarmData.getHour()<9 && alarmData.getHour()!=0 )||   ( alarmData.getHour()<22 && alarmData.getHour()>13)){
+            if ((alarmData.getHour() < 9 && alarmData.getHour() != 0) || (alarmData.getHour() < 22 && alarmData.getHour() > 13)) {
                 hourString += "0";
             }
             if (alarmData.getHour() == 0) {

@@ -1,25 +1,23 @@
 package com.fixed4fun.alarmclock.viewHolders;
 
+import android.graphics.Typeface;
+import android.view.MotionEvent;
+import android.view.View;
+import android.widget.CheckBox;
+import android.widget.ImageView;
+import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.SwitchCompat;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.res.Resources;
-import android.graphics.Typeface;
-import android.util.Log;
-import android.view.View;
-import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.ImageView;
-import android.widget.TextView;
-
+import com.fixed4fun.alarmclock.R;
 import com.fixed4fun.alarmclock.activities.MainActivity;
 import com.fixed4fun.alarmclock.adapters.CustomAdapter;
 import com.fixed4fun.alarmclock.alarmObject.ADObject;
-import com.fixed4fun.alarmclock.objectLists.AlarmList;
-import com.fixed4fun.alarmclock.R;
 import com.fixed4fun.alarmclock.notifications.AlarmNotifications;
+import com.fixed4fun.alarmclock.objectLists.AlarmList;
 
 public class CustomViewHolder extends RecyclerView.ViewHolder {
 
@@ -86,16 +84,24 @@ public class CustomViewHolder extends RecyclerView.ViewHolder {
             }
         });
 
+        onOrOff.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                return event.getActionMasked() == MotionEvent.ACTION_MOVE;
+            }
+        });
+
         if (MainActivity.listState) {
 
             selected.setOnClickListener(v -> AlarmList.getAlarms().get(getAdapterPosition()).setSelected(selected.isChecked()));
 
             deleteAlarm.setOnClickListener(v -> {
+                alarmNotifications.cancelAlarm(MainActivity.alarms.get(getAdapterPosition()), ADObject.getAppContext());
                 deleteSelectedAlarm(getAdapterPosition());
                 adapter = MainActivity.getCustomAdapter();
                 adapter.notifyDataSetChanged();
                 adapter = null;
-                alarmNotifications.startNotification(ADObject.getAppContext(), MainActivity.alarms);
+//                alarmNotifications.startNotification(ADObject.getAppContext(), MainActivity.alarms);
             });
         }
 

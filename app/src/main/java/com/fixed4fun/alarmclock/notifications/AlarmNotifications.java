@@ -19,7 +19,6 @@ import java.util.Calendar;
 public class AlarmNotifications extends AppCompatActivity {
 
     public void startNotification(Context context, ArrayList<AlarmData> alarmsList) {
-        Log.d("123456", "startNotification: ");
         if(alarmsList!=null) {
             for (int i = 0; i < alarmsList.size(); i++) {
                 cancelAlarm(alarmsList.get(i), context);
@@ -94,7 +93,7 @@ public class AlarmNotifications extends AppCompatActivity {
     }
 
 
-    private void cancelAlarm(AlarmData ad, Context context) {
+    public void cancelAlarm(AlarmData ad, Context context) {
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         Intent intent = new Intent(context, AlertReceiver.class);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context, (int) ad.getFlag(), intent, PendingIntent.FLAG_CANCEL_CURRENT);
