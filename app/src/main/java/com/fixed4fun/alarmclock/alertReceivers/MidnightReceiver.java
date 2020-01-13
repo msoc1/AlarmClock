@@ -4,8 +4,10 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Vibrator;
 import android.preference.PreferenceManager;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.fixed4fun.alarmclock.alarmObject.ADObject;
 import com.fixed4fun.alarmclock.alarmObject.AlarmData;
@@ -27,5 +29,24 @@ public class MidnightReceiver extends BroadcastReceiver {
         ArrayList<AlarmData> arrayList = gson.fromJson(json2, type);
         AlarmNotifications alarmNotifications = new AlarmNotifications();
         alarmNotifications.startNotification(ADObject.getAppContext(), arrayList);
+        Log.d("123456", "onReceive: midnight " + arrayList.toString());
+        Toast.makeText(ADObject.getAppContext(), "toast midnightreceiver " + arrayList.toString(), Toast.LENGTH_SHORT).show();
+
+        Vibrator vibrator;
+
+            long[] pattern = {0, 1000, 300};
+            vibrator = (Vibrator) ADObject.getAppContext().getSystemService(Context.VIBRATOR_SERVICE);
+            if (vibrator != null) {
+                vibrator.vibrate(pattern, -1);
+            }
+
+            vibrator.cancel();
+
+
     }
+
+
+
+
 }
+

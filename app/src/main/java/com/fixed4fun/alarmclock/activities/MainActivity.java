@@ -2,6 +2,9 @@ package com.fixed4fun.alarmclock.activities;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -30,6 +33,7 @@ import com.fixed4fun.alarmclock.R;
 import com.fixed4fun.alarmclock.adapters.CustomAdapter;
 import com.fixed4fun.alarmclock.alarmObject.ADObject;
 import com.fixed4fun.alarmclock.alarmObject.AlarmData;
+import com.fixed4fun.alarmclock.alertReceivers.MidnightReceiver;
 import com.fixed4fun.alarmclock.fragments.ChangeAllTimePicker;
 import com.fixed4fun.alarmclock.fragments.ModifyTimePicker;
 import com.fixed4fun.alarmclock.fragments.NewTimePicker;
@@ -47,6 +51,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
 
@@ -122,8 +127,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     @Override
-    protected void onPause() {
-        super.onPause();
+    protected void onStop() {
         SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         SharedPreferences.Editor editor = sharedPrefs.edit();
         Gson gson = new Gson();
@@ -131,7 +135,31 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         String json = gson.toJson(alarms);
         editor.putString("ALARMS", json);
         editor.apply();
-        alarmNotifications.midnightAlarms(ADObject.getAppContext());
+//        alarmNotifications.midnightAlarms(ADObject.getAppContext());
+        if(alarms.size()!=0) {
+            Toast.makeText(ADObject.getAppContext(), "stop", Toast.LENGTH_LONG).show();
+//            AlarmManager cancelAlarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+//            Intent intent = new Intent(getApplicationContext(), MidnightReceiver.class);
+//            PendingIntent cancelPendingIntent = PendingIntent.getBroadcast(getApplicationContext(), 7734, intent, PendingIntent.FLAG_CANCEL_CURRENT);
+//            cancelAlarmManager.cancel(cancelPendingIntent);
+//            cancelPendingIntent.cancel();
+
+
+            Intent dialogIntent = new Intent(ADObject.getAppContext(), MidnightReceiver.class);
+            AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+            Calendar calendar = Calendar.getInstance();
+            calendar.set(Calendar.HOUR_OF_DAY, 0);
+            calendar.set(Calendar.MINUTE, 1 );
+            calendar.set(Calendar.SECOND, 0);
+
+            calendar.setTimeInMillis(calendar.getTimeInMillis() + AlarmManager.INTERVAL_DAY);
+
+            Log.d("123456", "onStop: " +calendar.getTime());
+            PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), 7734, dialogIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+            alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntent);
+
+        }
+        super.onStop();
     }
 
 

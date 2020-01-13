@@ -61,6 +61,14 @@ public class AlarmGoingOff extends AppCompatActivity {
         boolean vibrate = sharedPrefs.getBoolean(VIBRATETAG, true);
 
         Calendar calendar = Calendar.getInstance();
+        Window window = getWindow();
+        window.addFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED
+                | WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD
+                | WindowManager.LayoutParams.FLAG_FULLSCREEN
+                | WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED
+                | WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON
+                | WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON
+                | WindowManager.LayoutParams.FLAG_ALLOW_LOCK_WHILE_SCREEN_ON);
 
         hours = findViewById(R.id.hours_alarm);
         minutes = findViewById(R.id.minutes_alarm);
@@ -175,11 +183,14 @@ public class AlarmGoingOff extends AppCompatActivity {
     public void onAttachedToWindow() {
         super.onAttachedToWindow();
         Window window = getWindow();
-        window.addFlags(WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON
+       window.addFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED
+                | WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD
+                | WindowManager.LayoutParams.FLAG_FULLSCREEN
                 | WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED
                 | WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON
-                | WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD
-                | WindowManager.LayoutParams.FLAG_FULLSCREEN);
+                | WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON
+                | WindowManager.LayoutParams.FLAG_ALLOW_LOCK_WHILE_SCREEN_ON);
+
 
         super.onAttachedToWindow();
     }

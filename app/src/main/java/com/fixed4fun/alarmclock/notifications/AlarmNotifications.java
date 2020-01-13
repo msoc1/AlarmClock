@@ -8,10 +8,8 @@ import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.fixed4fun.alarmclock.alarmObject.ADObject;
 import com.fixed4fun.alarmclock.alarmObject.AlarmData;
 import com.fixed4fun.alarmclock.alertReceivers.AlertReceiver;
-import com.fixed4fun.alarmclock.alertReceivers.MidnightReceiver;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -41,43 +39,56 @@ public class AlarmNotifications extends AppCompatActivity {
                 //check for monday
                 case 2:
                     if (alarmData.isMonday()) {
-                        startAlarm(calendar, alarmData, context);
+                        Log.d("123456", "checkForActiveDays: Mon "+alarmData.isMonday());
+                        startAlarm(alarmData, context);
                     }
                     break;
                 //check for tuesday
                 case 3:
                     if (alarmData.isTuesday()) {
-                        startAlarm(calendar, alarmData, context);
+                        Log.d("123456", "checkForActiveDays: tue"+alarmData.isTuesday());
+
+                        startAlarm(alarmData, context);
                     }
                     break;
                 //check for wednesday
                 case 4:
                     if (alarmData.isWednesday()) {
-                        startAlarm(calendar, alarmData, context);
+                        Log.d("123456", "checkForActiveDays: wed "+alarmData.isWednesday());
+
+                        startAlarm(alarmData, context);
                     }
                     break;
                 //check for thursday
                 case 5:
                     if (alarmData.isThursday()) {
-                        startAlarm(calendar, alarmData, context);
+                        Log.d("123456", "checkForActiveDays: thur "+alarmData.isThursday());
+
+                        startAlarm(alarmData, context);
                     }
                     break;
                 //check for friday
                 case 6:
                     if (alarmData.isFriday()) {
-                        startAlarm(calendar, alarmData, context);
+                        Log.d("123456", "checkForActiveDays:fri " + alarmData.isFriday());
+
+                        startAlarm(alarmData, context);
                     }
                     break;
                 //check for saturday
                 case 7:
                     if (alarmData.isSaturday()) {
-                        startAlarm(calendar, alarmData, context);
+                        Log.d("123456", "checkForActiveDays: sat "+ alarmData.isSaturday());
+
+                        startAlarm(alarmData, context);
                     }
                     break;
                 //check for sunday
                 case 1:
                     if (alarmData.isSunday()) {
-                        startAlarm(calendar, alarmData, context);
+                        Log.d("123456", "checkForActiveDays: sun" + alarmData.isSunday());
+
+                        startAlarm(alarmData, context);
                     }
                     break;
             }
@@ -85,11 +96,15 @@ public class AlarmNotifications extends AppCompatActivity {
 
     }
 
-    private void startAlarm(Calendar c, AlarmData ad, Context context) {
+    private void startAlarm(AlarmData ad, Context context) {
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         Intent intent = new Intent(context, AlertReceiver.class);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, (int) ad.getFlag(), intent, PendingIntent.FLAG_CANCEL_CURRENT);
-        alarmManager.setExact(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(), pendingIntent);
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.HOUR_OF_DAY, ad.getHour());
+        calendar.set(Calendar.MINUTE, ad.getMinute());
+        calendar.set(Calendar.SECOND, 0);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, (int) ad.getFlag(), intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
     }
 
 
@@ -101,20 +116,24 @@ public class AlarmNotifications extends AppCompatActivity {
         pendingIntent.cancel();
     }
 
-    public void midnightAlarms(Context context) {
-        //needed to reset alarms at midnight
-        Intent dialogIntent = new Intent(ADObject.getAppContext(), MidnightReceiver.class);
-        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-        Calendar calendar = Calendar.getInstance();
-
-        calendar.set(Calendar.HOUR_OF_DAY, 0);
-        calendar.set(Calendar.MINUTE, 1);
-        calendar.set(Calendar.SECOND, 0);
-
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 7734, dialogIntent, PendingIntent.FLAG_CANCEL_CURRENT);
-
-        alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntent);
-
-    }
+//    public void midnightAlarms(Context context) {
+//        //needed to reset alarms at midnight
+//        AlarmManager cancelAlarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+//        Intent intent = new Intent(context, MidnightReceiver.class);
+//        PendingIntent cancelPendingIntent = PendingIntent.getBroadcast(context, 7734, intent, PendingIntent.FLAG_CANCEL_CURRENT);
+//        cancelAlarmManager.cancel(cancelPendingIntent);
+//        cancelPendingIntent.cancel();
+//
+//
+//        Intent dialogIntent = new Intent(ADObject.getAppContext(), MidnightReceiver.class);
+//        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+//        Calendar calendar = Calendar.getInstance();
+//        calendar.set(Calendar.HOUR_OF_DAY, 0);
+//        calendar.set(Calendar.MINUTE, 1);
+//        calendar.set(Calendar.SECOND, 0);
+//        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 7734, dialogIntent, PendingIntent.FLAG_ONE_SHOT);
+//        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntent);
+//
+//    }
 
 }

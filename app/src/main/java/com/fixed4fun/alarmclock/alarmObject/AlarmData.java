@@ -186,6 +186,15 @@ public class AlarmData implements Parcelable {
         return "AlarmData{" +
                 "hour=" + hour +
                 ", minute=" + minute +
+                ", monday=" + monday +
+                ", tuesday=" + tuesday +
+                ", wednesday=" + wednesday +
+                ", thursday=" + thursday +
+                ", friday=" + friday +
+                ", saturday=" + saturday +
+                ", sunday=" + sunday +
+                ", onOrOff=" + onOrOff +
+                ", flag=" + flag +
                 '}';
     }
 

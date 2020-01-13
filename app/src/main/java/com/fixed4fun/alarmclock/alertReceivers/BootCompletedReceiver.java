@@ -30,8 +30,8 @@ public class BootCompletedReceiver extends BroadcastReceiver {
             ArrayList<AlarmData> arrayList = gson.fromJson(json2, type);
             alarmNotifications = new AlarmNotifications();
             alarmNotifications.startNotification(ADObject.getAppContext(), arrayList);
-            alarmNotifications.midnightAlarms(ADObject.getAppContext());
-            Toast.makeText(ADObject.getAppContext(), "toast", Toast.LENGTH_LONG).show();
+//            alarmNotifications.midnightAlarms(ADObject.getAppContext());
+            Toast.makeText(ADObject.getAppContext(), "toast bootreceived " + arrayList.toString(), Toast.LENGTH_LONG).show();
         }
 
     }

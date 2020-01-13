@@ -18,12 +18,16 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:showOnLockScreen="true"
+        android:showWhenLocked="true"
+        android:turnScreenOn="true"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
             android:name="com.fixed4fun.alarmclock.activities.AlarmGoingOff"
             android:screenOrientation="sensorPortrait"
             android:showOnLockScreen="true"
+            android:showWhenLocked="true"
+            android:turnScreenOn="true"
             android:exported="true"></activity>
         <activity android:name="com.fixed4fun.alarmclock.activities.MainActivity">
             <intent-filter>
@@ -40,8 +44,6 @@
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
                 <action android:name="android.intent.action.QUICKBOOT_POWERON" />
                 <action android:name="com.htc.intent.action.QUICKBOOT_POWERON"/>
-                <action android:name="android.intent.action.REBOOT"/>
-
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </receiver>
