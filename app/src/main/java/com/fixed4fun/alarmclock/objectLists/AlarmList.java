@@ -1,7 +1,5 @@
 package com.fixed4fun.alarmclock.objectLists;
 
-import android.content.Intent;
-
 import com.fixed4fun.alarmclock.alarmObject.AlarmData;
 
 import java.util.ArrayList;

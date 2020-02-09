@@ -52,4 +52,5 @@
     <string name="changed">Changed </string>
     <string name="select_times">Select hours or minutes.</string>
     <string name="alarm_deleted">Alarm deleted.</string>
+    <string name="nap_option">Nap option:</string>
 </resources>

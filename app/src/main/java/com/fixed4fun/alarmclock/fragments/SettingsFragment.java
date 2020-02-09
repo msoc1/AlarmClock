@@ -32,10 +32,12 @@ public class SettingsFragment extends DialogFragment {
     public static final String THEMETAG = "theme";
     public static final String NAPTAG = "nap";
     public static final String ALERTOFFTAG = "secondsoff";
+    public static final String NAPOPTIONTAG = "nap_option";
 
 
     SwitchCompat vibrateSwitch;
     SwitchCompat themeSwitch;
+    SwitchCompat napSwitch;
     int napTime;
     int turnOffAfter;
 
@@ -58,6 +60,7 @@ public class SettingsFragment extends DialogFragment {
         selectSong = view.findViewById(R.id.select_song);
         closeSettings = view.findViewById(R.id.close_settings);
         turnoffTimer = view.findViewById(R.id.turnoff_timer);
+        napSwitch = view.findViewById(R.id.nap_option_switch);
 
 
         closeSettings.setOnClickListener(v -> {
@@ -67,6 +70,7 @@ public class SettingsFragment extends DialogFragment {
             editor.putBoolean(THEMETAG, themeSwitch.isChecked());
             editor.putInt(NAPTAG, napTimes.getValue());
             editor.putInt(ALERTOFFTAG, turnoffTimer.getValue());
+            editor.putBoolean(NAPOPTIONTAG, napSwitch.isChecked());
             editor.apply();
             getDialog().cancel();
         });
@@ -74,6 +78,7 @@ public class SettingsFragment extends DialogFragment {
         napTime = sharedPrefs.getInt(NAPTAG, 1);
         turnOffAfter = sharedPrefs.getInt(ALERTOFFTAG, 3);
         vibrateSwitch.setChecked(sharedPrefs.getBoolean(VIBRATETAG, true));
+        napSwitch.setChecked(sharedPrefs.getBoolean(NAPOPTIONTAG, true));
         themeSwitch.setChecked(sharedPrefs.getBoolean(THEMETAG, false));
 
         napTimes.setDisplayedValues(new String[]{"5", "10", "15", "20"});

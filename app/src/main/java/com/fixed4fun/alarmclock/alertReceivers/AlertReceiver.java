@@ -6,7 +6,6 @@ import android.content.Intent;
 import androidx.core.app.NotificationCompat;
 
 import android.text.format.DateFormat;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.fixed4fun.alarmclock.R;
@@ -20,7 +19,6 @@ public class AlertReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        Log.d("123456", "onReceive: receiver");
         NotificationHelper notificationHelper = new NotificationHelper(context);
         String amPMString ="";
         Calendar calendar = Calendar.getInstance();

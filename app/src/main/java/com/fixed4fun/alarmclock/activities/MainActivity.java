@@ -10,7 +10,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
@@ -136,28 +135,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         editor.putString("ALARMS", json);
         editor.apply();
 //        alarmNotifications.midnightAlarms(ADObject.getAppContext());
-        if(alarms.size()!=0) {
+        if (alarms.size() != 0) {
             Toast.makeText(ADObject.getAppContext(), "stop", Toast.LENGTH_LONG).show();
-//            AlarmManager cancelAlarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-//            Intent intent = new Intent(getApplicationContext(), MidnightReceiver.class);
-//            PendingIntent cancelPendingIntent = PendingIntent.getBroadcast(getApplicationContext(), 7734, intent, PendingIntent.FLAG_CANCEL_CURRENT);
-//            cancelAlarmManager.cancel(cancelPendingIntent);
-//            cancelPendingIntent.cancel();
-
-
             Intent dialogIntent = new Intent(ADObject.getAppContext(), MidnightReceiver.class);
             AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
             Calendar calendar = Calendar.getInstance();
             calendar.set(Calendar.HOUR_OF_DAY, 0);
-            calendar.set(Calendar.MINUTE, 1 );
+            calendar.set(Calendar.MINUTE, 1);
             calendar.set(Calendar.SECOND, 0);
-
             calendar.setTimeInMillis(calendar.getTimeInMillis() + AlarmManager.INTERVAL_DAY);
-
-            Log.d("123456", "onStop: " +calendar.getTime());
             PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), 7734, dialogIntent, PendingIntent.FLAG_UPDATE_CURRENT);
             alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntent);
-
         }
         super.onStop();
     }
@@ -239,9 +227,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }
                 customAdapter.notifyItemChanged(i);
             }
+
             @Override
             public void onSelectionFinished(int i) {
             }
+
             @Override
             public void onSelectChange(int i, int i1, boolean b) {
                 if (alarms.get(i).isSelected()) {
@@ -364,7 +354,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     }
                 }
                 if (turnedOn != 0) {
-
                     ChangeAllTimePicker dialogFragment = new ChangeAllTimePicker();
                     dialogFragment.show(getSupportFragmentManager(), "asa");
                     customAdapter.notifyDataSetChanged();
@@ -380,6 +369,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     if (ad.isSelected())
                         ad.setOnOrOff(turnOnOrOffAll.isChecked());
                 }
+                alarmNotifications.startNotification(ADObject.getAppContext(), alarms);
                 customAdapter.notifyDataSetChanged();
                 recyclerView.setAdapter(customAdapter);
                 break;

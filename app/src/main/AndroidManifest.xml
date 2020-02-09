@@ -9,11 +9,13 @@
     <uses-permission android:name="android.permission.DISABLE_KEYGUARD" />
 <!--    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />-->
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+
 
 
     <application
-        android:name="com.fixed4fun.alarmclock.alarmObject.ADObject"
-        android:allowBackup="true"
+        android:name=".alarmObject.ADObject"
+        android:allowBackup="false"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
@@ -23,23 +25,23 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name="com.fixed4fun.alarmclock.activities.AlarmGoingOff"
+            android:name=".activities.AlarmGoingOff"
             android:screenOrientation="sensorPortrait"
             android:showOnLockScreen="true"
             android:showWhenLocked="true"
             android:turnScreenOn="true"
             android:exported="true"></activity>
-        <activity android:name="com.fixed4fun.alarmclock.activities.MainActivity">
+        <activity android:name=".activities.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.fixed4fun.alarmclock.notifications.AlarmNotifications" />
-        <receiver android:name="com.fixed4fun.alarmclock.alertReceivers.AlertReceiver" />
-        <receiver android:name="com.fixed4fun.alarmclock.alertReceivers.MidnightReceiver" />
+        <activity android:name=".notifications.AlarmNotifications" />
+        <receiver android:name=".alertReceivers.AlertReceiver" />
+        <receiver android:name=".alertReceivers.MidnightReceiver" />
 
-        <receiver android:name="com.fixed4fun.alarmclock.alertReceivers.BootCompletedReceiver">
+        <receiver android:name=".alertReceivers.BootCompletedReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
                 <action android:name="android.intent.action.QUICKBOOT_POWERON" />
