@@ -134,9 +134,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         String json = gson.toJson(alarms);
         editor.putString("ALARMS", json);
         editor.apply();
-//        alarmNotifications.midnightAlarms(ADObject.getAppContext());
         if (alarms.size() != 0) {
-            Toast.makeText(ADObject.getAppContext(), "stop", Toast.LENGTH_LONG).show();
             Intent dialogIntent = new Intent(ADObject.getAppContext(), MidnightReceiver.class);
             AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
             Calendar calendar = Calendar.getInstance();

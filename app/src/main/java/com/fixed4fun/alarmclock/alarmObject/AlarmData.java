@@ -20,8 +20,9 @@ public class AlarmData implements Parcelable {
     private boolean onOrOff;
     private boolean selected;
     private int flag;
+    private boolean called;
 
-    public AlarmData(int hour, int minute, boolean monday_friday, boolean saturday_sunday, boolean monday, boolean tuesday, boolean wednesday, boolean thursday, boolean friday, boolean saturday, boolean sunday, boolean onOrOff, boolean selected, int flag) {
+    public AlarmData(int hour, int minute, boolean monday_friday, boolean saturday_sunday, boolean monday, boolean tuesday, boolean wednesday, boolean thursday, boolean friday, boolean saturday, boolean sunday, boolean onOrOff, boolean selected, int flag, boolean called) {
         this.hour = hour;
         this.minute = minute;
         this.monday_friday = monday_friday;
@@ -36,6 +37,7 @@ public class AlarmData implements Parcelable {
         this.onOrOff = onOrOff;
         this.selected = selected;
         this.flag = flag;
+        this.called = called;
     }
 
     protected AlarmData(Parcel in) {
@@ -53,6 +55,7 @@ public class AlarmData implements Parcelable {
         onOrOff = in.readByte() != 0;
         selected = in.readByte() != 0;
         flag = in.readInt();
+        called = in.readByte() != 0;
     }
 
     public static final Creator<AlarmData> CREATOR = new Creator<AlarmData>() {
@@ -171,8 +174,7 @@ public class AlarmData implements Parcelable {
         this.selected = selected;
     }
 
-
-    public long getFlag() {
+    public int getFlag() {
         return flag;
     }
 
@@ -180,21 +182,12 @@ public class AlarmData implements Parcelable {
         this.flag = flag;
     }
 
-    @Override
-    public String toString() {
-        return "AlarmData{" +
-                "hour=" + hour +
-                ", minute=" + minute +
-                ", monday=" + monday +
-                ", tuesday=" + tuesday +
-                ", wednesday=" + wednesday +
-                ", thursday=" + thursday +
-                ", friday=" + friday +
-                ", saturday=" + saturday +
-                ", sunday=" + sunday +
-                ", onOrOff=" + onOrOff +
-                ", flag=" + flag +
-                '}';
+    public boolean isCalled() {
+        return called;
+    }
+
+    public void setCalled(boolean called) {
+        this.called = called;
     }
 
     @Override
@@ -218,5 +211,6 @@ public class AlarmData implements Parcelable {
         dest.writeByte((byte) (onOrOff ? 1 : 0));
         dest.writeByte((byte) (selected ? 1 : 0));
         dest.writeInt(flag);
+        dest.writeByte((byte) (called ? 1 : 0));
     }
 }

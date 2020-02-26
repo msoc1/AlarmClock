@@ -17,11 +17,11 @@ public class AlarmList {
 
     public static void addAlarm(int hour, int minute, boolean monday_friday, boolean saturday_sunday,
                                 boolean monday, boolean tuesday, boolean wednesday, boolean thursday, boolean friday,
-                                boolean saturday, boolean sunday, boolean onOrOff, boolean selected , int flag) {
+                                boolean saturday, boolean sunday, boolean onOrOff, boolean selected , int flag, boolean called) {
 
         alarmDataArrayList.add(new AlarmData(hour, minute, monday_friday, saturday_sunday,
                 monday, tuesday, wednesday, thursday, friday,
-                saturday, sunday, onOrOff, selected, flag));
+                saturday, sunday, onOrOff, selected, flag, called));
     }
 
     public static void addAlarm(AlarmData a) {

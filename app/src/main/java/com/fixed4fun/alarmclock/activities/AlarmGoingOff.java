@@ -13,6 +13,7 @@ import android.os.Handler;
 import android.os.Vibrator;
 import android.preference.PreferenceManager;
 import android.text.format.DateFormat;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
@@ -30,9 +31,13 @@ import com.fixed4fun.alarmclock.alarmObject.AlarmData;
 import com.fixed4fun.alarmclock.alertReceivers.AlertReceiver;
 import com.fixed4fun.alarmclock.notifications.NotificationHelper;
 import com.fixed4fun.alarmclock.objectLists.SoundsList;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
+import java.lang.reflect.Type;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
 
@@ -53,7 +58,9 @@ public class AlarmGoingOff extends AppCompatActivity {
     Vibrator vibrator;
     int turnOffAfter;
     Handler turnOffHandler = new Handler();
-
+    public ArrayList<AlarmData> alarms = new ArrayList<>();
+    static int alarmIndex = -1;
+    public static boolean ringAlarm;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,7 +76,48 @@ public class AlarmGoingOff extends AppCompatActivity {
                 | WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON
                 | WindowManager.LayoutParams.FLAG_ALLOW_LOCK_WHILE_SCREEN_ON);
 
-        if (isInList()) {
+
+        String json2 = sharedPrefs.getString("ALARMS", "");
+        Gson gson = new Gson();
+        Type type = new TypeToken<ArrayList<AlarmData>>() {
+        }.getType();
+        ArrayList<AlarmData> arrayList = gson.fromJson(json2, type);
+        alarms.clear();
+        if (arrayList != null) {
+            alarms.addAll(arrayList);
+        }
+
+        Calendar c = Calendar.getInstance();
+        int napTimeInMinutes2 = sharedPrefs.getInt(NAPTAG, 1);
+        int minute = c.get(Calendar.MINUTE);
+        int hour = c.get(Calendar.HOUR_OF_DAY);
+        if (minute + napTimeInMinutes2 * 5 > 60) {
+            hour++;
+            minute = (minute + napTimeInMinutes2 * 5) - 60;
+        }
+        for (AlarmData ad : alarms) {
+            if (!ad.isCalled() && ad.getHour() == c.get(Calendar.HOUR_OF_DAY) && (ad.getMinute() == c.get(Calendar.MINUTE) || (ad.getMinute() + napTimeInMinutes2 * 5) == c.get(Calendar.MINUTE)) && ad.isOnOrOff()) {
+                ringAlarm = true;
+                ad.setCalled(true);
+                alarmIndex = alarms.indexOf(ad);
+                break;
+            }
+            if (!ad.isCalled() && ad.getHour() == hour && ad.getMinute() == minute && ad.isOnOrOff()) {
+                ringAlarm = true;
+                ad.setCalled(true);
+                alarmIndex = alarms.indexOf(ad);
+                break;
+            }
+        }
+
+        SharedPreferences.Editor editor = sharedPrefs.edit();
+        Gson gson2 = new Gson();
+        editor.remove("ALARMS");
+        String json = gson2.toJson(alarms);
+        editor.putString("ALARMS", json);
+        editor.apply();
+
+        if (ringAlarm) {
             hours = findViewById(R.id.hours_alarm);
             minutes = findViewById(R.id.minutes_alarm);
             turnOff = findViewById(R.id.turnoff_alarm);
@@ -121,6 +169,14 @@ public class AlarmGoingOff extends AppCompatActivity {
                 Intent intent = new Intent(ADObject.getAppContext(), AlertReceiver.class);
                 PendingIntent pendingIntent = PendingIntent.getBroadcast(ADObject.getAppContext(), 0, intent, PendingIntent.FLAG_ONE_SHOT);
                 alarmManager.setExact(AlarmManager.RTC_WAKEUP, time, pendingIntent);
+                if(alarmIndex>=0){
+                    alarms.get(alarmIndex).setCalled(false);
+                    Gson gson3 = new Gson();
+                    editor.remove("ALARMS");
+                    String json3 = gson3.toJson(alarms);
+                    editor.putString("ALARMS", json3);
+                    editor.apply();
+                }
                 finish();
                 Toast.makeText(ADObject.getAppContext(),
                         "" + getResources().getText(R.string.nap_time_l) + napTimeInMinutes * 5 + " " + getResources().getText(R.string.minutes),
@@ -132,7 +188,7 @@ public class AlarmGoingOff extends AppCompatActivity {
             int song = sharedPrefs.getInt("SONG_TO_PLAY", 1);
             turnOffAfter = sharedPrefs.getInt("secondsoff", 0) * 1000;
             mMediaPlayer = MediaPlayer.create(this, SoundsList.getAvailableSounds().get(song).getSound());
-            mMediaPlayer.setAudioAttributes(new AudioAttributes.Builder().setContentType(AudioAttributes.CONTENT_TYPE_MUSIC).build());
+            mMediaPlayer.setAudioAttributes(new AudioAttributes.Builder().setUsage(AudioAttributes.USAGE_ALARM).build());
             mMediaPlayer.setLooping(true);
             mMediaPlayer.start();
             if (vibrate) {
@@ -153,30 +209,11 @@ public class AlarmGoingOff extends AppCompatActivity {
         }
     }
 
-    public boolean isInList() {
-        Calendar c = Calendar.getInstance();
-        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(ADObject.getAppContext());
-        int napTimeInMinutes = sharedPrefs.getInt(NAPTAG, 1);
-        int minute = c.get(Calendar.MINUTE);
-        int hour = c.get(Calendar.HOUR_OF_DAY);
-        if (minute + napTimeInMinutes * 5 > 60) {
-            hour++;
-            minute = (minute + napTimeInMinutes * 5) - 60;
-        }
-        for (AlarmData ad : MainActivity.alarms) {
-            if (ad.getHour() == c.get(Calendar.HOUR_OF_DAY) && (ad.getMinute() == c.get(Calendar.MINUTE) || ad.getMinute() + napTimeInMinutes * 3 == c.get(Calendar.MINUTE)) && ad.isOnOrOff()) {
-                return true;
-            }
-            if (ad.getHour() == hour && ad.getMinute() == minute && ad.isOnOrOff()) {
-                return true;
-            }
-        }
-        return false;
-    }
+
 
     public boolean isNap() {
         Calendar c = Calendar.getInstance();
-        for (AlarmData ad : MainActivity.alarms) {
+        for (AlarmData ad : alarms) {
             if (ad.getHour() == c.get(Calendar.HOUR_OF_DAY) && ad.getMinute() == c.get(Calendar.MINUTE)) {
                 return false;
             }

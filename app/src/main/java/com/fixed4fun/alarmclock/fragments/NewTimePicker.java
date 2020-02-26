@@ -206,7 +206,7 @@ public class NewTimePicker extends DialogFragment implements View.OnClickListene
     public void addAnAlarm() {
         alarmData = new AlarmData(getHour(timePicker), getMinute(timePicker), monFriCheckBox.isChecked(), satSunCheckBox.isChecked(), mondayCheckBox.isChecked()
                 , tuesdayCheckBox.isChecked(), wednesdayCheckBox.isChecked(), thursdayCheckBox.isChecked(), fridayCheckBox.isChecked(), saturdayCheckBox.isChecked(), sundayCheckBox.isChecked()
-                , true, false, (int) System.currentTimeMillis());
+                , true, false, (int) System.currentTimeMillis(), false);
 
         if (!alarmData.isMonday() && !alarmData.isTuesday() && !alarmData.isWednesday() && !alarmData.isThursday() && !alarmData.isFriday() && !alarmData.isSaturday() && !alarmData.isSunday()) {
             alarmData.setMonday_friday(true);
@@ -223,7 +223,7 @@ public class NewTimePicker extends DialogFragment implements View.OnClickListene
         } else {
             AlarmList.addAlarm(getHour(timePicker), getMinute(timePicker), monFriCheckBox.isChecked(), satSunCheckBox.isChecked(), mondayCheckBox.isChecked()
                     , tuesdayCheckBox.isChecked(), wednesdayCheckBox.isChecked(), thursdayCheckBox.isChecked(), fridayCheckBox.isChecked(), saturdayCheckBox.isChecked(), sundayCheckBox.isChecked()
-                    , true, false, (int) System.currentTimeMillis());
+                    , true, false, (int) System.currentTimeMillis(), false);
         }
 
         String amPMmessageText = "";
