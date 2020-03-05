@@ -10,6 +10,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
@@ -53,6 +54,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 
 import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.AppSettingsDialog;
@@ -214,6 +216,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         toolbarHeight = toolbar.getMaxHeight();
         toolbar.setVisibility(View.GONE);
         alarmNotifications = new AlarmNotifications();
+
+        Log.d("123456", "onCreate: " + Locale.getDefault());
 
         mDragSelectTouchListener = new DragSelectTouchListener().withSelectListener(new DragSelectTouchListener.OnAdvancedDragSelectListener() {
             @Override

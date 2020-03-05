@@ -50,4 +50,6 @@
     <string name="select_times">Zmień godziny lub minuty.</string>
     <string name="alarm_deleted">Budzik usunięty.</string>
     <string name="nap_option">Opcja drzemki:</string>
+    <string name="alarm_notification">Alarm!!!</string>
+    <string name="vibrate" translatable="false">V</string>
 </resources>

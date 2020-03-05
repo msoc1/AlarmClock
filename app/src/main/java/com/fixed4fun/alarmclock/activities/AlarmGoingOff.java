@@ -5,9 +5,14 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.AssetFileDescriptor;
 import android.graphics.drawable.TransitionDrawable;
+import android.icu.text.SimpleDateFormat;
 import android.media.AudioAttributes;
+import android.media.AudioManager;
 import android.media.MediaPlayer;
+import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Vibrator;
@@ -39,6 +44,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
 
 public class AlarmGoingOff extends AppCompatActivity {
@@ -48,7 +54,6 @@ public class AlarmGoingOff extends AppCompatActivity {
     TextView amPM;
     Button turnOff;
     Button napTime;
-    MediaPlayer mMediaPlayer;
     Handler mHandler = new Handler();
     Runnable timeRunnable;
     TransitionDrawable transitionDrawable;
@@ -61,6 +66,9 @@ public class AlarmGoingOff extends AppCompatActivity {
     public ArrayList<AlarmData> alarms = new ArrayList<>();
     static int alarmIndex = -1;
     public static boolean ringAlarm;
+    static MediaPlayer mediaPlayer = new MediaPlayer();
+
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -156,9 +164,9 @@ public class AlarmGoingOff extends AppCompatActivity {
             hours.setText(hourString);
             int timeInMinutes = calendar.get(Calendar.MINUTE);
             minutes.setText(((timeInMinutes > 9) ? timeInMinutes : "0" + timeInMinutes).toString());
-            LocalDate localDate = LocalDate.now();
+            Date date = calendar.getTime();
             //"EEEE" is for day of the week in it's full name
-            dayOfTheWeek.setText(localDate.format(DateTimeFormatter.ofPattern("EEEE", Locale.getDefault())));
+            dayOfTheWeek.setText(new SimpleDateFormat("EEEE", Locale.getDefault()).format(date.getTime()));
 
             turnOff.setOnTouchListener(buttonOnTouchListener);
 
@@ -169,7 +177,7 @@ public class AlarmGoingOff extends AppCompatActivity {
                 Intent intent = new Intent(ADObject.getAppContext(), AlertReceiver.class);
                 PendingIntent pendingIntent = PendingIntent.getBroadcast(ADObject.getAppContext(), 0, intent, PendingIntent.FLAG_ONE_SHOT);
                 alarmManager.setExact(AlarmManager.RTC_WAKEUP, time, pendingIntent);
-                if(alarmIndex>=0){
+                if (alarmIndex >= 0) {
                     alarms.get(alarmIndex).setCalled(false);
                     Gson gson3 = new Gson();
                     editor.remove("ALARMS");
@@ -184,13 +192,9 @@ public class AlarmGoingOff extends AppCompatActivity {
 
             });
 
-            mMediaPlayer = new MediaPlayer();
             int song = sharedPrefs.getInt("SONG_TO_PLAY", 1);
-            turnOffAfter = sharedPrefs.getInt("secondsoff", 0) * 1000;
-            mMediaPlayer = MediaPlayer.create(this, SoundsList.getAvailableSounds().get(song).getSound());
-            mMediaPlayer.setAudioAttributes(new AudioAttributes.Builder().setUsage(AudioAttributes.USAGE_ALARM).build());
-            mMediaPlayer.setLooping(true);
-            mMediaPlayer.start();
+            turnOffAfter = sharedPrefs.getInt("secondsoff", 3) * 1000;
+            playAlarmSound(SoundsList.getAvailableSounds().get(song).getDescr());
             if (vibrate) {
                 long[] pattern = {0, 1000, 300};
                 vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
@@ -209,6 +213,35 @@ public class AlarmGoingOff extends AppCompatActivity {
         }
     }
 
+    static public void playAlarmSound(String songDescr) {
+        new AsyncTask<Void, Void, Boolean>() {
+            @Override
+            protected Boolean doInBackground(Void... voids) {
+                try {
+                    mediaPlayer.setOnCompletionListener(mp -> {
+                        mediaPlayer.reset();
+                        mediaPlayer.release();
+                    });
+                    mediaPlayer.setOnPreparedListener(mp -> mediaPlayer.start());
+                    int resourdeID = ADObject.getAppContext().getResources().getIdentifier(songDescr, "raw", ADObject.getAppContext().getPackageName());
+                    AssetFileDescriptor afd = ADObject.getAppContext().getResources().openRawResourceFd(resourdeID);
+
+                    if (afd == null) return false;
+                    mediaPlayer.setDataSource(afd.getFileDescriptor(), afd.getStartOffset(), afd.getLength());
+                    afd.close();
+                    mediaPlayer.setLooping(true);
+                    mediaPlayer.setAudioStreamType(AudioManager.STREAM_ALARM);
+                    mediaPlayer.setVolume(1.0f, 1.0f);
+                    mediaPlayer.prepare();
+                    return true;
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                return false;
+            }
+
+        }.execute();
+    }
 
 
     public boolean isNap() {
@@ -225,10 +258,10 @@ public class AlarmGoingOff extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (mMediaPlayer != null) {
-            mMediaPlayer.stop();
-            mMediaPlayer.release();
-            mMediaPlayer = null;
+        if (mediaPlayer != null) {
+            mediaPlayer.stop();
+            mediaPlayer.release();
+            mediaPlayer = null;
         }
         if (vibrator != null) {
             vibrator.cancel();

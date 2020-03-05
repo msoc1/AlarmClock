@@ -138,6 +138,7 @@ public class ChangeAllTimePicker extends DialogFragment implements View.OnClickL
                                     ad.setHour(ad.getHour() + hours.getValue());
                                 }
                             }
+                            ad.setCalled(false);
                         }
                     }
                     MainActivity.listState = false;

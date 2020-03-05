@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name" translatable="false">Multi Alarm</string>
     <string name="sunday">Su</string>
     <string name="saturday">Sa</string>
     <string name="friday">F</string>
@@ -10,10 +8,8 @@
     <string name="monday">M</string>
     <string name="saturday_sunday_short">S-S</string>
     <string name="monday_friday_short">M-F</string>
-    <string name="vibrate" translatable="false">V</string>
     <string name="sat_sun">SAT-SUN</string>
     <string name="mon_fri">MON-FRI</string>
-    <string name="alarm_notification">Alarm!!!</string>
     <string name="it_is_notification">"It is "</string>
     <string name="current_alarm_notification">"Current alarm "</string>
     <string name="earlier">Earlier</string>
@@ -24,7 +20,6 @@
     <string name="mon_fri_adapter">Mon - Fri</string>
     <string name="deleted">Deleted</string>
     <string name="alarmy_toast_main">alarms</string>
-    <string name="alarm_information_dialog_title" translatable="false">Alarm Information</string>
     <string name="message_dialog_xiaomi_permissions">Accept permissions for full functionallity</string>
     <string name="continue_xiaomi_permissions">CONTINUE</string>
     <string name="modified_onmodify_timepicker_toas">"Modified to "</string>
@@ -54,4 +49,6 @@
     <string name="select_times">Select hours or minutes.</string>
     <string name="alarm_deleted">Alarm deleted.</string>
     <string name="nap_option">Nap option:</string>
+    <string name="alarm_notification">Alarm!!!</string>
+    <string name="vibrate" translatable="false">V</string>
 </resources>

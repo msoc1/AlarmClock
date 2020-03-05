@@ -11,18 +11,16 @@ public class SoundsList {
 
     public static ArrayList<Sounds> getAvailableSounds() {
         soundsArrayList.clear();
-        soundsArrayList.add(new Sounds("Bells" , R.raw.bells ));
-        soundsArrayList.add(new Sounds("Pager Beeps", R.raw.pager_beeps));
-        soundsArrayList.add(new Sounds("Siren" ,R.raw.siren ));
-        soundsArrayList.add(new Sounds("Siren 2" ,R.raw.siren2 ));
-        soundsArrayList.add(new Sounds("Siren 3" ,R.raw.siren3 ));
-        soundsArrayList.add(new Sounds("Whistle" ,R.raw.whistle ));
+        soundsArrayList.add(new Sounds("Bells", R.raw.bells, "bells"));
+        soundsArrayList.add(new Sounds("Pager Beeps", R.raw.pager_beeps, "pager_beeps"));
+        soundsArrayList.add(new Sounds("Siren", R.raw.siren, "siren"));
+        soundsArrayList.add(new Sounds("Siren 2", R.raw.siren2, "siren2"));
+        soundsArrayList.add(new Sounds("Siren 3", R.raw.siren3, "siren3"));
+        soundsArrayList.add(new Sounds("Whistle", R.raw.whistle, "whistle"));
 
 
         return soundsArrayList;
     }
-
-
 
 
 }

@@ -25,6 +25,9 @@ public class MidnightReceiver extends BroadcastReceiver {
         }.getType();
         ArrayList<AlarmData> arrayList = gson.fromJson(json2, type);
         AlarmNotifications alarmNotifications = new AlarmNotifications();
+        for ( AlarmData ad : arrayList){
+            ad.setCalled(false);
+        }
         alarmNotifications.startNotification(ADObject.getAppContext(), arrayList);
     }
 

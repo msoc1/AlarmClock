@@ -134,7 +134,7 @@ public class ModifyTimePicker extends DialogFragment implements View.OnClickList
         AlarmList.getAlarms().get(MainActivity.position).setHour(timePicker.getCurrentHour());
         AlarmList.getAlarms().get(MainActivity.position).setMinute(timePicker.getCurrentMinute());
         AlarmList.getAlarms().get(MainActivity.position).setOnOrOff(true);
-
+        AlarmList.getAlarms().get(MainActivity.position).setCalled(false);
 
         String amPMmessageText = "";
         if(!timePicker.is24HourView()){
